@@ -1,0 +1,9 @@
+function um ()
+{
+	parte 1
+}
+
+function dois ()
+{
+	parte 2
+}
