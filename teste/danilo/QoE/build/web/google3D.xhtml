@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <script type='text/javascript' src='http://www.google.com/jsapi'></script>
+
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">  
+
+            <p:panel>
+
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                    google.load('visualization', '1', {'packages':['motionchart']});
+                    google.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'mechanism')
+                        //data.addColumn('string', 'Fruit');
+                        data.addColumn('date', 'Date');
+                        data.addColumn('number', 'PSNR');
+                        data.addColumn('number', 'Congest');
+                        //data.addColumn('string', 'Location');
+                        
+                        data.addRows([
+                            ['mec3',  new Date (1988,0,1), 49, 10],
+                            ['mec3',  new Date (1988,0,1), 46.81879, 20],
+                            ['mec3',  new Date (1988,0,1), 46.19535, 30],
+                            ['mec3',  new Date (1988,0,1), 47.31813, 40], 
+                            ['mec2', new Date (1988,0,1), 1150, 200],
+                            ['mec1', new Date (1988,0,1), 300,  250],
+                            ['mec4',  new Date (1989,6,1), 1200, 400],
+                            ['mec5', new Date (1989,6,1), 750,  150],
+                            ['mec6', new Date (1989,6,1), 788,  617]                           
+                            
+                            //[49,'Apples',  new Date (1988,0,1), 1000, 300, 'East'],
+                            //[46.81879, 'Oranges', new Date (1988,0,1), 1150, 200, 'West'],
+                            //[46.19535,'Bananas', new Date (1988,0,1), 300,  250, 'West'],
+                            //[47.31813,'Apples',  new Date (1989,6,1), 1200, 400, 'East'],
+                            //[47.4653, 'Oranges', new Date (1989,6,1), 750,  150, 'West'],
+                            //[48.8745, 'Bananas', new Date (1989,6,1), 788,  617, 'West']
+                        ]);
+                        var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
+                        chart.draw(data, {width: 600, height:300});
+                    }
+                </script>
+
+                <body>
+                    <div id="chart_div" style="width: 600px; height: 300px;"></div>
+                </body>
+
+            </p:panel>
+
+        </h:form>  
+    </h:body>
+</html>

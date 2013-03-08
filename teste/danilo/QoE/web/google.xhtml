@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>
+            Google Visualization API Sample
+        </title>
+        <!-- One script tag loads all the required libraries! Do not specify any chart types in the autoload statement. -->
+        <script type="text/javascript"
+                src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'>
+        </script>
+        <script type="text/javascript">
+            google.load('visualization', '1', {'packages':['charteditor']});
+            google.setOnLoadCallback(drawVisualization);
+
+            function drawVisualization() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('String', 'Mechanisms');
+                data.addColumn('number', '10');
+                data.addColumn('number', '20');
+                data.addColumn('number', '30');
+                data.addColumn('number', '40');
+                data.addColumn('number', '50');
+                data.addColumn('number', '60');
+                data.addColumn('number', '70');
+                data.addColumn('number', '10');
+                data.addColumn('number', '20');
+                data.addColumn('number', '30');
+                data.addColumn('number', '40');
+                data.addColumn('number', '50');
+                data.addColumn('number', '60');
+                data.addColumn('number', '70');
+                data.addColumn('number', '10');
+                data.addColumn('number', '20');
+                data.addColumn('number', '30');
+                data.addColumn('number', '40');
+                data.addColumn('number', '50');
+                data.addColumn('number', '60');
+                data.addColumn('number', '70');
+                           
+                data.addRows([
+                                
+                    ['mec3', 49, 46.81879, 46.19535, 47.31813, 46.21228, 45.84793, 45.61262, 45.95911, 45.97948, 46.79549, 45.73103, 45.61695, 45.50878, 45.22722, 45.15083, 44.7883, 44.93113, 44.64151, 44.48718, 44.43994, 45.03528],
+                    ['mec2', 49, 46.81879, 46.19535, 47.31813, 46.21228, 45.84793, 45.61262, 45.95911, 45.97948, 46.79549, 45.73103, 45.61695, 45.50878, 45.22722, 45.15083, 44.7883, 44.93113, 44.64151, 44.48718, 44.43994, 45.03528],              
+                                
+                    //[new Date(2008, 1 ,2), 14045, undefined, undefined, 20374, undefined, undefined],
+                    //[new Date(2008, 1 ,3), 55022, undefined, undefined, 50766, undefined, undefined],
+                    //[new Date(2008, 1 ,4), 75284, undefined, undefined, 14334, 'Out of Stock','Ran out of stock on pens at 4pm'],
+                    //[new Date(2008, 1 ,5), 41476, 'Bought Pens','Bought 200k pens', 66467, undefined, undefined],
+                    //[new Date(2008, 1 ,6), 33322, undefined, undefined, 39463, undefined, undefined]
+                ]);
+                
+                var wrap = new google.visualization.ChartWrapper();
+                wrap.setChartType('LineChart');
+                wrap.setDataTable(data);
+                wrap.setContainerId('visualization');
+                wrap.setOptions({'title':'Population Density (people/km^2)', 'legend':'none'});
+                wrap.draw();
+            }          
+            
+
+        </script>
+    </head>
+    <body>
+        <div id="visualization" style="height: 400px; width: 400px;"></div>
+    </body>
+</html>

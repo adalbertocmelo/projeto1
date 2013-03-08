@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     >
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">  
+    <p:panel header="Test Plain" toggleable="true" id="panel">  
+        <h:panelGrid columns="2" cellpadding="5"> 
+            
+            <h:outputLabel value="id :" for="id" />  
+            <!-- <p:autoComplete id="id"  value="{autoCompleteBean.txt6}"   
+                    completeMethod="{autoCompleteBean.complete}" />-->
+          
+            <h:outputLabel value="Codification :" for="cod" />  
+            <p:commandButton value="Search" update="panel,display" id="cod"  
+             styleClass="ui-priority-primary"/>    
+              
+            <h:outputLabel value="Node id source :" for="nodeSource" />  
+            <p:autoComplete id="nodeSource"    
+                    value="#{autoCompleteBean.txt1}" effect="fade"  
+                    completeMethod="#{autoCompleteBean.complete}"/>  
+              
+            <h:outputLabel value="Node id destination :" for="nodeDest" />  
+            <p:autoComplete id="nodeDest"    
+                    value="#{autoCompleteBean.txt2}" effect="blind"  
+                    completeMethod="#{autoCompleteBean.complete}"/>  
+                      
+            <h:outputLabel value="Bandwidth (Mbps):" for="band" />  
+            <p:autoComplete id="band"   
+                    value="#{autoCompleteBean.txt3}"   
+                    completeMethod="#{autoCompleteBean.complete}"/>  
+              
+            <h:outputLabel value="Mechanism :" for="mechanism" />  
+            <p:autoComplete id="mechanism" forceSelection="true"   
+                    value="#{autoCompleteBean.txt4}"   
+                    completeMethod="#{autoCompleteBean.complete}"/>  
+  
+            <h:outputLabel value="Congest. perc (%) :" for="congest" /> 
+            <h:panelGrid columns="2" cellpadding="3">
+                <h:outputLabel value="Min (%) :" for="min" />
+                <p:autoComplete id="min" value="#{autoCompleteBean.txt5}"   
+                    completeMethod="#{autoCompleteBean.complete}" />  
+                <h:outputLabel value="Min (%) :" for="max" />
+                <p:autoComplete id="max" value="#{autoCompleteBean.txt6}"   
+                    completeMethod="#{autoCompleteBean.complete}" />
+                <h:outputLabel value="Variation :" for="var" />
+                <p:autoComplete id="var" value="#{autoCompleteBean.txt7}"   
+                    completeMethod="#{autoCompleteBean.complete}" />
+            </h:panelGrid>  
+              
+        </h:panelGrid>  
+    </p:panel>  
+      
+    <p:commandButton value="Submit" id="submit" update="display" oncomplete="dialog.show()" />  
+      
+    <p:dialog header="Values" widgetVar="dialog"  
+            showEffect="fold" hideEffect="fold" width="200">  
+              
+         <h:panelGrid id="display" columns="2" cellpadding="5">  
+            <h:outputText value="Value 1: " />  
+            <h:outputText value="#{autoCompleteBean.txt1}" />   
+              
+            <h:outputText value="Value 2: " />  
+            <h:outputText value="#{autoCompleteBean.txt2}" />   
+              
+            <h:outputText value="Value 3: " />  
+            <h:outputText value="#{autoCompleteBean.txt3}" />   
+              
+            <h:outputText value="Value 4: " />  
+            <h:outputText value="#{autoCompleteBean.txt4}" />   
+              
+            <h:outputText value="Value 5: " />  
+            <h:outputText value="#{autoCompleteBean.txt5}" />   
+  
+            <h:outputText value="Value 6: " />  
+            <h:outputText value="#{autoCompleteBean.txt6}" />   
+
+            <h:outputText value="Value 7: " />  
+            <h:outputText value="#{autoCompleteBean.txt7}" />            
+           
+            
+         </h:panelGrid>  
+          
+    </p:dialog>  
+                  
+</h:form>  
+    </h:body>
+</html>
+
