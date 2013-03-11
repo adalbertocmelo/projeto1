@@ -8,5 +8,6 @@
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">gercom</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
+    <mapping class="com.videoevaluation.entity.User"/>
   </session-factory>
 </hibernate-configuration>
