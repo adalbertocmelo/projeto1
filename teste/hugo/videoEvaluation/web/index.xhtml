@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Video Evaluation</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="form">  
+
+            <p:panel header="Register new admin" toggleable="true" id="panel">  
+                <h:panelGrid columns="2" cellpadding="5">  
+
+                    <h:outputLabel value="Name :" for="name" />  
+                    <p:inputText value="#{userBean.user.name}"/>
+
+                    <h:outputLabel value="Age :" for="age" />  
+                    <p:inputText value="#{userBean.user.age}"/>
+
+                    <h:outputLabel value="Gender :" />  
+                    <p:selectOneRadio value="#{userBean.user.gender}">
+                    <!--<p:selectOneRadio value="{formBean.number}">-->
+                        <f:selectItem itemLabel="Male" itemValue="0" />
+                        <f:selectItem itemLabel="Female" itemValue="1" />
+                    </p:selectOneRadio>
+
+                    <h:outputLabel value="Profession :" for="username" />  
+                    <p:inputText value="#{userBean.user.profession}"/>
+
+                    <!--<h:outputLabel value="Password :" for="password" />  
+                    <p:password id="password" type='password' />
+
+                    <h:outputLabel value="Confirm password :" for="c_password" />  
+                    <p:password id="c_password" type='password' />-->
+                    
+                    <h:inputHidden/>
+                    <p:commandButton value="Register" action="#{userBean.addUser}"/>
+
+                </h:panelGrid>  
+            </p:panel>  
+
+            <h:dataTable value="" var="data" border="1">
+                <h:column>
+                    <f:facet name="header">
+                        Name
+                    </f:facet>
+                    <h:outputText value=""/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Age
+                    </f:facet>
+                    <h:outputText value=""/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Gender
+                    </f:facet>
+                    <h:outputText value=""/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        Profession
+                    </f:facet>
+                    <h:outputText value=""/>
+                </h:column>
+            </h:dataTable>
+
+        </h:form> 
+
+    </h:body>
+</html>
+

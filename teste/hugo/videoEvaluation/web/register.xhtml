@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+    <h:head>
+        <title>Register new admin</title>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">  
+
+            <p:panel header="Register new admin" toggleable="true" id="panel">  
+                <h:panelGrid columns="2" cellpadding="5">  
+
+                    <h:outputLabel value="Name :" for="name" />  
+                    <p:autoComplete id="name" value="#{autoCompleteBean.txt1}"   
+                                    completeMethod="#{autoCompleteBean.complete}"/>
+
+                    <h:outputLabel value="Age :" for="age" />  
+                    <p:autoComplete id="age" value="#{autoCompleteBean.txt1}"   
+                                    completeMethod="#{autoCompleteBean.complete}"/>
+
+                    <h:outputLabel value="Gender :" />  
+                    <p:selectOneRadio id="gender" value="#{formBean.number}">
+                        <f:selectItem itemLabel="Male" itemValue="1" />
+                        <f:selectItem itemLabel="Female" itemValue="2" />
+                    </p:selectOneRadio>
+
+
+                    <h:outputLabel value="Profession :" for="username" />  
+                    <p:autoComplete id="username" value="#{autoCompleteBean.txt1}"   
+                                    completeMethod="#{autoCompleteBean.complete}"/>
+
+                    <h:outputLabel value="Password :" for="password" />  
+                    <p:password id="password" />
+                    
+                    <h:outputLabel value="Confirm password :" for="c_password" />  
+                    <p:password id="c_password" />
+
+                </h:panelGrid>  
+            </p:panel>  
+
+            <p:commandButton value="Register" id="login" />    
+
+        </h:form> 
+
+    </h:body>
+
+</html>

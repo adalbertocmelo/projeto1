@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
+    <h:head>
+        <title>Login</title>
+    </h:head>
+
+
+
+    <h:body>
+
+        <h:form id="form">  
+
+            <p:panel header="Login" toggleable="true" id="panel">  
+                <h:panelGrid columns="2" cellpadding="5">  
+
+                    <h:outputLabel value="Username :" for="username" />  
+                    <p:autoComplete id="username" value="#{autoCompleteBean.txt1}"   
+                                    completeMethod="#{autoCompleteBean.complete}"/>  
+
+                    <h:outputLabel value="Password :" for="password" />  
+                    <p:password id="password" /> <!--type='password'-->   
+
+                </h:panelGrid>  
+            </p:panel>  
+
+            <p:commandButton value="Login" id="login" />    
+
+            <h:outputText value="Not registered already? Register " />
+            <a href="/GoogleAPI/register.xhtml">here</a>
+
+            <p:panel header="Gráfico" toggleable="true">
+                <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+                <script type="text/javascript">
+                    google.load("visualization", "1", {packages:["corechart"]});
+                    google.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['GOP',     'mec3',         'mec2',         'mec1',         'mec4',         'mec5',         'mec6',         'IEEE',         'dropQoEOnt'],
+                            ['GOP 10',  45.77606333,    46.11225333,    46.77001476,    46.82088952,    46.82987,       46.71026429,    44.99270905,    47.31832571 ],
+                            ['GOP 15',  45.44494048,    45.5687519,     46.9393681,     46.72712429,    46.59705095,    45.2198481,     45.2198481,     47.1864419  ],
+                            ['GOP 18',  44.99184238,    44.92337,       46.41228238,    46.69696476,    46.0038281,     45.95646524,    44.10395476,    47.05290762 ],
+                        ]);
+
+                        var options = {
+                            //title: 'Average',
+                            vAxis: {title: 'PSNR (dB)', titleTextStyle: {color:'blue'}, textPosition: 'in'},
+                            legend: {position: 'top'},
+                            series: {   0:{color: 'black', visibleInLegend: true},
+                                        1:{color: 'red', visibleInLegend: true},
+                                        2:{color: 'black', visibleInLegend: true}},
+                                        3:{color: 'red', visibleInLegend: true},
+                                        4:{color: 'black', visibleInLegend: true},
+                                        5:{color: 'red', visibleInLegend: true},
+                                        6:{color: 'black', visibleInLegend: true},
+                                        7:{color: 'red', visibleInLegend: true}
+                        };
+
+                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                        chart.draw(data, options);
+                    }
+                </script>
+
+                <body>
+                    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+                </body>
+            </p:panel>
+
+        </h:form> 
+
+    </h:body>
+
+</html>
