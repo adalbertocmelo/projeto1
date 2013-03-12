@@ -4,8 +4,10 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
     <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
-    <property name="hibernate.connection.url">jdbc:derby://localhost:1527/sample</property>
-    <property name="hibernate.connection.username">app</property>
-    <property name="hibernate.connection.password">app</property>
+    <property name="hibernate.connection.url">jdbc:derby://localhost:5432/qoe</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">gercom</property>
+    <property name="hibernate.show_sql">true</property>
+    <mapping class="br.com.qoe.entity.Videos"/>
   </session-factory>
 </hibernate-configuration>
