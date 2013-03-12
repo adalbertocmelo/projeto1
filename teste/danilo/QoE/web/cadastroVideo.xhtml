@@ -25,29 +25,19 @@ and open the template in the editor.
                             completeMethod="{autoCompleteBean.complete}" />-->
 
                     <h:outputLabel value="Name :" for="name" />  
-                    <p:autoComplete id="name"  
-                                    value="#{autoCompleteBean.txt1}" effect="fade"  
-                                    completeMethod="#{autoCompleteBean.complete}"/>     
+                    <p:inputText id="name" value="#{videosBean.video.nome}" effect="fade" />     
 
                     <h:outputLabel value="Gop :" for="gop" />  
-                    <p:autoComplete id="gop" manQueryLength="2"   
-                                    value="#{autoCompleteBean.txt2}" effect="fade"  
-                                    completeMethod="#{autoCompleteBean.complete}"/>  
+                    <p:inputText id="gop" value="#{videosBean.video.gop}" effect="fade"/>  
 
                     <h:outputLabel value="Fps :" for="fps" />  
-                    <p:autoComplete id="fps"    
-                                    value="#{autoCompleteBean.txt3}" effect="blind"  
-                                    completeMethod="#{autoCompleteBean.complete}"/>  
+                    <p:inputText id="fps" value="#{videosBean.video.fps}" effect="blind"/>  
 
                     <h:outputLabel value="Cgop :" for="cgop" />  
-                    <p:autoComplete id="cgop" forceSelection="true"   
-                                    value="#{autoCompleteBean.txt4}"   
-                                    completeMethod="#{autoCompleteBean.complete}"/>  
+                    <p:inputText id="cgop"  value="#{videosBean.video.cgop}"  />  
 
                     <h:outputLabel value="Sameq :" for="sameq" />  
-                    <p:autoComplete id="sameq" forceSelection="true"   
-                                    value="#{autoCompleteBean.txt5}"   
-                                    completeMethod="#{autoCompleteBean.complete}"/>
+                    <p:inputText   id="sameq" value="#{videosBean.video.sameq}"/>
 
                     <h:outputLabel value="Video Type :" for="videotype" />  
                     <p:selectOneMenu value="#{buttonBean.number}">  
