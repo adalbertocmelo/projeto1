@@ -17,6 +17,7 @@ import javax.persistence.*;
 public class Videos implements Serializable{
     
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private int id;
     
     private String nome;
