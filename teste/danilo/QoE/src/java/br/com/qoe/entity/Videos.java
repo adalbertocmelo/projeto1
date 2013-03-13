@@ -16,8 +16,12 @@ import javax.persistence.*;
 @Table (name="videos")
 public class Videos implements Serializable{
     
+    public Videos(){
+        
+    }
+    
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    //@GeneratedValue (strategy = GenerationType.AUTO)
     private int id;
     
     private String nome;

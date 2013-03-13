@@ -25,6 +25,8 @@ public class VideosBean {
 
     public String addVideo() {
         videoDao.addVideo(video);
+        video.setNome(null);
+        video.setVideoType(null);
         return "sucesso";
     }
 

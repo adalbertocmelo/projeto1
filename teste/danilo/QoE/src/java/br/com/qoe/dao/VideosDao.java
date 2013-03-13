@@ -33,7 +33,7 @@ public class VideosDao {
             video.setGop(v.getGop());
             video.setVideoType(v.getVideoType());
 
-            sessao.save(v);
+            sessao.save(video);
             trans.commit();
 
 

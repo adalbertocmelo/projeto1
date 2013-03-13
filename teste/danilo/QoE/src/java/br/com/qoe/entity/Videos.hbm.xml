@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+ 
+<hibernate-mapping package="br.com.qoe.entity">
+    <class name="Videos" table="videos">
+        <id name="id" type="int" column="id" >
+            <generator class="native" />
+        </id>        
+        <property name="nome" column="nome" type="string"/>
+        <property name="gop" column="gop" type="int"/>
+        <property name="fps" column="fps" type="int"/>
+        <property name="sameq" column="sameq" type="boolean"/>
+        <property name="cgop" column="cgop" type="boolean"/>
+        <property name="videoType" column="video_type" type="string"/>                 
+    </class>
+</hibernate-mapping>

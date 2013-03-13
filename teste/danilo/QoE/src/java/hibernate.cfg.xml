@@ -2,12 +2,12 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.DerbyDialect</property>
-    <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
-    <property name="hibernate.connection.url">jdbc:derby://localhost:5432/qoe</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/qoe</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">gercom</property>
-    <property name="hibernate.show_sql">true</property>
-    <mapping class="br.com.qoe.entity.Videos"/>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <mapping resource="br/com/qoe/entity/Videos.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
