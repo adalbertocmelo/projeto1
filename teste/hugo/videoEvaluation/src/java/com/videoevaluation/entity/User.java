@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class User implements Serializable{
     
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    //@GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String name;
     private int age;
@@ -87,7 +87,5 @@ public class User implements Serializable{
         final User other = (User) obj;
         return true;
     }
-    
-    
-    
+   
 }
