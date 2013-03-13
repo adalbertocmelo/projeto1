@@ -16,10 +16,10 @@
             <p:panel header="Register new admin" toggleable="true" id="panel">  
                 <h:panelGrid columns="2" cellpadding="5">  
 
-                    <h:outputLabel value="Name :" for="name" />  
+                    <h:outputLabel value="Name :" />  
                     <p:inputText value="#{userBean.user.name}"/>
 
-                    <h:outputLabel value="Age :" for="age" />  
+                    <h:outputLabel value="Age :" />  
                     <p:inputText value="#{userBean.user.age}"/>
 
                     <h:outputLabel value="Gender :" />  
@@ -29,7 +29,7 @@
                         <f:selectItem itemLabel="Female" itemValue="1" />
                     </p:selectOneRadio>
 
-                    <h:outputLabel value="Profession :" for="username" />  
+                    <h:outputLabel value="Profession :" />  
                     <p:inputText value="#{userBean.user.profession}"/>
 
                     <!--<h:outputLabel value="Password :" for="password" />  

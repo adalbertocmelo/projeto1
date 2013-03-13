@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * @author Hugo
  */
 @Entity
-@Table(name="user")
+@Table(name="usuario")
 public class User implements Serializable{
     
     @Id
@@ -26,6 +26,8 @@ public class User implements Serializable{
     private int age;
     private boolean gender = true;
     private String profession;
+    
+    public User(){}
 
     public int getId() {
         return id;
