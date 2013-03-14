@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+ 
+<hibernate-mapping package="br.com.qoe.entity">
+    <class name="PlanoAvaliacao" table="plano_avaliacao">
+        <id name="id" type="int" column="id" >
+            <generator class="native" />
+        </id>        
+        <property name="node_id_source" column="node_id_source" type="int"/>
+        <property name="node_id_destination" column="node_id_destination" type="int"/>
+        <property name="bandwidth" column="bandwidth" type="int"/>
+        <property name="mechanism" column="mechanism" type="string"/>
+        <property name="congest_max" column="congest_max" type="int"/>
+        <property name="congest_min" column="congest_min" type="int"/>       
+        <property name="congest_var" column="congest_var" type="int"/>
+
+    </class>
+</hibernate-mapping>
