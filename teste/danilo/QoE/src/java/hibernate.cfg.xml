@@ -9,5 +9,6 @@
     <property name="hibernate.connection.password">gercom</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
     <mapping resource="br/com/qoe/entity/Videos.hbm.xml"/>
+    <mapping resource="br/com/qoe/entity/PlanoAvaliacao.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
