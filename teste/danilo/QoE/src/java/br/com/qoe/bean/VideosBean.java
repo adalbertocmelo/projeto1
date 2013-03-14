@@ -27,7 +27,7 @@ public class VideosBean {
         videoDao.addVideo(video);
         video.setNome(null);
         video.setVideoType(null);
-        return "sucesso";
+        return "sucessoCadastroVideo";
     }
 
     public String deleteVideo() {
