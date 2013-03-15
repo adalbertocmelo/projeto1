@@ -6,6 +6,7 @@ package br.com.qoe.bean;
 
 import br.com.qoe.dao.VideosDao;
 import br.com.qoe.entity.Videos;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -19,6 +20,7 @@ public class VideosBean {
 
     private Videos video = new Videos();
     private VideosDao videoDao = new VideosDao();
+    private List<Videos> consultaVideos;
 
     public VideosBean() {
     }
@@ -33,6 +35,12 @@ public class VideosBean {
     public String deleteVideo() {
         videoDao.deleteVideo(video);
         return "sucessoDelete";
+    }
+    
+    public List consultaVideos(){
+        consultaVideos = videoDao.getList();
+        return consultaVideos;
+        
     }
 
     public Videos getVideo() {

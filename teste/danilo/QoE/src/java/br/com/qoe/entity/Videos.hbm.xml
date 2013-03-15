@@ -6,7 +6,7 @@
  
 <hibernate-mapping package="br.com.qoe.entity">
     <class name="Videos" table="videos">
-        <id name="id" type="int" column="id" >
+        <id name="id" type="int" column="video_id" >
             <generator class="native" />
         </id>        
         <property name="nome" column="nome" type="string"/>

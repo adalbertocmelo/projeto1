@@ -6,6 +6,7 @@ package br.com.qoe.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 /**
  *
  * @author Gercom
@@ -19,6 +20,7 @@ public class PlanoAvaliacao implements Serializable {
     
     @Id
     private int id;
+    
     private int node_id_source;
     private int node_id_destination;
     private int bandwidth;
@@ -94,7 +96,7 @@ public class PlanoAvaliacao implements Serializable {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 37 * hash + this.id;
+        hash = 29 * hash + this.id;
         return hash;
     }
 
@@ -112,8 +114,4 @@ public class PlanoAvaliacao implements Serializable {
         }
         return true;
     }
-    
-    
-    
-    
 }

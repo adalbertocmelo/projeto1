@@ -41,6 +41,8 @@ public class Videos implements Serializable{
         this.id = id;
     }
 
+
+
     public String getNome() {
         return nome;
     }
@@ -91,8 +93,8 @@ public class Videos implements Serializable{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + this.id;
+        int hash = 5;
+        hash = 67 * hash + this.id;
         return hash;
     }
 
@@ -110,6 +112,8 @@ public class Videos implements Serializable{
         }
         return true;
     }
+
+
     
     
     

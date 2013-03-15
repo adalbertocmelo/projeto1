@@ -6,8 +6,11 @@ package br.com.qoe.dao;
 
 import br.com.qoe.entity.Videos;
 import br.com.qoe.util.HibernateUtil;
+import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.primefaces.model.SelectableDataModel;
 
 /**
  *
@@ -17,6 +20,16 @@ public class VideosDao {
 
     private Session sessao;
     private Transaction trans;
+    private List<Videos> list;
+
+    public List<Videos> getList() {
+        sessao = HibernateUtil.getSessionFactory().openSession();
+        trans = sessao.beginTransaction();
+
+        Criteria cri = sessao.createCriteria(Videos.class);
+        this.list = cri.list();
+        return list;
+    }
 
     public void addVideo(Videos v) {
 
