@@ -19,11 +19,38 @@ and open the template in the editor.
         <h:form id="form">  
             <p:panel header="Video registration" toggleable="true" id="panel">
                 <h:panelGrid columns="2" cellpadding="5">
-                 
-                    
-                    <p:dataTable
+
+                    <p:dataTable id="tabelavideos" var="tabelavideos" value="#{videosBean.consultaVideos()}" paginator="true" rows="10">  
 
 
+                        <p:column headerText="Nome" >  
+                            <h:outputText value="#{tabelavideos.nome}"/>
+                        </p:column>  
+
+                        <p:column headerText="Gop" >  
+                            <h:outputText value="#{tabelavideos.gop}"/> 
+                        </p:column>  
+
+                        <p:column headerText="Fps" >  
+                            <h:outputText value="#{tabelavideos.fps}"/>  
+                        </p:column>  
+
+                        <p:column headerText="Sameq" >  
+                            <h:outputText value="#{tabelavideos.sameq}"/> 
+                        </p:column>  
+
+                        <p:column headerText="Cgop" >  
+                            <h:outputText value="#{tabelavideos.cgop}"/>   
+                        </p:column>
+                        
+                        <p:column headerText="Video Type" >  
+                            <h:outputText value="#{tabelavideos.videoType}"/>  
+                        </p:column>                        
+                        
+                        <f:facet name="footer">  
+                            <p:commandButton id="multiViewButton" value="View" icon="ui-icon-search" />  
+                        </f:facet>  
+                    </p:dataTable> 
 
                 </h:panelGrid>
 
