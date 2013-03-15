@@ -32,11 +32,17 @@ and open the template in the editor.
                     <h:outputLabel value="Fps :" for="fps" />  
                     <p:inputText id="fps" value="#{videosBean.video.fps}" effect="blind"/>  
 
-                    <h:outputLabel value="Cgop :" for="cgop" />  
-                    <p:inputText id="cgop"  value="#{videosBean.video.cgop}"  />  
+                    <h:outputLabel value="Cgop :" for="cgop"/>  
+                    <p:selectOneRadio id="cgop" value="#{videosBean.video.cgop}">
+                        <f:selectItem itemLabel="True" itemValue="1" />
+                        <f:selectItem itemLabel="False" itemValue="2" />
+                    </p:selectOneRadio> 
 
-                    <h:outputLabel value="Sameq :" for="sameq" />  
-                    <p:inputText   id="sameq" value="#{videosBean.video.sameq}"/>
+                    <h:outputLabel value="Sameq :" for="sameq "/>  
+                    <p:selectOneRadio id="sameq" value="#{videosBean.video.sameq}">
+                        <f:selectItem itemLabel="True" itemValue="1" />
+                        <f:selectItem itemLabel="False" itemValue="2" />
+                    </p:selectOneRadio>
 
                     <h:outputLabel value="Video Type :" for="video_type" />  
                     <p:selectOneMenu value="#{videosBean.video.videoType}" id="video_type">  
