@@ -3,11 +3,13 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!--<property name="hibernate.connection.driver_class">br.com.p6spy.engine.spy.P6SpyDriver</property>-->
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/qoe</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">gercom</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.show_sql">true</property> 
     <mapping resource="br/com/qoe/entity/Videos.hbm.xml"/>
     <mapping resource="br/com/qoe/entity/PlanoAvaliacao.hbm.xml"/>
   </session-factory>
