@@ -21,6 +21,7 @@ public class VideosBean {
     private Videos video = new Videos();
     private VideosDao videoDao = new VideosDao();
     private List<Videos> consultaVideos;
+    private List<Videos> filteredVideos;
 
     public VideosBean() {
     }
@@ -29,6 +30,7 @@ public class VideosBean {
         videoDao.addVideo(video);
         video.setNome(null);
         video.setVideoType(null);
+        video.setCgop(true);
         return "sucessoCadastroVideo";
     }
 
@@ -36,11 +38,18 @@ public class VideosBean {
         videoDao.deleteVideo(video);
         return "sucessoDelete";
     }
-    
-    public List consultaVideos(){
+
+    public List consultaVideos() {
         consultaVideos = videoDao.getList();
         return consultaVideos;
-        
+    }
+
+    public List<Videos> getFilteredVideos() {
+        return filteredVideos;
+    }
+
+    public void setFilteredVideos(List<Videos> filteredVideos) {
+        this.filteredVideos = filteredVideos;
     }
 
     public Videos getVideo() {
