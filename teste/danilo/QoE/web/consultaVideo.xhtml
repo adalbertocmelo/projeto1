@@ -20,33 +20,40 @@ and open the template in the editor.
             <p:panel header="Video registration" toggleable="true" id="panel">
                 <h:panelGrid columns="2" cellpadding="5">
 
-                    <p:dataTable id="tabelavideos" var="tabelavideos" value="#{videosBean.consultaVideos()}" paginator="true" rows="10">  
+                    <p:dataTable id="tabelavideos" var="tabelavideos" value="#{videosBean.consultaVideos()}" 
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15" filteredValue="#{videosBean.filteredVideos}"> 
 
-
-                        <p:column headerText="Nome" >  
-                            <h:outputText value="#{tabelavideos.nome}"/>
+                        <p:column headerText="Id" >  
+                            <h:outputText value="#{tabelavideos.id}"/> 
+                        </p:column>
+                        
+                        
+                        <p:column headerText="Nome"  sortBy="#{tabelavideos.nome}" filterBy="#{tabelavideos.nome}" >  
+                            <h:outputText value="#{tabelavideos.nome}" /> 
                         </p:column>  
 
-                        <p:column headerText="Gop" >  
+                        <p:column headerText="Gop" filterBy="#{tabelavideos.gop}" >  
                             <h:outputText value="#{tabelavideos.gop}"/> 
                         </p:column>  
 
-                        <p:column headerText="Fps" >  
+                        <p:column headerText="Fps" filterBy="#{tabelavideos.fps}" >  
                             <h:outputText value="#{tabelavideos.fps}"/>  
                         </p:column>  
 
-                        <p:column headerText="Sameq" >  
+                        <p:column headerText="Sameq" filterBy="#{tabelavideos.sameq}" >  
                             <h:outputText value="#{tabelavideos.sameq}"/> 
                         </p:column>  
 
-                        <p:column headerText="Cgop" >  
+                        <p:column headerText="Cgop" filterBy="#{tabelavideos.cgop}">  
                             <h:outputText value="#{tabelavideos.cgop}"/>   
                         </p:column>
-                        
-                        <p:column headerText="Video Type" >  
+
+                        <p:column headerText="Video Type" filterBy="#{tabelavideos.videoType}">  
                             <h:outputText value="#{tabelavideos.videoType}"/>  
                         </p:column>                        
-                        
+
                         <f:facet name="footer">  
                             <p:commandButton id="multiViewButton" value="View" icon="ui-icon-search" />  
                         </f:facet>  
