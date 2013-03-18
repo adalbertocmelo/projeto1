@@ -34,23 +34,25 @@ and open the template in the editor.
                     <p:inputText id="fps" value="#{videosBean.video.fps}" effect="blind"/>  
 
                     <h:outputLabel value="Cgop :" for="cgop" />  
-                    <p:selectOneMenu value="#{videosBean.video.cgop}">  
+                    <p:selectOneMenu id="cgop" value="#{videosBean.video.cgop}">  
+                        <f:selectItem itemLabel="Select One" itemValue="" />    
                         <f:selectItem itemLabel="True" itemValue="1" />  
-                        <f:selectItem itemLabel="False" itemValue="2" />  
+                        <f:selectItem itemLabel="False" itemValue="0" />  
                     </p:selectOneMenu> 
                     
                     <h:outputLabel value="Sameq :" for="sameq" />  
-                    <p:selectOneMenu value="#{videosBean.video.sameq}">  
+                    <p:selectOneMenu id="sameq" value="#{videosBean.video.sameq}">  
+                        <f:selectItem itemLabel="Select One" itemValue="" />
                         <f:selectItem itemLabel="True" itemValue="1" />  
-                        <f:selectItem itemLabel="False" itemValue="2" />  
+                        <f:selectItem itemLabel="False" itemValue="0" />  
                     </p:selectOneMenu> 
 
                     <h:outputLabel value="Video Type :" for="video_type" />  
-                    <p:selectOneMenu value="#{videosBean.video.videoType}">  
+                    <p:selectOneMenu id="video_type" value="#{videosBean.video.videoType}">  
                         <f:selectItem itemLabel="Select One" itemValue="" />  
-                        <f:selectItem itemLabel="Futebol" itemValue="1" />  
-                        <f:selectItem itemLabel="Jornal" itemValue="2" />  
-                        <f:selectItem itemLabel="Clipe" itemValue="3" />  
+                        <f:selectItem itemLabel="Futebol" itemValue="Futebol" />  
+                        <f:selectItem itemLabel="Jornal" itemValue="Jornal" />  
+                        <f:selectItem itemLabel="Clipe" itemValue="Clipe" />  
                     </p:selectOneMenu> 
 
                     <h:outputLabel value="Chose a video to upload:" for="upload" />  
