@@ -10,6 +10,11 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import javax.faces.context.FacesContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+import javax.faces.application.FacesMessage;
+
 /**
  *
  * @author Gercom
@@ -30,7 +35,6 @@ public class VideosBean {
         videoDao.addVideo(video);
         video.setNome(null);
         video.setVideoType(null);
-        video.setCgop(true);
         return "sucessoCadastroVideo";
     }
 
@@ -46,6 +50,11 @@ public class VideosBean {
 
     public List<Videos> getFilteredVideos() {
         return filteredVideos;
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void setFilteredVideos(List<Videos> filteredVideos) {
