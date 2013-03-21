@@ -10,58 +10,92 @@
                 src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'>
         </script>
         <script type="text/javascript">
-            google.load('visualization', '1', {'packages':['charteditor']});
-            google.setOnLoadCallback(drawVisualization);
-
-            function drawVisualization() {
-                var data = new google.visualization.DataTable();
-                data.addColumn('String', 'Mechanisms');
-                data.addColumn('number', '10');
-                data.addColumn('number', '20');
-                data.addColumn('number', '30');
-                data.addColumn('number', '40');
-                data.addColumn('number', '50');
-                data.addColumn('number', '60');
-                data.addColumn('number', '70');
-                data.addColumn('number', '10');
-                data.addColumn('number', '20');
-                data.addColumn('number', '30');
-                data.addColumn('number', '40');
-                data.addColumn('number', '50');
-                data.addColumn('number', '60');
-                data.addColumn('number', '70');
-                data.addColumn('number', '10');
-                data.addColumn('number', '20');
-                data.addColumn('number', '30');
-                data.addColumn('number', '40');
-                data.addColumn('number', '50');
-                data.addColumn('number', '60');
-                data.addColumn('number', '70');
-                           
-                data.addRows([
-                                
-                    ['mec3', 49, 46.81879, 46.19535, 47.31813, 46.21228, 45.84793, 45.61262, 45.95911, 45.97948, 46.79549, 45.73103, 45.61695, 45.50878, 45.22722, 45.15083, 44.7883, 44.93113, 44.64151, 44.48718, 44.43994, 45.03528],
-                    ['mec2', 49, 46.81879, 46.19535, 47.31813, 46.21228, 45.84793, 45.61262, 45.95911, 45.97948, 46.79549, 45.73103, 45.61695, 45.50878, 45.22722, 45.15083, 44.7883, 44.93113, 44.64151, 44.48718, 44.43994, 45.03528],              
-                                
-                    //[new Date(2008, 1 ,2), 14045, undefined, undefined, 20374, undefined, undefined],
-                    //[new Date(2008, 1 ,3), 55022, undefined, undefined, 50766, undefined, undefined],
-                    //[new Date(2008, 1 ,4), 75284, undefined, undefined, 14334, 'Out of Stock','Ran out of stock on pens at 4pm'],
-                    //[new Date(2008, 1 ,5), 41476, 'Bought Pens','Bought 200k pens', 66467, undefined, undefined],
-                    //[new Date(2008, 1 ,6), 33322, undefined, undefined, 39463, undefined, undefined]
-                ]);
+            google.load("visualization", "1", {packages:["corechart"]});
+            google.setOnLoadCallback(drawChart);
+                    
+            function drawChart() {
+                    
+                //var data = "{videosBean.consultaVideos()}"
                 
-                var wrap = new google.visualization.ChartWrapper();
-                wrap.setChartType('LineChart');
-                wrap.setDataTable(data);
-                wrap.setContainerId('visualization');
-                wrap.setOptions({'title':'Population Density (people/km^2)', 'legend':'none'});
-                wrap.draw();
-            }          
-            
+                var data2 = new google.visualization.DataTable();
+                data2.addColumn('string', 'Name');
+                data2.addColumn('number', 'Salary');
+                data2.addColumn('boolean', 'Full Time');
+                data2.addRows(5);
+                data2.setCell(0, 0, 'John');
+                data2.setCell(0, 1, 10000, '$10,000');
+                data2.setCell(0, 2, true);
+                data2.setCell(1, 0, 'Mary');
+                data2.setCell(1, 1, 25000, '$25,000');
+                data2.setCell(1, 2, true);
+                data2.setCell(2, 0, 'Steve');
+                data2.setCell(2, 1, 8000, '$8,000');
+                data2.setCell(2, 2, false);
+                data2.setCell(3, 0, 'Ellen');
+                data2.setCell(3, 1, 20000, '$20,000');
+                data2.setCell(3, 2, true);
+                data2.setCell(4, 0, 'Mike');
+                data2.setCell(4, 1, 12000, '$12,000');
+                data2.setCell(4, 2, false);
 
+                /*var data = new google.visualization.arrayToDataTable(
+                [
+                    ['Congest',     ' ',         'mec2',         'mec1',         'mec4',         'mec5',         'mec6',         'IEEE',         'dropQoEOnt'],
+                    [' ',           45, ,, , , , , ,              ],
+                    ['10',           49,             49,             49,             49,             49,             49,             49,             49          ],
+                            
+                    ['20',           46.81879,       46.50843,       47.00457,       47.66943,       46.86161,       45.92428,       46.06181,       47.66943    ],
+                    ['30',           46.19535,       45.82653,       47.15847,       46.60496,       47.97442,       45.74588,       46.66936,       47.97442    ],
+                    ['40',           47.31813,       45.6513,        47.0718,        46.58449,       45.86174,       45.8813,        46.45037,       47.0718	],
+                ]);
+
+                var options = {
+                    //title: 'Average',
+                    vAxis: {title: 'PSNR (dB)', titleTextStyle: {color:'blue'}, textPosition: 'in'},
+                    hAxis: {title: 'Congest (%)', titleTextStyle: {color:'blue'}, textPosition: 'in'},
+                    legend: {position: 'top', alignment: 'end'},
+                    pointSize:4,
+                    colors: ['white','yellow','gray','purple','black','green','pink','blue']
+                    //series: {   0:{color: 'black', visibleInLegend: true},
+                    //            1:{color: 'red', visibleInLegend: true},
+                    //            2:{color: 'blue', visibleInLegend: true}},
+                    //            3:{color: 'yellow', visibleInLegend: true},
+                    //            4:{color: 'gray', visibleInLegend: true},
+                    //            5:{color: 'purple', visibleInLegend: true},
+                    //            6:{color: 'black', visibleInLegend: true},
+                    //            7:{color: 'green', visibleInLegend: true}
+                };*/
+
+                // Every time the table fires the "select" event, it should call your
+                // function.
+                        
+                var table = new google.visualization.Table(document.getElementById('table_div'));
+                table.draw(data2, {showRowNumber: true});
+                
+                //var data = google.visualization.arrayToDataTable(table, 'select', drawChart2);
+                        
+                //var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                //chart.draw(data, options);
+                        
+                google.visualization.events.addListener(table, 'select', drawChart2);
+
+
+            }
+            function drawChart2(){
+                var row = data.getSelection()[0].row;
+                //var column = data.getSelection()[0].column;
+                alert('You selected ' + data.getValue(row, 0));
+                alert('Hello World');
+            }
+                      
+                      
+                    
+                    
+
+                    
         </script>
     </head>
     <body>
-        <div id="visualization" style="height: 400px; width: 400px;"></div>
+        <div id="table_div" style="width: 1000px; height: 500px;"></div>
     </body>
 </html>
