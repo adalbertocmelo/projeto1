@@ -1,0 +1,26 @@
+<script language="javascript" type="text/javascript">
+	parent.oAran.atualizarTab();
+	function validaFrm()
+	{
+		if (FrmAran.nome.value == '')
+		{
+			alert('Informe o nome do arquivo');
+			FrmAran.nome.focus();
+			return false;
+		}
+
+		FrmAran.submit();		
+	}
+</script>
+<body style="background-color: #ECECEC;">
+	<FORM id="FrmAran" ENCTYPE="multipart/form-data" ACTION="relatorios/salvarAran" METHOD="POST">
+		<input type="hidden" id="docuid" name="docuid" value="@docuid@">
+		Id: <span style="width: 20px;">@id@</span><input type="hidden" id="id" name="id" value="@id@">&nbsp;&nbsp;&nbsp;
+		Tipo Arquivo Anexado: @tiaaid@<br>
+		Nome: <input type="text" id="nome" name="nome" value="@nome@" size="40">&nbsp;&nbsp;&nbsp;
+		Versão: <input type="text" id="versao" name="versao" value="@versao@" size="4"><br>
+		Arquivo: <INPUT TYPE="FILE" NAME="arquivo" SIZE=35>
+		<input type="button" id="botSalvarAran" value="Salvar" onclick="validaFrm();">
+	</FORM>
+</body>
+

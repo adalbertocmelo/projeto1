@@ -1,0 +1,48 @@
+<div class="tabMigraDescricao">Aviso Sistema<input type="text" size="3" id="tempoTermino"><input type="text" size="20" id="mensagem"></div>
+<div class="tabMigraAcao"><input type="button" id="botSetAviso" value="Set" onClick="setAvisoSistema();"></div>
+<div class="tabMigraDescricao">Migrar Pessoas (Clientes, Fornecedores, Veículos)</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impPessoa" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Id Antigo de Pessoas</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impPessIdAntigo" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Id Antigo de Usuarios</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impUsuaIdAntigo" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Campanha para Briefing</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impBrieCamp" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Id Antigo de Pecas</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impPecaIdAntigo" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Os para Briefing</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impBrieOs" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Os</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impOs" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Cargo</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impCarg" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Departamento</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impDepa" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Contato</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impContato" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Mapa de Midia</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impMami" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Programa</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impProg" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Item Mapa de Midia</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impItemMami" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Autorização de Midia</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impAumi" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Atualizar Insercoes Item Mapa de Midia</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impAtuaIimm" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Ajuste financeiro</div>
+<div class="tabMigraAcao"><input type="checkbox" id="ajusteFinanceiro" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Orçamento</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impOrca" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Item Orçamento</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impItor" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Autorização Produção</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impAupr" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">Importar Item Autorização Produção</div>
+<div class="tabMigraAcao"><input type="checkbox" id="impItap" onclick="oMigr.marcarOnOff(this);"></div>
+<div class="tabMigraDescricao">
+	<input type="button" id="botIniciarMigracao" value="Iniciar Migração" onClick="oMigr.iniciarMigracao();">
+	<input type="button" id="botPararMigracao" value="Parar Migração" onClick="oMigr.pararMigracao();">
+	<input type="button" id="botDesmarcarTodos" value="Desmarcar Todos" onClick="oMigr.desmarcarTodos();">	
+</div>
+	

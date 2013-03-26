@@ -1,0 +1,18 @@
+<div id="grpAupr">
+	<div id="grpAuprNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oAupr.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oAupr.selecionarAbas(this.id);oAupr.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 580px; text-align: right; overflow: hidden;">
+				<input type="button" value="Visualizar Autorização com Logo" onclick="oAupr.visualizarRel('1');" style="width: 220px;">
+				<input type="button" value="Visualizar Autorização sem Logo" onclick="oAupr.visualizarRel('0');" style="width: 220px;">
+				<input type="button" value="Visualizar Lista" onclick="oAupr.visualizarRelacao();" style="width: 110px;">
+			</li>
+		</ul>
+	</div>	
+	<div id="frmAupr" class="frmMaior">@frm@</div>
+	<div id="tabAupr" class="tabMaior"></div>
+	<div id="grpAuprBarraBotoes" class="grpBarraBotoes">
+	</div>
+</div>

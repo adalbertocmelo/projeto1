@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relFechamentoFinanceiroOrcamentoAupr" pageWidth="378" pageHeight="612" columnWidth="378" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PESSIDFORN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUIDORCA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[93961 ]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  docu.id as docuid
+,	docu.ano || '/' || substring(docu.mes+100,2,2) ||  substring(docu.numero+1000,2,3) as auprnumeroordem
+,	substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano  as auprnumero
+,	sido.abreviatura as auprsituacao
+,	case when (select count(peju.*) from pessoajuridica peju where pessforn.id = peju.pessid )>0 then (select peju.nomefantasia from pessoajuridica peju where pessforn.id = peju.pessid) else pessforn.nome end as fornnome
+,	case 	when sido.id = 3 then 0 else aupr.valor end as auprvalor
+from    documento docu
+,	(
+	 select aupr1.docuid
+	 ,	aupr1.docuidorca
+	 ,	aupr1.pessidforn
+	 ,	sum(((itap.valor*itap.quantidade) - (itap.valor*itap.quantidade*itap.bvforn/100))::numeric(15,2)) as valor
+	 from   autorizacaoproducao aupr1
+	 ,	itemautorizacaoproducao itap
+	 where  itap.docuidaupr = aupr1.docuid
+	 group by aupr1.docuid, aupr1.docuidorca, aupr1.pessidforn
+	) aupr
+,	situacaodocumento sido
+,	pessoa pessforn
+,	fornecedor forn
+where   docu.id = aupr.docuid
+and     docu.sidoid = sido.id
+and     forn.pessid = pessforn.id
+and     aupr.pessidforn = forn.pessid
+and     aupr.docuidorca = $P!{DOCUIDORCA}
+and     docu.pessidempr = $P!{PESSIDEMPR}
+$P!{PESSIDFORN}
+order by auprnumeroordem]]>
+	</queryString>
+	<field name="docuid" class="java.lang.Integer"/>
+	<field name="auprnumeroordem" class="java.lang.String"/>
+	<field name="auprnumero" class="java.lang.String"/>
+	<field name="auprsituacao" class="java.lang.String"/>
+	<field name="fornnome" class="java.lang.String"/>
+	<field name="auprvalor" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="43" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{auprnumero}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="46" y="0" width="119" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fornnome}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" mode="Transparent" x="237" y="0" width="140" height="11"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDORIGEM">
+					<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RECEBIMENTO">
+					<subreportParameterExpression><![CDATA["and mofi.recebimento = false"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroOrcamentoAuprMofi.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="165" y="0" width="20" height="11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{auprsituacao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="189" y="0" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{auprvalor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,335 @@
+<div id="frmNofi" style="text-indent: 0px; padding-left: 5px">
+	<table border="0" cellpadding="0" cellspacing="1" class="frmMaiorFonte" align="center">
+	<tr>
+		<td width="50px" align="center" bgcolor="#999999">Id</td>
+		<td width="140px" align="center" bgcolor="#999999">Número</td>
+		<td width="340px" align="center" bgcolor="#999999">Situação</td>
+		<td width="240px" align="center" bgcolor="#999999">Mais Detalhes</td>
+	</tr>
+	<tr>
+		<td align="center" >
+			<input type="hidden" id="docuid" value="@docuid@">
+			<span id="spanId">@docuid@</span>
+		</td>
+		<td align="center" >
+			<input type="hidden" id="numero" value="@numero@">
+			<input type="hidden" id="mes" value="@mes@">
+			<input type="hidden" id="ano" value="@ano@">
+			<div id="divMesAnoExibir" style="display: block; width: 140px; line-height: 23px;">		
+				<div id="divnumero" style="float: left; width: 75px; text-align: center; line-height: 25px;">				
+					<b>@numero@/@mes@@ano@</b>
+				</div>
+				<div id="botMudarMesAnoExibirTela" onclick="oNofi.mudarMesAnoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>		
+			</div>			
+		</td>
+		<td align="center">
+			<div id="divSidoExibir"  style="display: block; width: 335px;">
+				<input type="hidden" id="sidoid" value="@sidoid@">
+				<input type="hidden" id="datasituacao" value="@datasituacao@">
+				<div onclick="oNofi.hsidExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 80px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Histórico</a>
+				</div>
+				<div style="float: left; width: 190px; text-align: center; line-height: 25px;">				
+					@sidonome@ em @datasituacao@
+				</div>
+				<div id="botMudarSidoExibirTela" onclick="oNofi.mudarSidoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>				
+			</div>			
+		</td>
+		<td align="center">	
+			<div id="botAlteracoesExibirTela" onclick="oNofi.alteExibirTela();" 
+				 style="background-color: #ECECEC; 
+				 		border-left: 1px solid #dcdce9;
+				 		border-top: 1px solid #dcdce9;
+				 		border-right: 1px solid #dcdce9; 
+				 		width: 85px; 
+				 		height: 23px; 
+				 		line-height: 25px; 
+				 		float: left;
+				 		overflow: visible;
+				 		cursor: pointer;">
+		 		<a>Alterações</a>
+			</div>	
+			<div id="botTrabalhoExibirTela" onclick="oNofi.trabExibirTela();" 
+				 style="background-color: #ECECEC; 
+				 		border-left: 1px solid #dcdce9;
+				 		border-top: 1px solid #dcdce9;
+				 		border-right: 1px solid #dcdce9; 
+				 		width: 85px; 
+				 		height: 23px; 
+				 		line-height: 25px; 
+				 		float: left;
+				 		overflow: visible;
+				 		cursor: pointer;">
+		 		<a>Trabalho</a>
+			</div>	
+		</td>
+	</tr>
+	</table>&nbsp;
+	<div id="divHsidExibirTela" 
+		 style="display: none; padding: 5px;  margin-left: 175px; top: 180px; width: 450px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicosituacaodocumento@
+	</div>	
+	<div id="divSidoMudar" style="display: none; padding: 5px;  margin-left: 315px; top: 180px; width: 200px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		Mudar para: @sidoidproxima@<br>
+		&nbsp;<input id="botMudarSidoCancelar" type="button" value="Cancelar" onclick="oNofi.mudarSidoCancelar();">
+		<input id="botMudarSido" type="button" value="Confirmar" onclick="oNofi.mudarSido();">
+	</div>	
+	<div id="divMesAnoMudar"  style="display: none; padding: 5px;  margin-left: -25px; top: 180px; 
+		width: 200px; position: absolute; height: auto; overflow: visibled; 
+		background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: center;">
+		Mês/Ano: @cmbmesano@<br>
+		&nbsp;<input id="botMudarMesAnoCancelar" type="button" value="Cancelar" onclick="oNofi.mudarMesAnoCancelar();">
+		<input id="botMudarMesAno" type="button" value="Confirmar" onclick="oNofi.mudarMesAno();">
+	</div>
+	<div id="divTrabalho" style="display: none; padding: 5px;  margin-left: 0px; top: 180px; 
+		width: 750px; position: absolute; height: auto; overflow: hidden; 
+		background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		<b>Vincular novo trabalho:</b><br>
+		<div style="width: 410px; float: left; height: 130px; overflow: hidden;">
+			Fluxo: @fltrid@<br>
+			Descrição: <br><textarea id="trabdescricao" cols="35" rows="4"></textarea>
+		</div>
+		<div style="width: 330px; float: left; height: 130px; overflow: hidden;">
+			Inidicar responsável pela tarefa inicial: <br>
+			@usuaidresptareinicial@ 
+		</div>
+		<div style="width: 740px; float: left; height: 40px; overflow: hidden;">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho" onClick="oNofi.vincularTrabalho();">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho e Iniciar" onClick="oNofi.vincularTrabalho('iniciar');">
+		</div>
+		<br>
+		<b>Trabalhos Vinculados</b><br>
+		<div id="abas">
+			<ul>
+				<li id="liTrabVinculados" onclick="oNofi.selecionarAbasTrabalho(this.id);"  style=" background-color: #ECECEC"><a style="width: 100px;">Ativos</a></li>
+				<li id="liTrabCancelados" onclick="oNofi.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 100px; ">Cancelados</a></li>
+				<li id="liTrabNotificacoes" onclick="oNofi.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 150px;">Notificações</a></li>
+			</ul>
+		</div>
+		<div id="divListaAndamentoTrabalho" style="width: 735px;">
+			<div id="tabTrabVinculados" style="display:block; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabCancelados" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabNotificacoes" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+		</div>		
+	</div>	
+	<div id="divAlteracoes" style="display: none; padding: 5px;  margin-left: 0px; top: 180px; width: 700px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicoalteracao@		
+	</div>
+	<div id="divMotivoCancelamento"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 200px;
+		 		top: 300px; 
+		 		width: 330px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		<input type="hidden" value="" id="trabid">
+		<span id="tituloTelaCancelamento"></span><br>
+		Informe o Motivo da Cancelamento:<br>
+		&nbsp;<textarea id="motivocancelamento" cols="30" rows="3"></textarea><br>
+		&nbsp;<input id="botFecharCancelamento" type="button" value="Fechar" onclick="oNofi.fecharTelaCancelamento();"><input id="botCancelarTrabalho" type="button" value="Registrar Cancelamento" onclick="oNofi.cancelarTrabalho();">
+	</div>
+	<div id="divHetr"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 100px;
+		 		top: 0px; 
+		 		width: 530px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		Histórico de Observações:<br>
+		&nbsp;<textarea id="historicoobservacoes" cols="60" rows="8"></textarea> <br>
+		&nbsp;<input id="botFecharHetr" type="button" value="Fechar" onclick="oNofi.fecharTelaHetr();">
+	</div>
+	<input type="hidden" id="alteracao" value="">
+	<input type="hidden" id="numeronofiAnt" value="@numeronofi@">
+	<input type="hidden" id="dataemissaoAnt" value="@dataemissao@">
+	<input type="hidden" id="datavencimentoAnt" value="@datavencimento@">
+	<input type="hidden" id="datarecebimentoAnt" value="@datarecebimento@">
+	<input type="hidden" id="pessidclieAnt" value="@pessidclie_id@">
+	<input type="hidden" id="pessnomeAnt" value="@pessnome@">
+	<input type="hidden" id="enderecoAnt" value="@endereco@">
+	<input type="hidden" id="cidadeAnt" value="@cidade@">
+	<input type="hidden" id="estadoAnt" value="@estado@">
+	<input type="hidden" id="cepAnt" value="@cep@">
+	<input type="hidden" id="inscricaoestadualAnt" value="@inscricaoestadual@">
+	<input type="hidden" id="inscricaomunicipalAnt" value="@inscricaomunicipal@">
+	<input type="hidden" id="cnpjAnt" value="@cnpj@">
+	<input type="hidden" id="observacaoAnt" value="@observacao@">
+	<input type="hidden" id="valortotalAnt" value="@valortotal@">
+	<input type="hidden" id="issAnt" value="@iss@">
+	<input type="hidden" id="pisAnt" value="@pis@">
+	<input type="hidden" id="cofinsAnt" value="@cofins@">
+	<input type="hidden" id="csllAnt" value="@csll@">
+	<input type="hidden" id="irpjAnt" value="@irpj@">
+	<input type="hidden" id="issretidoAnt" value="@issretido@">
+	<input type="hidden" id="pisretidoAnt" value="@pisretido@">
+	<input type="hidden" id="cofinsretidoAnt" value="@cofinsretido@">
+	<input type="hidden" id="csllretidoAnt" value="@csllretido@">
+	<input type="hidden" id="irpjretidoAnt" value="@irpjretido@">
+
+	<hr><br>
+	<div class="labelNofi">Número:</div> <input type="text" id="numeronofi" value="@numeronofi@" size="10" onKeyDown="somentenumeros(this)">&nbsp;&nbsp;
+	Emissão: <input type="text" id="dataemissao" value="@dataemissao@" size="10" onKeyDown="numerosformatodata(this)">&nbsp;&nbsp;&nbsp;
+	Vencimento: <input type="text" id="datavencimento" value="@datavencimento@" size="10" onKeyDown="numerosformatodata(this)">&nbsp;&nbsp;
+	Recebimento: <input type="text" id="datarecebimento" value="@datarecebimento@" size="10" onKeyDown="numerosformatodata(this)"><br><br> 
+	
+	<div class="labelNofi">Cliente:</div>
+	<div id="editpessidclie" style="width:80%; overflow:visible; float:left;"></div>
+    <input name="pessidclie" id="pessidclie" type="hidden" value="@pessidclie@" descricao="@pessidclienome@"><br><br>
+	
+	<div class="labelNofi">Nome:</div><input type="text" id="pessnome" value="@pessnome@" size="70" maxlength="100"><br>
+	<div class="labelNofi">Endereço:</div><input type="text" id="endereco" value="@endereco@" size="70" maxlength="100"><br>
+	<div class="labelNofi">Cidade:</div><input type="text" id="cidade" value="@cidade@" size="20" maxlength="50">&nbsp;&nbsp;
+	Estado:<input type="text" id="estado" value="@estado@" size="3" maxlength="2">&nbsp;&nbsp;
+	CEP:<input type="text" id="cep" value="@cep@" size="10" maxlength="8"><br>
+	<div class="labelNofi">CNPJ:</div><input type="text" id="cnpj" value="@cnpj@" size="20" maxlength="14">&nbsp;&nbsp;
+	Insc. Estadual:  <input type="text" id="inscricaoestadual" value="@inscricaoestadual@" size="20" maxlength="15">&nbsp;&nbsp;
+	Insc. Municipal: <input type="text" id="inscricaomunicipal" value="@inscricaomunicipal@" size="20" maxlength="15"><br>
+	<br>
+	Observação: <br><textarea id="observacao" cols="88" rows="5">@observacao@</textarea><br>
+	Dados Antigos de Exportação: <br>(Empresa: @exemnome@&nbsp;&nbsp;Banco: @exbanome@&nbsp;&nbsp;Conta: @exconome@&nbsp;&nbsp;Doc.: @extdnome@)<br><br>
+	<div id="divItem"  
+ 		style="display: none;
+		padding: 5px;
+ 		top: 250px; 
+ 		margin-left: -470px; 
+ 		width: 728px; 
+		position: absolute; 
+ 		height: auto; 
+ 		overflow: visibled; 
+ 		background-color: #ECECEC; 
+ 		border: 1px solid #BDC7DE; 
+ 		font-weight: normal; 
+ 		text-align: left;">
+		<b>Adicionar/Alterar Item</b><br><input name="iditem" id="iditem" type="hidden">
+	    <div class="labelNofi">Origem:</div>
+		<div id="editdocuidorigem" style="width:80%; overflow:visible; float:left;"></div>
+	    <input name="docuidorigem" id="docuidorigem" type="hidden" value="" descricao="">
+	    <br><br>
+        Vincular ao Recebimento: <span id="divDocuIdMofi"><input name="docuidmofi" id="docuidmofi" type="hidden"></span><br>
+        Descrição: <br>
+        &nbsp;<textarea id="descricao" cols="86" rows="3"></textarea><br>
+        <center>
+        Valor Tributado: <input type="text" id="valortributado" value="0,00" size="13" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right">&nbsp;&nbsp;&nbsp;&nbsp;
+        Valor não Tributado: <input type="text" id="valornaotributado" value="0,00" size="13" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right"><br>
+        <input id="botAddItem" type="button" value="Salvar" onclick="oNofi.addItem();"><input type="button" id="botFecharTelaItem" value="Fechar" onClick="oNofi.fecharTelaItem();">
+        </center>
+	</div> 
+	<div id="tabItens" style="float: left; width: 100%; font-weight: normal;"></div>
+	<div style="width: 280px; float: left; height: 26px; " class="frmMaiorFonte"><input type="button" id="botExibirTelaItem" value="Adicionar Item" onClick="oNofi.exibirTelaItem();"></div>
+	<div style="width: 110px; float: left; height: 26px; line-height: 26px; " class="frmMaiorFonte">Total</div>
+	<div id="totaltributado" style="float: left; width: 78px; text-align: right; height: 26px; line-height: 26px;" class="frmMaiorFonte"></div>
+	<div id="totalnaotributado" style="float: left; width: 120px; text-align: right; height: 26px; line-height: 26px; float: none;" class="frmMaiorFonte"></div>
+	<div style="width: 280px; float: left; height: 26px; " class="frmMaiorFonte"></div>
+	<div style="width: 110px; float: left; height: 26px; line-height: 26px; " class="frmMaiorFonte">Total da Nota:</div>
+	<div id="totalnotafiscal" style="float: left; width: 200px; text-align: right; height: 26px; line-height: 26px;" class="frmMaiorFonte"></div>
+	<br><br>&nbsp;
+	
+	<div class="nofiTabImp" style="width: 49%; text-indent: 0px;">Impostos:</div>
+	<div class="nofiTabImp" style="width: 49%; text-indent: 0px;">Impostos Retidos:</div>
+	
+	<div class="nofiTabImp">ISS:</div>
+	<div class="nofiTabImp"><input type="text" id="iss" value="@iss@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="issvalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">ISS:</div>
+	<div class="nofiTabImp"><input type="text" id="issretido" value="@issretido@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="issretidovalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+
+	<div class="nofiTabImp">PIS:</div>
+	<div class="nofiTabImp"><input type="text" id="pis" value="@pis@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="pisvalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">PIS:</div>
+	<div class="nofiTabImp"><input type="text" id="pisretido" value="@pisretido@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="pisretidovalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+
+	<div class="nofiTabImp">COFINS:</div>
+	<div class="nofiTabImp"><input type="text" id="cofins" value="@cofins@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="cofinsvalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">COFINS:</div>
+	<div class="nofiTabImp"><input type="text" id="cofinsretido" value="@cofinsretido@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="cofinsretidovalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+
+	<div class="nofiTabImp">CSLL:</div>
+	<div class="nofiTabImp"><input type="text" id="csll" value="@csll@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="csllvalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">CSLL:</div>
+	<div class="nofiTabImp"><input type="text" id="csllretido" value="@csllretido@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="csllretidovalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+
+	<div class="nofiTabImp">IRPJ:</div>
+	<div class="nofiTabImp"><input type="text" id="irpj" value="@irpj@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="irpjvalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">IRPJ:</div>
+	<div class="nofiTabImp"><input type="text" id="irpjretido" value="@irpjretido@" size="5" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right" onBlur="oNofi.calcularImposto(this.id,'totaltributado');">%</div>
+	<div class="nofiTabImpValor" id="irpjretidovalor"></div>
+	<div class="nofiTabImpEspaco"></div>
+	
+	<div class="nofiTabImp">Total:</div>
+	<div class="nofiTabImp"></div>
+	<div class="nofiTabImpValor" id="totalimpostos"></div>
+	<div class="nofiTabImpEspaco"></div>
+	<div class="nofiTabImp">Total:</div>
+	<div class="nofiTabImp"></div>
+	<div class="nofiTabImpValor" id="totalimpostosretidos"></div>
+	<div class="nofiTabImpEspaco"></div>	
+	<br>&nbsp;<br>&nbsp;
+	<hr>
+	<div style="float: left ;text-align: right; width: 100%;">
+		<input type="button" id="botNovo" value="Novo" onClick="oNofi.telaCadastro('');">
+		<input type="button" id="botSalvar" value="Salvar" onClick="oNofi.salvar();">
+	</div>
+</div>

@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>QoEAT</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="/QoEAT/acesso/tTabelaV2.css" rel="stylesheet" type="text/css">
+<link href="/QoEAT/acesso/intranet.css" rel="stylesheet" type="text/css">
+<link href="/QoEAT/acesso/exibirVigeOpco.css" rel="stylesheet" type="text/css">
+<link href="/QoEAT/acesso/exibirVige.css" rel="stylesheet" type="text/css">
+<link href="/QoEAT/acesso/trocarSenha.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/QoEAT/acesso/tIntranet.js"></script>
+
+<script language="javascript" type="text/javascript">
+function carregar()
+{
+	@carregar@ 
+}
+</script>
+</head>
+<body onLoad="carregar();avisoSistema();">
+<center>
+	<div id="pagina">
+		<div id="topo">
+			<div id="logo"></div>			
+			<div id="divTitulo">QoEAT</div>
+			<div id="barraUsuario">
+				<div id="emprselecionada"></div>
+				<div id="usuario">@usuario.login@</div>
+				<div id="minhaconta">Minha conta</div>
+				<div id="ajuda">Ajuda</div>
+				<div id="sair"><a href="/QoEAT/acesso/login?acao=sair">Sair</a></div>
+				<div id="aviso">Aguarde...</div>			
+			</div>			
+			 <div id="caminhoMenus">Caminho do Menu</div>
+		</div>
+		<div id="tituloCorpo">Aguarde, carregando menu....</div>
+		<div id="divAcomTrabMenu">
+			<div id="divMenu">@menu@</div>		
+		</div>	
+		<div id="corpo"></div>	
+		<div id="rodape">&#169 2013 GERCOM</div>	
+	</div>
+	
+</center>
+</body>
+</html>

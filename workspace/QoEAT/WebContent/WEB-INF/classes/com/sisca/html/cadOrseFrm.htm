@@ -1,0 +1,247 @@
+<div id="frmOrse" style="text-indent: 0px; padding-left: 5px">
+	<div style="width: 115px; height:25px ;text-align: left; float: left; line-height: 25px;">
+		Briefing: 
+	</div> 	
+	<div id="editdocuidbrie" style="width:600px; overflow:visible; float:left;"></div>
+    <input name="docuidbrie" id="docuidbrie" type="hidden" value="@docuidbrie@" descricao="@docuidbriedescricao@">
+	<br><br>
+	Descrição:<br>	
+	<textarea id="briedescricao" cols="90" rows="7" readonly="readonly"></textarea><br>
+	<div style="height:5px; overflow:hidden; float:none;"></div>
+	<table border="0" cellpadding="0" cellspacing="1" class="frmMaiorFonte" align="center">
+	<tr>
+		<td width="50px" align="center" bgcolor="#999999">Id</td>
+		<td width="140px" align="center" bgcolor="#999999">Número</td>
+		<td width="340px" align="center" bgcolor="#999999">Situação</td>
+		<td width="200px" align="center" bgcolor="#999999">Mais Detalhes</td>
+		<td width="40px" align="center" bgcolor="#999999">Ativo</td>
+	</tr>
+	<tr>
+		<td align="center" >
+			<input type="hidden" id="docuid" value="@docuid@">
+			<span id="spanId">@docuid@</span>
+		</td>
+		<td align="center" >
+			<input type="hidden" id="numero" value="@numero@">
+			<input type="hidden" id="mes" value="@mes@">
+			<input type="hidden" id="ano" value="@ano@">
+			<div id="divMesAnoExibir" style="display: block; width: 140px; line-height: 23px;">		
+				<div id="divnumero" style="float: left; width: 75px; text-align: center; line-height: 25px;">				
+					<b>@numero@/@mes@@ano@</b>
+				</div>
+				<div id="botMudarMesAnoExibirTela" onclick="oOrse.mudarMesAnoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>		
+			</div>			
+		</td>
+		<td align="center">
+			<div id="divSidoExibir"  style="display: block; width: 335px;">
+				<input type="hidden" id="sidoid" value="@sidoid@">
+				<input type="hidden" id="datasituacao" value="@datasituacao@">
+				<div onclick="oOrse.hsidExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 80px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Histórico</a>
+				</div>
+				<div style="float: left; width: 190px; text-align: center; line-height: 25px;">				
+					@sidonome@ em @datasituacao@
+				</div>
+				<div id="botMudarSidoExibirTela" onclick="oOrse.mudarSidoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>				
+			</div>			
+		</td>
+		<td align="center">
+				<div id="botAlteracoesExibirTela" onclick="oOrse.alteExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 85px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Alterações</a>
+				</div>	
+				<div id="botTrabalhoExibirTela" onclick="oOrse.trabExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 85px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Trabalho</a>
+				</div>	
+		</td>
+		<td align="center">@ativo@</td>
+	</tr>
+	</table>&nbsp;
+	<div id="divHsidExibirTela" 
+		 style="display: none; padding: 5px;  margin-left: 175px; top: 350px; width: 450px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicosituacaodocumento@
+	</div>	
+	<div id="divSidoMudar" style="display: none; padding: 5px;  margin-left: 315px; top: 350px; width: 200px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		Mudar para: @sidoidproxima@<br>
+		&nbsp;<input id="botMudarSidoCancelar" type="button" value="Cancelar" onclick="oOrse.mudarSidoCancelar();">
+		<input id="botMudarSido" type="button" value="Confirmar" onclick="oOrse.mudarSido();">
+	</div>	
+	<div id="divMesAnoMudar"  style="display: none; padding: 5px;  margin-left: -25px; top: 350px; width: 200px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: center;">
+		Mês/Ano: @cmbmesano@<br>
+		&nbsp;<input id="botMudarMesAnoCancelar" type="button" value="Cancelar" onclick="oOrse.mudarMesAnoCancelar();">
+		<input id="botMudarMesAno" type="button" value="Confirmar" onclick="oOrse.mudarMesAno();">
+	</div>
+	<div id="divTrabalho" style="display: none; padding: 5px;  margin-left: 0px; top: 350px; 
+		width: 750px; position: absolute; height: auto; overflow: hidden; 
+		background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		<b>Vincular novo trabalho:</b><br>
+		<div style="width: 410px; float: left; height: 130px; overflow: hidden;">
+			Fluxo: @fltrid@<br>
+			Descrição: <br><textarea id="trabdescricao" cols="35" rows="4">@titulo@</textarea>
+		</div>
+		<div style="width: 330px; float: left; height: 130px; overflow: hidden;">
+			Inidicar responsável pela tarefa inicial: <br>
+			@usuaidresptareinicial@ 
+		</div>
+		<div style="width: 740px; float: left; height: 40px; overflow: hidden;">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho" onClick="oOrse.vincularTrabalho();">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho e Iniciar" onClick="oOrse.vincularTrabalho('iniciar');">
+		</div>
+		<br>
+		<b>Trabalhos Vinculados</b><br>
+		<div id="abas">
+			<ul>
+				<li id="liTrabVinculados" onclick="oOrse.selecionarAbasTrabalho(this.id);"  style=" background-color: #ECECEC"><a style="width: 100px;">Ativos</a></li>
+				<li id="liTrabCancelados" onclick="oOrse.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 100px; ">Cancelados</a></li>
+				<li id="liTrabNotificacoes" onclick="oOrse.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 150px;">Notificações</a></li>
+			</ul>
+		</div>
+		<div id="divListaAndamentoTrabalho" style="width: 735px;">
+			<div id="tabTrabVinculados" style="display:block; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabCancelados" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabNotificacoes" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+		</div>		
+	</div>
+	<div id="divAlteracoes" style="display: none; padding: 5px;  margin-left: 0px; top: 350px; width: 700px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicoalteracao@		
+	</div>
+	<div id="divMotivoCancelamento"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 200px;
+		 		top: 300px; 
+		 		width: 330px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		<input type="hidden" value="" id="trabid">
+		<span id="tituloTelaCancelamento"></span><br>
+		Informe o Motivo da Cancelamento:<br>
+		&nbsp;<textarea id="motivocancelamento" cols="30" rows="3"></textarea><br>
+		&nbsp;<input id="botFecharCancelamento" type="button" value="Fechar" onclick="oOrse.fecharTelaCancelamento();"><input id="botCancelarTrabalho" type="button" value="Registrar Cancelamento" onclick="oOrse.cancelarTrabalho();">
+	</div>
+	<div id="divHetr"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 100px;
+		 		top: 0px; 
+		 		width: 530px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		Histórico de Observações:<br>
+		&nbsp;<textarea id="historicoobservacoes" cols="60" rows="8"></textarea> <br>
+		&nbsp;<input id="botFecharHetr" type="button" value="Fechar" onclick="oOrse.fecharTelaHetr();">
+	</div>	
+	<div id="telaAran"
+				style="display: none;
+		 		padding: 5px;
+		 		margin-left: 10px;
+		 		top: 0px; 
+		 		width: 670px; 
+		 		position: absolute; 
+		 		height: 330px; 
+		 		overflow: hidden; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+			<iframe id="ifrmAran" src="" width="658px" height="100px" scrolling="no" frameborder="0" style="border: 1px solid #BDC7DE "></iframe>
+			<div id="tabAran" class="tabMaior" style="width: 660px; height: 189px;"></div>
+			<div id="grpAranBarraBotoes" class="grpBarraBotoes">
+				<input type="button" id="botAranFechar" value="Fechar" onClick="oAran.fecharTela();">
+			</div>
+	</div>	
+	<input type="hidden" id="alteracao" value="">
+	<input type="hidden" id="formatoAnt" value="@formato@">
+	<input type="hidden" id="pecaidAnt" value="@pecaid_id@">
+	<input type="hidden" id="tituloAnt" value="@titulo@">
+	<input type="hidden" id="titulocriacaoAnt" value="@titulocriacao@">
+	<input type="hidden" id="ativoAnt" value="@ativo_valor@">	
+	<hr>
+	<table border="0" cellpadding="0" cellspacing="1" class="frmMaiorFonte" align="center" width="100%">
+	<tr>
+		<td>Peça:</td>
+		<td colspan="3">@pecaid@</td>
+	</tr>
+	<tr>
+		<td>Título:</td>
+		<td><input type="text" id="titulo" value="@titulo@" size="40" maxlength="100"></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>Formato:</td>
+		<td><input type="text" id="formato" value="@formato@" size="30" maxlength="50"></td>
+		<td colspan="2">Possível Participação em Concurso: @concurso@</td>
+	</tr>
+	</table>
+	<hr>
+	<div style="float: left ;text-align: right; width: 100%;">
+		<input type="button" id="botAran" value="Arquivos Anexados" onClick="oAran.abrirTela();">
+		<input type="button" id="botNovo" value="Novo" onClick="oOrse.telaCadastro('');">
+		<input type="button" id="botSalvar" value="Salvar" onClick="oOrse.salvar();">
+	</div>
+</div>
+<div id="divListaOSPorBriefing" class="tabMaior" style="background-color: #FFFFFF;"></div>

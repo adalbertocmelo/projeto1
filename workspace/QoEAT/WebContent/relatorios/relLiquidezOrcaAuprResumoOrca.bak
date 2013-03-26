@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="relLiquidezOrcaAuprResumoOrca"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="189"
+		 pageHeight="842"
+		 columnWidth="189"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="SQLDATA2" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MESANOREFERENCIA" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["and  docu.ano || '/' || substring(docu.mes+100,2,2) = '2010/04' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDCLIE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select  sum(sql3.qtdexpedido) as qtdexpedido
+,	sum(sql3.valorexpedido) as valorexpedido
+,	sum(sql3.qtdaprovado) as qtdaprovado
+,	sum(sql3.valoraprovado) as valoraprovado
+,	sum(sql3.qtdcancelado) as qtdcancelado
+,	sum(sql3.valorcancelado) as valorcancelado
+,	sum(sql3.qtdaberto) as qtdaberto
+,	sum(sql3.valoraberto) as valoraberto
+,	sum(sql3.qtdrecebido) as qtdrecebido
+,	sum(sql3.valorrecebido) as valorrecebido
+,	sum(sql3.qtdareceber) as qtdareceber
+,	sum(sql3.valorareceber) as valorareceber
+from    (
+	select  1 as qtdexpedido
+	,	sql2.valor as valorexpedido
+	,	case when sql2.sidoid = 2 then 1 else 0 end as qtdaprovado
+	,	case when sql2.sidoid = 2 then sql2.valor else 0 end as valoraprovado
+	,	case when sql2.sidoid = 3 then 1 else 0 end as qtdcancelado
+	,	case when sql2.sidoid = 3 then sql2.valor else 0 end as valorcancelado
+	,	case when sql2.sidoid = 1 then 1 else 0 end as qtdaberto
+	,	case when sql2.sidoid = 1 then sql2.valor else 0 end as valoraberto
+	,	case when sql2.financeiro = 'recebido' then 1 else 0 end as qtdrecebido
+	,	case when sql2.financeiro = 'recebido' then sql2.valor else 0 end as valorrecebido
+	,	case when sql2.financeiro = 'areceber' then 1 else 0 end as qtdareceber
+	,	case when sql2.financeiro = 'areceber' then sql2.valor else 0 end as valorareceber
+	from (
+		select  docu.id
+		,	sum((itor.quantidade * itor.valor) - (itor.quantidade * itor.valor * itor.desconto / 100)) as valor
+		,	docu.sidoid
+		,	case when docu.sidoid = 2 and ((select count(*)
+							from   movimentofinanceiro mofi
+							where  mofi.recebimento = true
+							and    mofi.datareal is not null
+							and    mofi.docuidorigem = docu.id) > 0) then 'recebido' else 'areceber' 
+			end as financeiro
+		from    documento docu
+		,	orcamento orca
+		,	itemorcamento itor
+		,	ordemservico orse
+		,	briefing brie
+		,	cliente clie
+		$P!{SQLDATA}
+		where   docu.id = orca.docuid
+		and     itor.docuidorca = orca.docuid
+		and     docu.pessidempr = $P!{PESSIDEMPR}
+		and     orca.docuidorse = orse.docuid
+		and     orse.docuidbrie = brie.docuid
+		and	brie.pessidclie = clie.pessid
+		$P!{PESSIDCLIE}
+		$P!{SQLDATA2}
+		$P!{MESANOREFERENCIA}
+		group by  orca.docuid
+		,	  docu.id
+		,	  docu.numero
+		,	  docu.sidoid
+		,	  docu.ano 
+		) as sql2
+	) as sql3]]></queryString>
+
+	<field name="qtdexpedido" class="java.lang.Long"/>
+	<field name="valorexpedido" class="java.math.BigDecimal"/>
+	<field name="qtdaprovado" class="java.lang.Long"/>
+	<field name="valoraprovado" class="java.math.BigDecimal"/>
+	<field name="qtdcancelado" class="java.lang.Long"/>
+	<field name="valorcancelado" class="java.math.BigDecimal"/>
+	<field name="qtdaberto" class="java.lang.Long"/>
+	<field name="valoraberto" class="java.math.BigDecimal"/>
+	<field name="qtdrecebido" class="java.lang.Long"/>
+	<field name="valorrecebido" class="java.math.BigDecimal"/>
+	<field name="qtdareceber" class="java.lang.Long"/>
+	<field name="valorareceber" class="java.math.BigDecimal"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="134"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="0"
+						y="72"
+						width="188"
+						height="15"
+						key="rectangle-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="0"
+						width="188"
+						height="15"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="188"
+						height="11"
+						key="staticText-2"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ORÇAMENTO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="15"
+						width="188"
+						height="15"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="29"
+						width="188"
+						height="15"
+						key="rectangle-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="43"
+						width="188"
+						height="15"
+						key="rectangle-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="57"
+						width="188"
+						height="15"
+						key="rectangle-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="103"
+						width="188"
+						height="15"
+						key="rectangle-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="117"
+						width="188"
+						height="15"
+						key="rectangle-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="87"
+						width="188"
+						height="16"
+						key="rectangle-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="60"
+						y="16"
+						width="0"
+						height="115"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="2"
+						y="17"
+						width="54"
+						height="11"
+						key="staticText-3"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[EXPEDIDO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="31"
+						width="54"
+						height="11"
+						key="staticText-4"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[APROVADO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="59"
+						width="54"
+						height="11"
+						key="staticText-5"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[ABERTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="45"
+						width="54"
+						height="11"
+						key="staticText-6"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[CANCELADO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="4"
+						y="119"
+						width="54"
+						height="11"
+						key="staticText-7"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[A RECEBER]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="105"
+						width="54"
+						height="11"
+						key="staticText-8"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[RECEBIDO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="89"
+						width="54"
+						height="11"
+						key="staticText-9"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[MÉDIA APV]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="17"
+						width="55"
+						height="11"
+						key="textField-1"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorexpedido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="17"
+						width="28"
+						height="11"
+						key="textField-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdexpedido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="31"
+						width="55"
+						height="11"
+						key="textField-4"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraprovado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="31"
+						width="28"
+						height="11"
+						key="textField-5"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdaprovado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="31"
+						width="29"
+						height="11"
+						key="textField-6"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraprovado}.divide($F{valorexpedido},4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="179"
+						y="31"
+						width="6"
+						height="11"
+						key="staticText-11"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="45"
+						width="55"
+						height="11"
+						key="textField-7"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorcancelado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="45"
+						width="28"
+						height="11"
+						key="textField-8"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdcancelado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="45"
+						width="29"
+						height="11"
+						key="textField-9"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorcancelado}.divide($F{valorexpedido},4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="179"
+						y="45"
+						width="6"
+						height="11"
+						key="staticText-12"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="59"
+						width="55"
+						height="11"
+						key="textField-10"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraberto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="59"
+						width="28"
+						height="11"
+						key="textField-11"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdaberto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="59"
+						width="29"
+						height="11"
+						key="textField-12"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraberto}.divide($F{valorexpedido},4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="179"
+						y="59"
+						width="6"
+						height="11"
+						key="staticText-13"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="105"
+						width="55"
+						height="11"
+						key="textField-13"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorrecebido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="105"
+						width="28"
+						height="11"
+						key="textField-14"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdrecebido}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="105"
+						width="29"
+						height="11"
+						key="textField-15"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorrecebido}.divide($F{valorrecebido}.add($F{valorareceber}),4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="179"
+						y="105"
+						width="6"
+						height="11"
+						key="staticText-14"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="63"
+						y="119"
+						width="55"
+						height="11"
+						key="textField-16"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorareceber}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="120"
+						y="119"
+						width="28"
+						height="11"
+						key="textField-17"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{qtdareceber}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="149"
+						y="119"
+						width="29"
+						height="11"
+						key="textField-18"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valorareceber}.divide($F{valorrecebido}.add($F{valorareceber}),4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="179"
+						y="119"
+						width="6"
+						height="11"
+						key="staticText-15"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[%]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="61"
+						y="89"
+						width="127"
+						height="11"
+						key="textField-19"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraprovado}.divide(new BigDecimal($F{qtdaprovado}.intValue()),2,BigDecimal.ROUND_HALF_EVEN)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="61"
+						y="74"
+						width="127"
+						height="11"
+						key="textField-20"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{valoraberto}.add($F{valoraprovado})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="3"
+						y="74"
+						width="54"
+						height="11"
+						key="staticText-16"/>
+					<box>					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Left">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[APV+ABE]]></text>
+				</staticText>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

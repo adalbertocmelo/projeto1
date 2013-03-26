@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relMovimentoFinanceiro" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.1435888100000016"/>
+	<property name="ireport.x" value="414"/>
+	<property name="ireport.y" value="14"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PERIODO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["10/05/2008 A 10/06/2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RECEBIMENTO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["false"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="TITULORELATORIO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["A PAGAR"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and    to_char(mofi.dataprevista, 'YYYY-MM-DD') >= '2010-07-01'and    to_char(mofi.dataprevista, 'YYYY-MM-DD') <= '2010-07-30'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ORDEM" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[" dataprevista"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLORIG1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  mofi.docuidorigem is null"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLORIG2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  tidoorigem.id in (6,7)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLRELATORIO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LBLDATAQUITACAO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LBLCLIEVEICFORN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select     sql1.docuidmofi
+,	   sql1.cecunome
+,	   sql1.tidonome
+,	   sql1.pessnome
+,	   sql1.docunumero
+,          sql1.dataprevista
+,          sql1.datareal
+,          sql1.databaixa
+,          sql1.ordemdataprevista
+,          sql1.ordemdatareal
+,          sql1.ordemdatabaixa
+,          sql1.valor
+,          sql1.valorreal
+,	   sql1.obs
+,	   'NF:' || array_to_string(array(select nofi.numeronofi from documento docu, notafiscal nofi, itemnotafiscal itnf where nofi.docuid = docu.id and itnf.docuidnofi = nofi.docuid and sql1.docuidmofi = itnf.docuidmofi and docu.sidoid = 7),',') as faturado
+from (
+	--- RP Doc Externo
+	select     documofi.id as docuidmofi
+	,	   cecunome.nome as cecunome
+	,	   'DOC. EXTERNO' as tidonome
+	,	   case when pess.tpesid = 2 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as pessnome
+	,          '' as docunumero
+	,          to_char(mofi.dataprevista, 'DD/MM/YYYY') as dataprevista
+	,          to_char(mofi.datareal, 'DD/MM/YYYY') as datareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'DD/MM/YYYY') else '' end as databaixa
+	,          to_char(mofi.dataprevista, 'YYYY/MM/DD') as ordemdataprevista
+	,          to_char(mofi.datareal, 'YYYY/MM/DD') as ordemdatareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'YYYY/MM/DD') else '' end as ordemdatabaixa
+	,      	   mofi.valor
+	,	   mofi.valorreal
+	,	   mofi.observacao as obs
+	from       documento documofi
+	,	   movimentofinanceiro mofi
+	,	   centrocusto cecunome
+	,	   tipodocumento tidodofi
+	,	   pessoa pess
+	where      cecunome.id = mofi.cecuid
+	and	   pess.id = mofi.pessid
+	and	   mofi.docuid = documofi.id
+	and        documofi.sidoid <> 3
+	and	   documofi.pessidempr = $P!{PESSIDEMPR}
+	and        mofi.recebimento = $P!{RECEBIMENTO}
+	$P!{SQLRELATORIO}
+	$P!{SQLDATA}
+	$P!{SQLORIG1}
+	$P!{PESSID}
+	--- R Doc Interno - Orcamento, Midia e BV
+	union all
+	select     documofi.id as docuidmofi
+	,	   cecunome.nome as cecunome
+	,	   tidoorigem.abreviatura as tidonome
+	,	   case when pess.tpesid = 2 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as pessnome
+	,          substring(docuorigem.numero+1000,2,3) || '/' || substring(docuorigem.mes+100,2,2) || docuorigem.ano as docunumero
+	,          to_char(mofi.dataprevista, 'DD/MM/YYYY') as dataprevista
+	,          to_char(mofi.datareal, 'DD/MM/YYYY') as datareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'DD/MM/YYYY') else '' end as databaixa
+	,          to_char(mofi.dataprevista, 'YYYY/MM/DD') as ordemdataprevista
+	,          to_char(mofi.datareal, 'YYYY/MM/DD') as ordemdatareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'YYYY/MM/DD') else '' end as ordemdatabaixa
+	,      	   mofi.valor
+	,	   mofi.valorreal
+	,	   mofi.observacao as obs
+	from       documento documofi
+	,	   movimentofinanceiro mofi
+	,	   centrocusto cecunome
+	,          documento docuorigem
+	,	   tipodocumento tidoorigem
+	,	   (select orca.docuid
+		    ,	   orca.docuidorse
+		    from   orcamento orca
+		    ,	   documento docuorca
+		    where  docuorca.id = orca.docuid
+		    and	   docuorca.pessidempr = $P!{PESSIDEMPR}
+		    union all
+		    select mami.docuid
+		    ,	   mami.docuidorse
+		    from   mapamidia mami
+		    ,	   documento documami
+		    where  documami.id = mami.docuid
+		    and	   documami.pessidempr = $P!{PESSIDEMPR}
+		    ) sqlorcamami
+	,	   ordemservico orse
+	,	   briefing brie
+	,	   cliente clie
+	,	   pessoa pess
+	where      cecunome.id = mofi.cecuid
+	and	   mofi.docuid = documofi.id
+	and        mofi.docuidorigem = docuorigem.id
+	and 	   docuorigem.tidoid = tidoorigem.id
+	and        docuorigem.id = sqlorcamami.docuid
+	and        sqlorcamami.docuidorse = orse.docuid
+	and        orse.docuidbrie = brie.docuid
+	and        brie.pessidclie = clie.pessid
+	and   	   clie.pessid = pess.id
+	and        mofi.recebimento = true
+	and        documofi.sidoid <> 3
+	and	   documofi.pessidempr = $P!{PESSIDEMPR}
+	and        mofi.recebimento = $P!{RECEBIMENTO}
+	$P!{SQLRELATORIO}
+	$P!{SQLDATA}
+	$P!{SQLORIG2}
+	$P!{PESSID}
+	--- R BV-Aupr
+	union all
+	select     documofi.id as docuidmofi
+	,	   cecunome.nome as cecunome
+	,	   'BV-'||tidoorigem.abreviatura as tidonome
+	,	   case when pess.tpesid = 2 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as pessnome
+	,          substring(docuorigem.numero+1000,2,3) || '/' || substring(docuorigem.mes+100,2,2) || docuorigem.ano as docunumero
+	,          to_char(mofi.dataprevista, 'DD/MM/YYYY') as dataprevista
+	,          to_char(mofi.datareal, 'DD/MM/YYYY') as datareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'DD/MM/YYYY') else '' end as databaixa
+	,          to_char(mofi.dataprevista, 'YYYY/MM/DD') as ordemdataprevista
+	,          to_char(mofi.datareal, 'YYYY/MM/DD') as ordemdatareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'YYYY/MM/DD') else '' end as ordemdatabaixa
+	,      	   mofi.valor
+	,	   mofi.valorreal
+	,	   mofi.observacao as obs
+	from       documento documofi
+	,	   movimentofinanceiro mofi
+	,	   centrocusto cecunome
+	,          documento docuorigem
+	,	   tipodocumento tidoorigem
+	,	   autorizacaoproducao aupr
+	,	   fornecedor forn
+	,	   pessoa pess
+	where      cecunome.id = mofi.cecuid
+	and	   mofi.docuid = documofi.id
+	and        mofi.docuidorigem = docuorigem.id
+	and 	   docuorigem.tidoid = tidoorigem.id
+	and        docuorigem.id = aupr.docuid
+	and        aupr.pessidforn = forn.pessid
+	and   	   forn.pessid = pess.id
+	and        mofi.recebimento = true
+	and        documofi.sidoid <> 3
+	and	   documofi.pessidempr = $P!{PESSIDEMPR}
+	and        mofi.recebimento = $P!{RECEBIMENTO}
+	$P!{SQLRELATORIO}
+	$P!{SQLDATA}
+	$P!{SQLORIG2}
+	$P!{PESSID}
+	--- P Aupr
+	union all
+	select     documofi.id as docuidmofi
+	,	   cecunome.nome as cecunome
+	,	   tidoorigem.abreviatura as tidonome
+	,	   case when pess.tpesid = 2 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as pessnome
+	,          substring(docuorigem.numero+1000,2,3) || '/' || substring(docuorigem.mes+100,2,2) || docuorigem.ano as docunumero
+	,          to_char(mofi.dataprevista, 'DD/MM/YYYY') as dataprevista
+	,          to_char(mofi.datareal, 'DD/MM/YYYY') as datareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'DD/MM/YYYY') else '' end as databaixa
+	,          to_char(mofi.dataprevista, 'YYYY/MM/DD') as ordemdataprevista
+	,          to_char(mofi.datareal, 'YYYY/MM/DD') as ordemdatareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'YYYY/MM/DD') else '' end as ordemdatabaixa
+	,      	   mofi.valor
+	,	   mofi.valorreal
+	,	   mofi.observacao as obs
+	from       documento documofi
+	,	   movimentofinanceiro mofi
+	,	   centrocusto cecunome
+	,          documento docuorigem
+	,	   tipodocumento tidoorigem
+	,	   autorizacaoproducao aupr
+	,	   fornecedor forn
+	,	   pessoa pess
+	where      cecunome.id = mofi.cecuid
+	and	   mofi.docuid = documofi.id
+	and        mofi.docuidorigem = docuorigem.id
+	and 	   docuorigem.tidoid = tidoorigem.id
+	and        docuorigem.id = aupr.docuid
+	and        aupr.pessidforn = forn.pessid
+	and   	   forn.pessid = pess.id
+	and        mofi.recebimento = false
+	and        documofi.sidoid <> 3
+	and	   documofi.pessidempr = $P!{PESSIDEMPR}
+	and        mofi.recebimento = $P!{RECEBIMENTO}
+	$P!{SQLRELATORIO}
+	$P!{SQLDATA}
+	$P!{SQLORIG2}
+	$P!{PESSID}
+	--- P Aumi
+	union all
+	select     documofi.id as docuidmofi
+	,	   cecunome.nome as cecunome
+	,	   tidoorigem.abreviatura as tidonome
+	,	   case when pess.tpesid = 2 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as pessnome
+	,          substring(docuorigem.numero+1000,2,3) || '/' || substring(docuorigem.mes+100,2,2) || docuorigem.ano as docunumero
+	,	   to_char(mofi.dataprevista, 'DD/MM/YYYY') as dataprevista
+	,          to_char(mofi.datareal, 'DD/MM/YYYY') as datareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'DD/MM/YYYY') else '' end as databaixa
+	,          to_char(mofi.dataprevista, 'YYYY/MM/DD') as ordemdataprevista
+	,          to_char(mofi.datareal, 'YYYY/MM/DD') as ordemdatareal
+	,          case when documofi.sidoid = 8 then to_char(documofi.datasituacao, 'YYYY/MM/DD') else '' end as ordemdatabaixa
+	,      	   mofi.valor
+	,	   mofi.valorreal
+	,	   mofi.observacao as obs
+	from       documento documofi
+	,	   movimentofinanceiro mofi
+	,	   centrocusto cecunome
+	,	   documento docuorigem
+	,	   tipodocumento tidoorigem
+	,	   autorizacaomidia aumi
+	,	   veiculo veic
+	,	   pessoa pess
+	where      cecunome.id = mofi.cecuid
+	and	   mofi.docuid = documofi.id
+	and        mofi.docuidorigem = docuorigem.id
+	and 	   docuorigem.tidoid = tidoorigem.id
+	and        docuorigem.id = aumi.docuid
+	and        aumi.pessidveic = veic.pessid
+	and   	   veic.pessid = pess.id
+	and        mofi.recebimento = false
+	and        documofi.sidoid <> 3
+	and	   documofi.pessidempr = $P!{PESSIDEMPR}
+	and        mofi.recebimento = $P!{RECEBIMENTO}
+	$P!{SQLRELATORIO}
+	$P!{SQLDATA}
+	$P!{SQLORIG2}
+	$P!{PESSID}
+) sql1
+order by $P!{ORDEM}
+,	 pessnome
+,	 tidonome
+,        dataprevista]]>
+	</queryString>
+	<field name="docuidmofi" class="java.lang.Integer"/>
+	<field name="cecunome" class="java.lang.String"/>
+	<field name="tidonome" class="java.lang.String"/>
+	<field name="pessnome" class="java.lang.String"/>
+	<field name="docunumero" class="java.lang.String"/>
+	<field name="dataprevista" class="java.lang.String"/>
+	<field name="datareal" class="java.lang.String"/>
+	<field name="databaixa" class="java.lang.String"/>
+	<field name="ordemdataprevista" class="java.lang.String"/>
+	<field name="ordemdatareal" class="java.lang.String"/>
+	<field name="ordemdatabaixa" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="valorreal" class="java.math.BigDecimal"/>
+	<field name="obs" class="java.lang.String"/>
+	<field name="faturado" class="java.lang.String"/>
+	<variable name="SOMAVALOR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="SOMAVALORREAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorreal}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-34" x="2" y="27" width="454" height="22"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CA COMUNICAÇÃO.
+RUA JERÔNIMO PIMENTEL, 99]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="680" y="23" width="101" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-35" x="627" y="23" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="627" y="35" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="680" y="35" width="66" height="14"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-37" x="1" y="5" width="235" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISCA]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" x="1" y="18" width="780" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-38" x="627" y="5" width="43" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Versão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-39" x="680" y="5" width="95" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[2.0]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-12" x="2" y="98" width="779" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-31" mode="Transparent" x="2" y="52" width="454" height="11"/>
+				<textElement>
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["RELATÓRIO DE "+$P{TITULORELATORIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-61" x="576" y="84" width="51" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-65" x="84" y="84" width="42" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="39" y="84" width="43" height="11"/>
+				<box>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NUMERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="2" y="84" width="35" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ORIGEM]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-32" mode="Transparent" x="2" y="68" width="228" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["PERIODO DE  "+$P{PERIODO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-73" x="628" y="84" width="48" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VL. REAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-75" x="172" y="84" width="42" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DT. BAIXA BAIXA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-76" x="324" y="84" width="125" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DOC. Cobrança]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-77" x="450" y="84" width="125" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DOC. Quitação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-78" x="678" y="84" width="103" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[OBS.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-39" x="128" y="84" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{LBLDATAQUITACAO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-40" x="216" y="84" width="107" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{LBLCLIEVEICFORN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="216" y="2" width="107" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pessnome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="576" y="2" width="51" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="39" y="2" width="43" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{docunumero}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="84" y="2" width="42" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dataprevista}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="2" y="2" width="35" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tidonome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-34" x="628" y="2" width="48" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorreal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-35" x="128" y="2" width="42" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{datareal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-36" x="172" y="2" width="42" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{databaixa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-37" x="678" y="2" width="103" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{obs}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="324" y="1" width="124" height="13">
+					<printWhenExpression><![CDATA[($P{RECEBIMENTO}.equals( "false" )? Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COBRANCAQUITACAO">
+					<subreportParameterExpression><![CDATA["true"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDMOFI">
+					<subreportParameterExpression><![CDATA[$F{docuidmofi}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relMovimentoFinanceiroDofi.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="450" y="1" width="124" height="13"/>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="COBRANCAQUITACAO">
+					<subreportParameterExpression><![CDATA["false"]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDMOFI">
+					<subreportParameterExpression><![CDATA[$F{docuidmofi}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relMovimentoFinanceiroDofi.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-41" x="326" y="2" width="122" height="11">
+					<printWhenExpression><![CDATA[($P{RECEBIMENTO}.equals( "true" )? Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{faturado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement key="line-11" x="2" y="3" width="779" height="1"/>
+			</line>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="576" y="7" width="50" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SOMAVALOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-79" x="464" y="7" width="110" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-38" x="627" y="7" width="50" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SOMAVALORREAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

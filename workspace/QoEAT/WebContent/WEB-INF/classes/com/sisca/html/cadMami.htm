@@ -1,0 +1,18 @@
+<div id="grpMami">
+	<div id="grpMamiNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oMami.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oMami.selecionarAbas(this.id);oMami.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 590px; text-align: right;">
+				<input type="button" value="Visualizar Mapa com Logo" onclick="oMami.visualizarRel('1');" style="width: 220px;">
+				<input type="button" value="Visualizar Mapa sem Logo" onclick="oMami.visualizarRel('0');" style="width: 220px;">
+				<input type="button" value="Visualizar Lista" onclick="oMami.visualizarRelacao();" style="width: 110px;">
+			</li>			
+		</ul>
+	</div>		
+	<div id="frmMami" class="frmMaior">@frm@</div>
+	<div id="tabMami" class="tabMaior" ></div>
+	<div id="grpMamiBarraBotoes" class="grpBarraBotoes">
+	</div>
+</div>

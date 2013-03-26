@@ -1,0 +1,238 @@
+<div id="frmAumi" style="text-indent: 0px; padding-left: 5px">
+	<table border="0" cellpadding="0" cellspacing="1" class="frmMaiorFonte" align="center">
+	<tr>
+		<td width="50px" align="center" bgcolor="#999999">Id</td>
+		<td width="140px" align="center" bgcolor="#999999">Número</td>
+		<td width="340px" align="center" bgcolor="#999999">Situação</td>
+		<td width="200px" align="center" bgcolor="#999999">Mais Detalhes</td>
+		<td width="40px" align="center" bgcolor="#999999">Ativo</td>
+	</tr>
+	<tr>
+		<td align="center" >
+			<input type="hidden" id="docuid" value="@docuid@">
+			<span id="spanId">@docuid@</span>
+		</td>
+		<td align="center" >
+			<input type="hidden" id="numero" value="@numero@">
+			<input type="hidden" id="mes" value="@mes@">
+			<input type="hidden" id="ano" value="@ano@">
+			<div id="divMesAnoExibir" style="display: block; width: 140px; line-height: 23px;">		
+				<div id="divnumero" style="float: left; width: 75px; text-align: center; line-height: 25px;">				
+					<b>@numero@/@mes@@ano@</b>
+				</div>
+				<div id="botMudarMesAnoExibirTela" onclick="oAumi.mudarMesAnoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>		
+			</div>			
+		</td>
+		<td align="center">
+			<div id="divSidoExibir"  style="display: block; width: 335px;">
+				<input type="hidden" id="sidoid" value="@sidoid@">
+				<input type="hidden" id="datasituacao" value="@datasituacao@">
+				<div onclick="oAumi.hsidExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 80px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Histórico</a>
+				</div>
+				<div style="float: left; width: 190px; text-align: center; line-height: 25px;">				
+					@sidonome@ em @datasituacao@
+				</div>
+				<div id="botMudarSidoExibirTela" onclick="oAumi.mudarSidoExibirTela();" 
+					 style="background-color: #ECECEC; 
+					 		border-left: 1px solid #dcdce9;
+					 		border-top: 1px solid #dcdce9;
+					 		border-right: 1px solid #dcdce9; 
+					 		width: 60px; 
+					 		height: 23px; 
+					 		line-height: 25px; 
+					 		float: left;
+					 		overflow: visible;
+					 		cursor: pointer;">
+			 		<a>Mudar</a>
+				</div>				
+			</div>			
+		</td>
+		<td align="center">	
+			<div id="botAlteracoesExibirTela" onclick="oAumi.alteExibirTela();" 
+				 style="background-color: #ECECEC; 
+				 		border-left: 1px solid #dcdce9;
+				 		border-top: 1px solid #dcdce9;
+				 		border-right: 1px solid #dcdce9; 
+				 		width: 85px; 
+				 		height: 23px; 
+				 		line-height: 25px; 
+				 		float: left;
+				 		overflow: visible;
+				 		cursor: pointer;">
+		 		<a>Alterações</a>
+			</div>	
+			<div id="botTrabalhoExibirTela" onclick="oAumi.trabExibirTela();" 
+				 style="background-color: #ECECEC; 
+				 		border-left: 1px solid #dcdce9;
+				 		border-top: 1px solid #dcdce9;
+				 		border-right: 1px solid #dcdce9; 
+				 		width: 85px; 
+				 		height: 23px; 
+				 		line-height: 25px; 
+				 		float: left;
+				 		overflow: visible;
+				 		cursor: pointer;">
+		 		<a>Trabalho</a>
+			</div>	
+		</td>
+		<td align="center">@ativo@</td>
+	</tr>
+	</table>&nbsp;
+	<div id="divHsidExibirTela" 
+		 style="display: none; padding: 5px;  margin-left: 175px; top: 180px; width: 450px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicosituacaodocumento@
+	</div>	
+	<div id="divSidoMudar" style="display: none; padding: 5px;  margin-left: 315px; top: 180px; width: 200px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		Mudar para: @sidoidproxima@<br>
+		&nbsp;<input id="botMudarSidoCancelar" type="button" value="Cancelar" onclick="oAumi.mudarSidoCancelar();">
+		<input id="botMudarSido" type="button" value="Confirmar" onclick="oAumi.mudarSido();">
+	</div>	
+	<div id="divMesAnoMudar"  style="display: none; padding: 5px;  margin-left: -25px; top: 180px; 
+		width: 200px; position: absolute; height: auto; overflow: visibled; 
+		background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: center;">
+		Mês/Ano: @cmbmesano@<br>
+		&nbsp;<input id="botMudarMesAnoCancelar" type="button" value="Cancelar" onclick="oAumi.mudarMesAnoCancelar();">
+		<input id="botMudarMesAno" type="button" value="Confirmar" onclick="oAumi.mudarMesAno();">
+	</div>
+	<div id="divTrabalho" style="display: none; padding: 5px;  margin-left: 0px; top: 180px; 
+		width: 750px; position: absolute; height: auto; overflow: hidden; 
+		background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		<b>Vincular novo trabalho:</b><br>
+		<div style="width: 410px; float: left; height: 130px; overflow: hidden;">
+			Fluxo: @fltrid@<br>
+			Descrição: <br><textarea id="trabdescricao" cols="35" rows="4"></textarea>
+		</div>
+		<div style="width: 330px; float: left; height: 130px; overflow: hidden;">
+			Inidicar responsável pela tarefa inicial: <br>
+			@usuaidresptareinicial@ 
+		</div>
+		<div style="width: 740px; float: left; height: 40px; overflow: hidden;">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho" onClick="oAumi.vincularTrabalho();">
+			<input id="botVincularTrabalho" type="button" value="Vincular Trabalho e Iniciar" onClick="oAumi.vincularTrabalho('iniciar');">
+		</div>
+		<br>
+		<b>Trabalhos Vinculados</b><br>
+		<div id="abas">
+			<ul>
+				<li id="liTrabVinculados" onclick="oAumi.selecionarAbasTrabalho(this.id);"  style=" background-color: #ECECEC"><a style="width: 100px;">Ativos</a></li>
+				<li id="liTrabCancelados" onclick="oAumi.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 100px; ">Cancelados</a></li>
+				<li id="liTrabNotificacoes" onclick="oAumi.selecionarAbasTrabalho(this.id);" style=" background-color: #D3D3D3"><a style="width: 150px;">Notificações</a></li>
+			</ul>
+		</div>
+		<div id="divListaAndamentoTrabalho" style="width: 735px;">
+			<div id="tabTrabVinculados" style="display:block; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabCancelados" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+			<div id="tabTrabNotificacoes" style="display:none; width:735px; text-indent: 0px; border: 1px solid #dcdce9; padding: 10px;"></div>
+		</div>		
+	</div>
+	<div id="divAlteracoes" style="display: none; padding: 5px;  margin-left: 0px; top: 180px; width: 700px; position: absolute; height: auto; overflow: visibled; background-color: #ECECEC; border: 1px solid #BDC7DE; font-weight: normal; text-align: left;">
+		@historicoalteracao@		
+	</div>
+	<div id="divMotivoCancelamento"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 200px;
+		 		top: 300px; 
+		 		width: 330px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		<input type="hidden" value="" id="trabid">
+		<span id="tituloTelaCancelamento"></span><br>
+		Informe o Motivo da Cancelamento:<br>
+		&nbsp;<textarea id="motivocancelamento" cols="30" rows="3"></textarea><br>
+		&nbsp;<input id="botFecharCancelamento" type="button" value="Fechar" onclick="oAumi.fecharTelaCancelamento();"><input id="botCancelarTrabalho" type="button" value="Registrar Cancelamento" onclick="oAumi.cancelarTrabalho();">
+	</div>
+	<div id="divHetr"  
+		 style="display: none;
+		 		padding: 5px;
+		 		margin-left: 100px;
+		 		top: 0px; 
+		 		width: 530px; 
+		 		position: absolute; 
+		 		height: auto; 
+		 		overflow: visibled; 
+		 		background-color: #ECECEC; 
+		 		border: 1px solid #BDC7DE; 
+		 		font-weight: normal; 
+		 		text-align: center;">
+		Histórico de Observações:<br>
+		&nbsp;<textarea id="historicoobservacoes" cols="60" rows="8"></textarea> <br>
+		&nbsp;<input id="botFecharHetr" type="button" value="Fechar" onclick="oAumi.fecharTelaHetr();">
+	</div>
+	<input type="hidden" id="alteracao" value="">
+	<input type="hidden" id="docuidmamiAnt" value="@docuidmami_id@">
+	<input type="hidden" id="pessidveicAnt" value="@pessidveic_id@">
+	<input type="hidden" id="fopaidAnt" value="@fopaid_id@">
+	<input type="hidden" id="datareferenciaAnt" value="@datareferencia@">
+	<input type="hidden" id="customidiaAnt" value="@customidia@">
+	<input type="hidden" id="valorpermutaAnt" value="@valorpermuta@">
+	<input type="hidden" id="observacaoAnt" value="@observacao@">
+	<input type="hidden" id="ativoAnt" value="@ativo_valor@">
+	<hr>
+	<div style="width: 115px; height:25px ;text-align: left; float: left; line-height: 25px;">
+		Mapa de Mídia: 
+	</div> 	
+	<div id="editdocuidmami" style="width:600px; overflow:visible; float:left;"></div>
+    <input name="docuidmami" id="docuidmami" type="hidden" value="@docuidmami@" descricao="@docuidmamidescricao@">
+	<br><br><input id="botAbrirMami" type="button" value="Abrir" onclick="oAumi.abrirMami(docuidmami.value);"><br>
+	<div id="dadosMami" style="font-weight: normal; padding: 10px; padding-top: 5px; height: 30px;"></div>
+	Veículo: <span id="spVeic">@pessidveic@</span><br>
+	<div id="dadosVeic" style="font-weight: normal; padding: 10px; padding-top: 5px; height: 30px;"></div>
+	Data Referência: <input type="text" id="datareferencia" value="@datareferencia@" size="10" onKeyDown="numerosformatodata(this)"> &nbsp;&nbsp;&nbsp; Forma de Pagamento: @fopaid@<br>
+	Datas Pagamento: @dataspagamento@ <br>
+	Observação: 
+	<input type="button" id="botRecuperarModeloObservacao" value="Recuperar Modelo" onClick="oAumi.recuperarModeloObservacao();">
+	<input type="button" id="botRecuperarObservacaoMapaMidia" value="Recuperar Observação do Mapa" onClick="oAumi.recuperarObservacaoMapaMidia();"><br>
+	<textarea id="observacao" cols="89" rows="3">@observacao@</textarea><br>
+	<div id="tabItens" style="float: left; width: 100%; font-weight: normal; padding-right: 10px;padding-top: 15px"></div>
+	<div style="width: 385px; float: left; height: 26px;" class="frmMaiorFonte"><input type="button" id="botAtualizarTotalAutorizacaoDeMidia" value="Atualizar Total Autorização de Midia" onClick="oAumi.atualizarTotalAutorizacaoDeMidia();oAumi.atualizarTotalAPagar();"></div>
+	<div style="width: 265px; float: left; height: 26px; line-height: 26px;" class="frmMaiorFonte">Total Autorização de Mídia:</div>
+	<div id="totalAutorizacaoDeMidia" style="float: left; width: 80px; text-align: right; height: 26px; line-height: 26px;" class="frmMaiorFonte">
+		<input type="text" id="customidia" value="@customidia@" size="6" onKeyDown="numerosformatomoedaComVirgula(this)"  onblur="oAumi.atualizarTotalAPagar();" style="text-align:right" disabled="disabled">
+	</div>
+	<br>
+	<div id="totalValorDoVeiculo" style="width: 385px; float: left; height: 26px; line-height: 26px;" class="frmMaiorFonte"></div>
+	<div style="width: 265px; float: left; height: 26px; line-height: 26px; border-bottom: 1px solid #000000;" class="frmMaiorFonte">Permuta:</div>
+	<div style="float: left; width: 80px; text-align: right; height: 27px; border-bottom: 1px solid #000000;" class="frmMaiorFonte">
+		<input type="text" id="valorpermuta" value="@valorpermuta@" size="9" onblur="oAumi.atualizarTotalAPagar();" onKeyDown="numerosformatomoedaComVirgula(this)" style="text-align:right">
+	</div>
+	<br>
+	<div style="width: 385px; float: left; height: 26px; line-height: 26px;" class="frmMaiorFonte"></div>
+	<div style="width: 265px; float: left; height: 20px; line-height: 20px;" class="frmMaiorFonte">Total a Pagar:</div>
+	<div id="totalAPagar" style="float: left; width: 80px; text-align: right; height: 20px; line-height: 20px;" class="frmMaiorFonte"></div>	
+	<br>&nbsp;
+	<hr>
+	<div style="float: left ;text-align: right; width: 100%;">
+		<input type="button" id="botNovo" value="Novo" onClick="oAumi.telaCadastro('');">
+		<input type="button" id="botSalvar" value="Salvar" onClick="oAumi.salvar();">
+	</div>
+</div>
+<div id="divListaAumiPorMami" class="tabMaior" style="background-color: #FFFFFF;"></div>

@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relFechamentoFinanceiroMapaMidia" pageWidth="1103" pageHeight="775" orientation="Landscape" columnWidth="1075" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="711"/>
+	<property name="ireport.y" value="99"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["10/05/2008 A 10/06/2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLSIDO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  sido.id in (1,3,2)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LSTSIDONOME" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ABERTO,CANCELADO,APROVADO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDCLIE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USUAIDATENDENTE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLFINANCEIROABERTO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PECAID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ATIVID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDVEIC" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MESANOREFERENCIA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  docu.ano || '/' || substring(docu.mes+100,2,2) = '2011/06' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA0" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[", to_char(docu.datasituacao, 'DD/MM/YYYY')"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLNAOFATURADO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  docu.id as docuid
+,	docu.ano || '/' || substring(docu.mes+100,2,2) || substring(docu.numero+1000,2,3)  as maminumeroordem
+,	substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano  as maminumero
+,	sido.abreviatura as mamisituacao
+,	mami.percentualcomissao as mamicomissao
+,	case when (select count(peju.*) from pessoajuridica peju where pess.id = peju.pessid )>0 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as clienome
+,	case when sido.id = 3 then 0 else mami.valor end as mamivalor
+,	case when sido.id = 1 then mami.valor else 0 end as mamivalorAberto
+,	case when sido.id = 2 then mami.valor else 0 end as mamivalorAprovado
+,	case when sido.id = 3 then mami.valor else 0 end as mamivalorCancelado
+,	(select sum(mofi.valor) as valor
+	from    movimentofinanceiro mofi
+	,	documento documofi
+	where   documofi.id = mofi.docuid
+	and     mofi.docuidorigem = docu.id
+	and     documofi.pessidempr = docu.pessidempr
+	and     documofi.sidoid <> 3
+	and     mofi.recebimento = true) as mamivalorParcela
+,	(select sum(mofi.valorreal) as valor
+	from    movimentofinanceiro mofi
+	,	documento documofi
+	where   documofi.id = mofi.docuid
+	and     mofi.docuidorigem = docu.id
+	and     documofi.pessidempr = docu.pessidempr
+	and     documofi.sidoid <> 3
+	and     mofi.datareal is not null
+	and     mofi.recebimento = true) as mamivalorRecebido
+,	(select sum(mofi.valorreal) as valor
+	from    movimentofinanceiro mofi
+	,	documento documofi
+	where   documofi.id = mofi.docuid
+	and     mofi.docuidorigem = docu.id
+	and     documofi.pessidempr = docu.pessidempr
+	and     documofi.sidoid <> 3
+	and     mofi.datareal is null
+	and     mofi.recebimento = true) as mamivalorAreceber
+,	aumi2.aumivalorAberto
+,	aumi2.aumivalorAprovado
+,	aumi2.aumivalorCancelado
+,	aumi2.aumivalorPago
+,	aumi2.aumivalorApagar
+$P!{SQLDATA0} as data
+from    documento docu
+,	(
+	 select mami1.docuid
+	 ,	mami1.docuidorse
+	 ,	mami1.percentualcomissao
+	 ,	sum(itmm.totalfinal)::numeric(15,2) as valor
+	 from   mapamidia mami1
+	 ,	itemmapamidia itmm
+	 where  itmm.docuidmami = mami1.docuid
+	 group by mami1.docuid, mami1.docuidorse, mami1.percentualcomissao
+	) mami
+,       (
+          select aumi.docuidmami
+          from   documento docu
+          ,      autorizacaomidia aumi
+	  ,	situacaodocumento sido
+	  $P!{SQLDATA}
+          where  aumi.docuid = docu.id
+	  and     docu.sidoid = sido.id
+	  $P!{SQLSIDO}
+          $P!{SQLDATA2}
+          $P!{MESANOREFERENCIA}
+	  group by aumi.docuidmami
+         ) sqlaumi
+,       (
+	select 	sql1.docuidmami
+	,	sum(sql1.aumivalorAberto) as aumivalorAberto
+	,	sum(sql1.aumivalorAprovado) as aumivalorAprovado
+	,	sum(sql1.aumivalorCancelado) as aumivalorCancelado
+	,	sum(sql1.aumivalorPago) as aumivalorPago
+	,	sum(sql1.aumivalorApagar) as aumivalorApagar
+	from    (
+		select  mami.docuid as docuidmami
+		,	0 as aumivalorAberto
+		,	0 as aumivalorAprovado
+		,	0 as aumivalorCancelado
+		,	0 as aumivalorPago
+		,	0 as aumivalorApagar
+		from    mapamidia mami
+		union all
+		select  aumi.docuidmami
+		,	sum(case when docuaumi.sidoid = 1 then aumi.valor else 0 end) as aumivalorAberto
+		,	sum(case when docuaumi.sidoid = 2 then aumi.valor else 0 end) as aumivalorAprovado
+		,	sum(case when docuaumi.sidoid = 3 then aumi.valor else 0 end) as aumivalorCancelado
+		,	sum((select sum(mofi.valorreal) as valor
+			from    movimentofinanceiro mofi
+			,	documento documofi
+			where   documofi.id = mofi.docuid
+			and     mofi.docuidorigem = docuaumi.id
+			and     documofi.pessidempr = docuaumi.pessidempr
+			and     documofi.sidoid <> 3
+			and     mofi.datareal is not null
+			and     mofi.recebimento = false)) as aumivalorPago
+		,	sum((select sum(mofi.valorreal) as valor
+			from    movimentofinanceiro mofi
+			,	documento documofi
+			where   documofi.id = mofi.docuid
+			and     mofi.docuidorigem = docuaumi.id
+			and     documofi.pessidempr = docuaumi.pessidempr
+			and     documofi.sidoid <> 3
+			and     mofi.datareal is null
+			and     mofi.recebimento = false)) as aumivalorApagar
+		from    documento docuaumi
+		,	(
+			 select aumi1.docuid
+			 ,	aumi1.docuidmami
+			 ,	aumi1.pessidveic
+			 ,	sum(itmm.totalfinal)::numeric(15,2) as valor
+			 from   autorizacaomidia aumi1
+			 ,	itemmapamidia itmm
+			 where  itmm.docuidmami = aumi1.docuidmami
+			 and    itmm.pessidveic = aumi1.pessidveic
+			 group by aumi1.docuid, aumi1.docuidmami, aumi1.pessidveic
+			) aumi
+		,	veiculo veic
+		where   docuaumi.id = aumi.docuid
+		and     aumi.pessidveic = veic.pessid
+		and     docuaumi.pessidempr = $P!{PESSIDEMPR}
+		$P!{PESSIDVEIC}
+		group by aumi.docuidmami
+		) sql1
+	group by sql1.docuidmami
+	) aumi2
+,	situacaodocumento sido
+,	documento docuorse
+,	ordemservico orse
+,	peca
+,	briefing brie
+,	cliente clie
+,	pessoa pess
+where   docu.id = mami.docuid
+and     aumi2.docuidmami = docu.id
+and     sqlaumi.docuidmami = docu.id
+and     docu.sidoid = sido.id
+and     docuorse.id = orse.docuid
+and     mami.docuidorse = orse.docuid
+and     orse.pecaid = peca.id
+and     orse.docuidbrie = brie.docuid
+and     brie.pessidclie = clie.pessid
+and     clie.pessid = pess.id
+and     docu.pessidempr = $P!{PESSIDEMPR}
+$P!{PESSIDCLIE}
+$P!{PECAID}
+$P!{ATIVID}
+$P!{USUAIDATENDENTE}
+$P!{SQLFINANCEIROABERTO}
+$P!{SQLNAOFATURADO}
+order by maminumeroordem]]>
+	</queryString>
+	<field name="docuid" class="java.lang.Integer"/>
+	<field name="maminumeroordem" class="java.lang.String"/>
+	<field name="maminumero" class="java.lang.String"/>
+	<field name="mamisituacao" class="java.lang.String"/>
+	<field name="mamicomissao" class="java.math.BigDecimal"/>
+	<field name="clienome" class="java.lang.String"/>
+	<field name="mamivalor" class="java.math.BigDecimal"/>
+	<field name="mamivaloraberto" class="java.math.BigDecimal"/>
+	<field name="mamivaloraprovado" class="java.math.BigDecimal"/>
+	<field name="mamivalorcancelado" class="java.math.BigDecimal"/>
+	<field name="mamivalorparcela" class="java.math.BigDecimal"/>
+	<field name="mamivalorrecebido" class="java.math.BigDecimal"/>
+	<field name="mamivalorareceber" class="java.math.BigDecimal"/>
+	<field name="aumivaloraberto" class="java.math.BigDecimal"/>
+	<field name="aumivaloraprovado" class="java.math.BigDecimal"/>
+	<field name="aumivalorcancelado" class="java.math.BigDecimal"/>
+	<field name="aumivalorpago" class="java.math.BigDecimal"/>
+	<field name="aumivalorapagar" class="java.math.BigDecimal"/>
+	<field name="data" class="java.lang.String"/>
+	<variable name="TOTALMAMIRECEBIDO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivalorrecebido}]]></variableExpression>
+	</variable>
+	<variable name="TOTALMAMIARECEBER" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivalorareceber}]]></variableExpression>
+	</variable>
+	<variable name="TOTALMAMIABERTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivaloraberto}]]></variableExpression>
+	</variable>
+	<variable name="TOTALMAMIAPROVADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivaloraprovado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALMAMICANCELADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivalorcancelado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMIPAGO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{aumivalorpago}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMIAPAGAR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{aumivalorapagar}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMIABERTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{aumivaloraberto}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMIAPROVADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{aumivaloraprovado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMICANCELADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{aumivalorcancelado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALMAMIPARCELA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivalorparcela}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUMIPARCELA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{mamivalorparcela}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="103" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" x="551" y="80" width="522" height="23" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="876" y="83" width="104" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="982" y="83" width="89" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="1" y="80" width="546" height="23" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="458" y="83" width="87" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="238" y="83" width="104" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="344" y="83" width="112" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-42" x="48" y="92" width="90" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-53" x="2" y="27" width="384" height="35"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CA COMUNICAÇÃO.
+RUA JERÔNIMO PIMENTEL, 99
+Fechamento FINANCEIRO DE MÍDIA ]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="970" y="23" width="101" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-54" x="917" y="23" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-55" x="917" y="35" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="970" y="35" width="66" height="14"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-56" x="1" y="5" width="235" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISCA]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-12" x="0" y="18" width="1073" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-57" x="917" y="5" width="43" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Versão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-58" x="970" y="5" width="95" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[2.0]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" mode="Transparent" x="2" y="64" width="543" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FECHAMENTO DE "+$P{PERIODO}+"      (SITUAÇÃO: "+$P{LSTSIDONOME}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-46" x="414" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="262" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-48" x="996" y="83" width="61" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-76" x="793" y="92" width="81" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DOC. Cobrança]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="371" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[EMISSÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-44" x="340" y="92" width="36" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="380" y="83" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NF/FAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-43" x="7" y="92" width="37" height="11"/>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MAPA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-45" x="172" y="92" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="152" y="92" width="19" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-49" x="597" y="92" width="101" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VEÍCULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-40" x="470" y="83" width="65" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" x="504" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DT REC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="460" y="92" width="41" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" x="557" y="92" width="35" height="11"/>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-45" x="747" y="92" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="726" y="92" width="19" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="215" y="92" width="16" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="304" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="240" y="92" width="23" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="270" y="83" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PARCELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="942" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="984" y="92" width="41" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="900" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" x="1030" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DT PAG.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="908" y="83" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PARCELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="878" y="92" width="23" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="48" y="2" width="102" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{clienome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="1" y="2" width="43" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{maminumero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="172" y="2" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{mamivalor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="151" y="2" width="20" height="11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{mamisituacao}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" mode="Transparent" x="554" y="2" width="521" height="11"/>
+				<subreportParameter name="PESSIDVEIC">
+					<subreportParameterExpression><![CDATA[$P{PESSIDVEIC}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDMAMI">
+					<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroMapaMidiaAumi.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToTallestObject" mode="Transparent" x="237" y="2" width="310" height="11"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDORIGEM">
+					<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RECEBIMENTO">
+					<subreportParameterExpression><![CDATA["and mofi.recebimento = true"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroMapaMidiaMofi.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement key="line-13" x="1" y="1" width="1072" height="1"/>
+			</line>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="211" y="2" width="24" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{mamicomissao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="3" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="85" splitType="Stretch">
+			<line>
+				<reportElement key="line-11" x="1" y="3" width="1072" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-68" x="2" y="18" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIDO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-69" x="2" y="29" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A RECEBER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="2" y="62" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANCELADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-71" x="2" y="40" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A FECHAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="75" y="40" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMIABERTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="75" y="62" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMICANCELADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-72" x="2" y="51" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="75" y="51" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMIAPROVADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-13" x="75" y="18" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMIRECEBIDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-14" x="75" y="29" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMIARECEBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-76" x="555" y="18" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-77" x="555" y="29" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A PAGAR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-78" x="555" y="62" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANCELADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-79" x="555" y="40" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A FECHAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-15" x="628" y="40" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMIABERTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-16" x="628" y="62" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMICANCELADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-80" x="555" y="51" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-17" x="628" y="51" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMIAPROVADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-81" x="555" y="7" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTOS]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-18" x="628" y="18" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMIPAGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-19" x="628" y="29" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMIAPAGAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-82" x="628" y="7" width="54" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="2" y="73" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="75" y="73" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALMAMIABERTO}.add( $V{TOTALMAMIAPROVADO}.add( $V{TOTALMAMICANCELADO} ) )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-75" x="75" y="7" width="54" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-73" x="2" y="7" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIMENTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="555" y="73" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="628" y="73" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUMIABERTO}.add( $V{TOTALAUMIAPROVADO}.add( $V{TOTALAUMICANCELADO} ) )]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relFechamentoFinanceiroMapaMidiaAumi" pageWidth="378" pageHeight="612" columnWidth="378" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PESSIDVEIC" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUIDMAMI" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[Integer.valueOf("63670")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  docu.id as docuid
+,	docu.ano || '/' || substring(docu.mes+100,2,2) ||  substring(docu.numero+1000,2,3) as auminumeroordem
+,	substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano  as auminumero
+,	sido.abreviatura as aumisituacao
+,	case when (select count(peju.*) from pessoajuridica peju where pessveic.id = peju.pessid )>0 then (select peju.nomefantasia from pessoajuridica peju where pessveic.id = peju.pessid) else pessveic.nome end as veicnome
+,	case 	when sido.id = 3 then 0 else aumi.valor end as aumivalor
+from    documento docu
+,	(
+	 select aumi1.docuid
+	 ,	aumi1.docuidmami
+	 ,	aumi1.pessidveic
+	 ,	sum(itmm.totalfinal)::numeric(15,2) as valor
+	 from   autorizacaomidia aumi1
+	 ,	itemmapamidia itmm
+	 where  itmm.docuidmami = aumi1.docuidmami
+	 and    itmm.pessidveic = aumi1.pessidveic
+	 group by aumi1.docuid, aumi1.docuidmami, aumi1.pessidveic
+	) aumi
+,	situacaodocumento sido
+,	pessoa pessveic
+,	veiculo veic
+where   docu.id = aumi.docuid
+and     docu.sidoid = sido.id
+and     veic.pessid = pessveic.id
+and     aumi.pessidveic = veic.pessid
+and     aumi.docuidmami = $P!{DOCUIDMAMI}
+and     docu.pessidempr = $P!{PESSIDEMPR}
+$P!{PESSIDVEIC}
+order by auminumeroordem]]>
+	</queryString>
+	<field name="docuid" class="java.lang.Integer"/>
+	<field name="auminumeroordem" class="java.lang.String"/>
+	<field name="auminumero" class="java.lang.String"/>
+	<field name="aumisituacao" class="java.lang.String"/>
+	<field name="veicnome" class="java.lang.String"/>
+	<field name="aumivalor" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="43" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{auminumero}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="45" y="0" width="128" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{veicnome}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" stretchType="RelativeToTallestObject" mode="Transparent" x="237" y="0" width="140" height="12"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDORIGEM">
+					<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RECEBIMENTO">
+					<subreportParameterExpression><![CDATA["and mofi.recebimento = false"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroMapaMidiaAumiMofi.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="173" y="0" width="20" height="11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{aumisituacao}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="195" y="0" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{aumivalor}.multiply( new java.math.BigDecimal(0.8))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relLiquidezOrcaAupr" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="326"/>
+	<property name="ireport.y" value="109"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["10/05/2008 A 10/06/2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDCLIE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MESANOREFERENCIA" class="java.lang.String">
+		<defaultValueExpression><![CDATA["and  docu.ano || '/' || substring(docu.mes+100,2,2) = '2012/06' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA0" class="java.lang.String">
+		<defaultValueExpression><![CDATA[", to_char(docu.datasituacao, 'DD/MM/YYYY')"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  sql2.clienome
+,	sql2.pecanome
+,	sql2.orcanumero
+,	sql2.orcanumeroordem
+,	sql2.receita
+,	sql2.custo
+,	sql2.receita - sql2.custo as liquidez
+,	case when sql2.receita > 0 then (sql2.receita - sql2.custo)/ sql2.receita * 100 else 0 end as percliquidez
+,	sql2.situacao
+from  (
+select  case when (select count(peju.*) from pessoajuridica peju where pess.id = peju.pessid )>0 then (select peju.nomefantasia || ' (' || pess.nome || ')' from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as clienome
+,	peca.nome as pecanome
+,	substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano  as orcanumero
+,	docu.ano || '/' || substring(docu.mes+100,2,2) || substring(docu.numero+1000,2,3)  as orcanumeroordem
+,	sum((itor.quantidade * itor.valor) - (itor.quantidade * itor.valor * itor.desconto / 100)) as receita
+,	(	select sum(sql1.custo)
+		from (
+			select 	sum(((itap.valor*itap.quantidade) - (itap.valor*itap.quantidade*itap.bvforn/100))::numeric(15,2)) as custo
+			from   	autorizacaoproducao aupr
+			,	itemautorizacaoproducao itap
+			,	documento docuaupr
+			where   aupr.docuid = itap.docuidaupr
+			and 	aupr.docuidorca = orca.docuid
+			and  	aupr.docuid = docuaupr.id
+			and 	docuaupr.sidoid = 2
+			union all
+			select  0 as custo
+		) as sql1
+	) as custo
+,	case 	when sido.id = 3 then sido.abreviatura
+		else ''
+	end as situacao
+from    documento docu
+,	orcamento orca
+,	itemorcamento itor
+,	documento docuorse
+,	ordemservico orse
+,	situacaodocumento sido
+,	peca
+,	briefing brie
+,	cliente clie
+,	pessoa pess
+$P!{SQLDATA}
+where   docu.id = orca.docuid
+and     itor.docuidorca = orca.docuid
+and     docu.sidoid = sido.id
+and     sido.id > 1
+and     docuorse.id = orse.docuid
+and     orca.docuidorse = orse.docuid
+and     orse.pecaid = peca.id
+and     orse.docuidbrie = brie.docuid
+and     brie.pessidclie = clie.pessid
+and     clie.pessid = pess.id
+and     docu.pessidempr = $P!{PESSIDEMPR}
+$P!{PESSIDCLIE}
+$P!{SQLDATA2}
+$P!{MESANOREFERENCIA}
+group by  pess.id
+,	  pess.nome
+,	  orse.formato
+,	  orse.titulo
+,	  substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano
+,	  docu.ano || '/' || substring(docu.mes+100,2,2) || substring(docu.numero+1000,2,3)
+$P!{SQLDATA0}
+,	  sido.abreviatura
+,	  sido.id
+,	  peca.nome
+,	 pess.mnemonico
+,	  docuorse.numero
+,	docu.id
+,	orca.docuid
+,	docu.numero
+) sql2
+order by orcanumeroordem]]>
+	</queryString>
+	<field name="clienome" class="java.lang.String"/>
+	<field name="pecanome" class="java.lang.String"/>
+	<field name="orcanumero" class="java.lang.String"/>
+	<field name="orcanumeroordem" class="java.lang.String"/>
+	<field name="receita" class="java.math.BigDecimal"/>
+	<field name="custo" class="java.math.BigDecimal"/>
+	<field name="liquidez" class="java.math.BigDecimal"/>
+	<field name="percliquidez" class="java.math.BigDecimal"/>
+	<field name="situacao" class="java.lang.String"/>
+	<variable name="TOTALRECEITA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{situacao}.equals("CLD") ? new BigDecimal(0) : $F{receita})]]></variableExpression>
+	</variable>
+	<variable name="TOTALCUSTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{custo}]]></variableExpression>
+	</variable>
+	<variable name="TOTALLIQUIDEZ" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{TOTALRECEITA}.subtract( $V{TOTALCUSTO} )]]></variableExpression>
+	</variable>
+	<variable name="TOTALPERCLIQUIDEZ" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[( $V{TOTALRECEITA}.equals( new BigDecimal(0) ) ? new BigDecimal(0) : $V{TOTALLIQUIDEZ}.divide($V{TOTALRECEITA},4,BigDecimal.ROUND_HALF_EVEN).multiply(new BigDecimal(100)) )]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-34" x="2" y="27" width="384" height="35"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CA COMUNICAÇÃO.
+RUA JERÔNIMO PIMENTEL, 99
+Relatório de Liquidez Orçamento / Produção Aprovados]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="451" y="23" width="101" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-35" x="398" y="23" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-36" x="398" y="35" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="451" y="35" width="66" height="14"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-37" x="1" y="5" width="235" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISCA]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" x="0" y="18" width="552" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-38" x="398" y="5" width="43" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Versão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-39" x="451" y="5" width="95" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[2.0]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-12" x="2" y="93" width="549" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-31" mode="Transparent" x="2" y="64" width="550" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FECHAMENTO DE "+$P{PERIODO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-59" x="5" y="79" width="103" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-61" x="458" y="79" width="52" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LIQUIDEZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-62" x="131" y="79" width="73" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PEÇA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-63" x="388" y="79" width="52" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CUSTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-64" x="321" y="79" width="52" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEITA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-65" x="535" y="79" width="17" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-33" x="131" y="1" width="118" height="11"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{pecanome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-35" x="250" y="1" width="51" height="11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orcanumero}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-36" x="300" y="1" width="20" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{situacao}.equals("CLD") ? $F{situacao} : "")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-37" x="457" y="1" width="52" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{situacao}.equals("CLD") ? new BigDecimal(0) : $F{liquidez})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="5" y="1" width="122" height="11"/>
+				<textElement>
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{clienome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-40" x="510" y="1" width="12" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-42" x="440" y="1" width="12" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-43" x="321" y="1" width="51" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{situacao}.equals("CLD") ? new BigDecimal(0) : $F{receita})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-44" x="373" y="1" width="12" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-45" x="524" y="1" width="27" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{situacao}.equals("CLD") ? new BigDecimal(0) : $F{percliquidez})]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-48" x="388" y="1" width="51" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{custo}.equals( new BigDecimal(0))?"S/C":"")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-49" x="388" y="1" width="51" height="11"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{custo}.equals( new BigDecimal(0))?null:$F{custo})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="184" splitType="Stretch">
+			<line>
+				<reportElement key="line-11" x="2" y="3" width="549" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-51" x="273" y="7" width="29" height="11"/>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="444" y="7" width="65" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALLIQUIDEZ}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-46" x="374" y="7" width="65" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALCUSTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-47" x="307" y="7" width="65" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALRECEITA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;(#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-50" x="517" y="7" width="28" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALPERCLIQUIDEZ}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-66" x="546" y="7" width="6" height="11"/>
+				<box>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="2" y="30" width="190" height="146"/>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDCLIE">
+					<subreportParameterExpression><![CDATA[$P{PESSIDCLIE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MESANOREFERENCIA">
+					<subreportParameterExpression><![CDATA[$P{MESANOREFERENCIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA2">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relLiquidezOrcaAuprResumoOrca.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="194" y="30" width="190" height="146"/>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDCLIE">
+					<subreportParameterExpression><![CDATA[$P{PESSIDCLIE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MESANOREFERENCIA">
+					<subreportParameterExpression><![CDATA[$P{MESANOREFERENCIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA2">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relLiquidezOrcaAuprResumoAupr.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-3" x="386" y="30" width="165" height="146"/>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDCLIE">
+					<subreportParameterExpression><![CDATA[$P{PESSIDCLIE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MESANOREFERENCIA">
+					<subreportParameterExpression><![CDATA[$P{MESANOREFERENCIA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SQLDATA2">
+					<subreportParameterExpression><![CDATA[$P{SQLDATA2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relLiquidezOrcaAuprResumoLiqu.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

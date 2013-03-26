@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relFechamentoFinanceiroOrcamento" pageWidth="1098" pageHeight="775" orientation="Landscape" columnWidth="1070" leftMargin="14" rightMargin="14" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="1544"/>
+	<property name="ireport.y" value="384"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PERIODO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["10/05/2008 A 10/06/2008"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDEMPR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["157"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLSIDO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  sido.id in (1,3,2)"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LSTSIDONOME" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["ABERTO,CANCELADO,APROVADO"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDCLIE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USUAIDATENDENTE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLFINANCEIROABERTO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PECAID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ATIVID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PESSIDFORN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MESANOREFERENCIA" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and  docu.ano || '/' || substring(docu.mes+100,2,2) = '2010/07' "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLDATA0" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[", to_char(docu.datasituacao, 'DD/MM/YYYY')"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\adalberto\\workspace\\SGCA\\WebContent\\relatorios\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SQLNAOFATURADO" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["and true"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  docu.id as docuid
+,	docu.ano || '/' || substring(docu.mes+100,2,2) || substring(docu.numero+1000,2,3)  as orcanumeroordem
+,	substring(docu.numero+1000,2,3) || '/' || substring(docu.mes+100,2,2) || docu.ano  as orcanumero
+,	sido.abreviatura as orcasituacao
+,	case when (select count(peju.*) from pessoajuridica peju where pess.id = peju.pessid )>0 then (select peju.nomefantasia from pessoajuridica peju where pess.id = peju.pessid) else pess.nome end as clienome
+,	case when sido.id = 3 then 0 else orca.valor end as orcavalor
+,	case when sido.id = 1 then orca.valor else 0 end as orcavalorAberto
+,	case when sido.id = 2 then orca.valor else 0 end as orcavalorAprovado
+,	case when sido.id = 3 then orca.valor else 0 end as orcavalorCancelado
+,	(select sum(mofi.valorreal) as valor
+	from    movimentofinanceiro mofi
+	,	documento documofi
+	where   documofi.id = mofi.docuid
+	and     mofi.docuidorigem = docu.id
+	and     documofi.pessidempr = docu.pessidempr
+	and     documofi.sidoid <> 3
+	and     mofi.datareal is not null
+	and     mofi.recebimento = true) as orcavalorRecebido
+,	(select sum(mofi.valorreal) as valor
+	from    movimentofinanceiro mofi
+	,	documento documofi
+	where   documofi.id = mofi.docuid
+	and     mofi.docuidorigem = docu.id
+	and     documofi.pessidempr = docu.pessidempr
+	and     documofi.sidoid <> 3
+	and     mofi.datareal is null
+	and     mofi.recebimento = true) as orcavalorAreceber
+,	aupr2.auprvalorAberto
+,	aupr2.auprvalorAprovado
+,	aupr2.auprvalorCancelado
+,	aupr2.auprvalorPago
+,	aupr2.auprvalorApagar
+$P!{SQLDATA0} as data
+from    documento docu
+,	(
+	 select orca1.docuid
+	 ,	orca1.docuidorse
+	 ,	sum(((itor.quantidade * itor.valor) - (itor.quantidade * itor.valor * itor.desconto / 100))::numeric(15,2)) as valor
+	 from   orcamento orca1
+	 ,	itemorcamento itor
+	 where  itor.docuidorca = orca1.docuid
+	 group by orca1.docuid, orca1.docuidorse
+	) orca
+,       (
+	select 	sql1.docuidorca
+	,	sum(sql1.auprvalorAberto) as auprvalorAberto
+	,	sum(sql1.auprvalorAprovado) as auprvalorAprovado
+	,	sum(sql1.auprvalorCancelado) as auprvalorCancelado
+	,	sum(sql1.auprvalorPago) as auprvalorPago
+	,	sum(sql1.auprvalorApagar) as auprvalorApagar
+	from    (
+		select  orca.docuid as docuidorca
+		,	0 as auprvalorAberto
+		,	0 as auprvalorAprovado
+		,	0 as auprvalorCancelado
+		,	0 as auprvalorPago
+		,	0 as auprvalorApagar
+		from    orcamento orca
+		union all
+		select  aupr.docuidorca
+		,	sum(case when docuaupr.sidoid = 1 then aupr.valor else 0 end) as auprvalorAberto
+		,	sum(case when docuaupr.sidoid = 2 then aupr.valor else 0 end) as auprvalorAprovado
+		,	sum(case when docuaupr.sidoid = 3 then aupr.valor else 0 end) as auprvalorCancelado
+		,	sum(case when docuaupr.sidoid = 2 then
+				(select sum(mofi.valorreal) as valor
+				from    movimentofinanceiro mofi
+				,	documento documofi
+				where   documofi.id = mofi.docuid
+				and     mofi.docuidorigem = docuaupr.id
+				and     documofi.pessidempr = docuaupr.pessidempr
+				and     documofi.sidoid <> 3
+				and     mofi.datareal is not null
+				and     mofi.recebimento = false) else 0 end
+			) as auprvalorPago
+		,	sum(case when docuaupr.sidoid = 2 then
+				(select sum(mofi.valorreal) as valor
+				from    movimentofinanceiro mofi
+				,	documento documofi
+				where   documofi.id = mofi.docuid
+				and     mofi.docuidorigem = docuaupr.id
+				and     documofi.pessidempr = docuaupr.pessidempr
+				and     documofi.sidoid <> 3
+				and     mofi.datareal is null
+				and     mofi.recebimento = false) else 0 end
+			) as auprvalorApagar
+		from    documento docuaupr
+		,	(
+			 select aupr1.docuid
+			 ,	aupr1.docuidorca
+			 ,	aupr1.pessidforn
+			 ,	sum(((itap.valor*itap.quantidade) - (itap.valor*itap.quantidade*itap.bvforn/100))::numeric(15,2)) as valor
+			 from   autorizacaoproducao aupr1
+			 ,	itemautorizacaoproducao itap
+			 where  itap.docuidaupr = aupr1.docuid
+			 group by aupr1.docuid, aupr1.docuidorca, aupr1.pessidforn
+			) aupr
+		,	fornecedor forn
+		where   docuaupr.id = aupr.docuid
+		and     aupr.pessidforn = forn.pessid
+		and     docuaupr.pessidempr = $P!{PESSIDEMPR}
+		$P!{PESSIDFORN}
+		group by aupr.docuidorca
+		) sql1
+	group by sql1.docuidorca
+	) aupr2
+,	situacaodocumento sido
+,	documento docuorse
+,	ordemservico orse
+,	peca
+,	briefing brie
+,	cliente clie
+,	pessoa pess
+$P!{SQLDATA}
+where   docu.id = orca.docuid
+and     aupr2.docuidorca = docu.id
+and     docu.sidoid = sido.id
+and     docuorse.id = orse.docuid
+and     orca.docuidorse = orse.docuid
+and     orse.pecaid = peca.id
+and     orse.docuidbrie = brie.docuid
+and     brie.pessidclie = clie.pessid
+and     clie.pessid = pess.id
+and     docu.pessidempr = $P!{PESSIDEMPR}
+$P!{SQLSIDO}
+$P!{PESSIDCLIE}
+$P!{PECAID}
+$P!{ATIVID}
+$P!{USUAIDATENDENTE}
+$P!{SQLDATA2}
+$P!{MESANOREFERENCIA}
+$P!{SQLFINANCEIROABERTO}
+$P!{SQLNAOFATURADO}
+order by orcanumeroordem]]>
+	</queryString>
+	<field name="docuid" class="java.lang.Integer"/>
+	<field name="orcanumeroordem" class="java.lang.String"/>
+	<field name="orcanumero" class="java.lang.String"/>
+	<field name="orcasituacao" class="java.lang.String"/>
+	<field name="clienome" class="java.lang.String"/>
+	<field name="orcavalor" class="java.math.BigDecimal"/>
+	<field name="orcavaloraberto" class="java.math.BigDecimal"/>
+	<field name="orcavaloraprovado" class="java.math.BigDecimal"/>
+	<field name="orcavalorcancelado" class="java.math.BigDecimal"/>
+	<field name="orcavalorrecebido" class="java.math.BigDecimal"/>
+	<field name="orcavalorareceber" class="java.math.BigDecimal"/>
+	<field name="auprvaloraberto" class="java.math.BigDecimal"/>
+	<field name="auprvaloraprovado" class="java.math.BigDecimal"/>
+	<field name="auprvalorcancelado" class="java.math.BigDecimal"/>
+	<field name="auprvalorpago" class="java.math.BigDecimal"/>
+	<field name="auprvalorapagar" class="java.math.BigDecimal"/>
+	<field name="data" class="java.lang.String"/>
+	<variable name="TOTALORCARECEBIDO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcavalorrecebido}]]></variableExpression>
+	</variable>
+	<variable name="TOTALORCAARECEBER" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcavalorareceber}]]></variableExpression>
+	</variable>
+	<variable name="TOTALORCAABERTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcavaloraberto}]]></variableExpression>
+	</variable>
+	<variable name="TOTALORCAAPROVADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcavaloraprovado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALORCACANCELADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orcavalorcancelado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUPRPAGO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{auprvalorpago}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUPRAPAGAR" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{auprvalorapagar}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUPRABERTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{auprvaloraberto}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUPRAPROVADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{auprvaloraprovado}]]></variableExpression>
+	</variable>
+	<variable name="TOTALAUPRCANCELADO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{auprvalorcancelado}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="103" splitType="Stretch">
+			<rectangle>
+				<reportElement key="rectangle-2" x="552" y="80" width="517" height="23" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="875" y="83" width="104" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="981" y="83" width="86" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="1" y="80" width="548" height="23" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="458" y="83" width="89" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement key="rectangle-1" x="238" y="83" width="104" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-41" x="558" y="92" width="37" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-42" x="48" y="92" width="90" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-43" x="7" y="92" width="37" height="11"/>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ORC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-45" x="194" y="92" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-49" x="598" y="92" width="101" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FORNECEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-53" x="2" y="27" width="384" height="35"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CA COMUNICAÇÃO.
+RUA JERÔNIMO PIMENTEL, 99
+Fechamento FINANCEIRO ORÇAMENTO]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="967" y="23" width="101" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-54" x="914" y="23" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Emissão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-55" x="914" y="35" width="49" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="967" y="35" width="66" height="14"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-56" x="1" y="5" width="235" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISCA]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-12" x="0" y="18" width="1069" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-57" x="914" y="5" width="43" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[Versão:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-58" x="967" y="5" width="95" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Verdana" size="9"/>
+				</textElement>
+				<text><![CDATA[2.0]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" mode="Transparent" x="2" y="64" width="545" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["FECHAMENTO DE "+$P{PERIODO}+"      (SITUAÇÃO: "+$P{LSTSIDONOME}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-65" x="716" y="92" width="19" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-67" x="171" y="92" width="19" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SIT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-84" x="742" y="92" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-76" x="790" y="92" width="81" height="11"/>
+				<box>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DOC. Cobrança]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement key="rectangle-1" x="344" y="83" width="112" height="20" backcolor="#CCCCCC"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-60" x="304" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="414" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-40" x="470" y="83" width="65" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="270" y="83" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PARCELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="380" y="83" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NF/FAT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="460" y="92" width="41" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="262" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="371" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[EMISSÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" x="505" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DT REC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-44" x="340" y="92" width="36" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="240" y="92" width="23" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="877" y="92" width="23" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NÚM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="983" y="92" width="41" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-47" x="1026" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DT PAG.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-60" x="941" y="92" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-59" x="907" y="83" width="41" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PARCELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-40" x="991" y="83" width="65" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-46" x="899" y="92" width="42" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENC.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="48" y="2" width="119" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{clienome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="1" y="2" width="43" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orcanumero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="194" y="2" width="39" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{orcavalor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="170" y="2" width="20" height="11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orcasituacao}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" stretchType="RelativeToTallestObject" mode="Transparent" x="238" y="2" width="311" height="11"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DOCUIDORIGEM">
+					<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PESSIDEMPR">
+					<subreportParameterExpression><![CDATA[$P{PESSIDEMPR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="RECEBIMENTO">
+					<subreportParameterExpression><![CDATA["and mofi.recebimento = true"]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroOrcamentoMofi.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement key="line-13" x="1" y="1" width="1068" height="1"/>
+			</line>
+			<elementGroup>
+				<subreport isUsingCache="true">
+					<reportElement key="subreport-1" stretchType="RelativeToTallestObject" mode="Transparent" x="552" y="2" width="517" height="11"/>
+					<subreportParameter name="PESSIDFORN">
+						<subreportParameterExpression><![CDATA[$P{PESSIDFORN}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DOCUIDORCA">
+						<subreportParameterExpression><![CDATA[$F{docuid}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relFechamentoFinanceiroOrcamentoAupr.jasper"]]></subreportExpression>
+				</subreport>
+			</elementGroup>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="87" splitType="Stretch">
+			<line>
+				<reportElement key="line-11" x="1" y="3" width="1068" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-68" x="7" y="18" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIDO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-69" x="7" y="29" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A RECEBER:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="7" y="62" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANCELADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-71" x="7" y="40" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A FECHAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="80" y="40" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCAABERTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="80" y="62" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCACANCELADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-72" x="7" y="51" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="80" y="51" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCAAPROVADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-73" x="7" y="7" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RECEBIMENTOS]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-13" x="80" y="18" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCARECEBIDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-14" x="80" y="29" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCAARECEBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-75" x="80" y="7" width="54" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-76" x="555" y="18" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-77" x="555" y="29" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A PAGAR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-78" x="555" y="62" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CANCELADO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-79" x="555" y="40" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[A FECHAR:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-15" x="628" y="40" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRABERTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-16" x="628" y="62" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRCANCELADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-80" x="555" y="51" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHADO:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-17" x="628" y="51" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRAPROVADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-81" x="555" y="7" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PAGAMENTOS]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-18" x="628" y="18" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRPAGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-19" x="628" y="29" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRAPAGAR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-82" x="628" y="7" width="54" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="80" y="73" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALORCAABERTO}.add( $V{TOTALORCAAPROVADO}.add( $V{TOTALORCACANCELADO} ) )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-70" x="7" y="73" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-70" x="555" y="73" width="71" height="11"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-6" x="628" y="73" width="54" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTALAUPRABERTO}.add( $V{TOTALAUPRAPROVADO}.add( $V{TOTALAUPRCANCELADO} ) )]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,39 @@
+Id: <input type="hidden" id="id" value="@id@"><span id="spanId" style="width:20px; ">@id@</span><br>
+Tipo Documento: @recebimento@ @cobrancaquitacao@ <span id="divTidoDofi">@tidoiddofi@</span><br>
+Número: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="numero" value="@numero@" size="10">&nbsp;&nbsp;&nbsp;
+Data Emissão:<input type="text" id="dataemissao" value="@dataemissao@" size="10" onKeyDown="numerosformatodata(this)">&nbsp;&nbsp;&nbsp;
+Data Vencimento:<input type="text" id="datavencimento" value="@datavencimento@" size="10" onKeyDown="numerosformatodata(this)">&nbsp;&nbsp;&nbsp;
+<br><br>
+<div id="labelpessid" style="width:20%; float:left; height: 26px; line-height: 26px;">Cliente/Fornecedor:</div>
+<div id="editpessid" style="width:80%; overflow:visible; float:left;"></div>
+<input name="pessid" id="pessid" type="hidden" value="@pessid@" descricao="@pessnome@">
+<br><br>
+Conta Corrente: @cocoid@&nbsp;&nbsp;&nbsp;Data Compensação:<input type="text" id="datacompensacao" value="@datacompensacao@" size="10" onKeyDown="numerosformatodata(this)"><br>
+&nbsp;
+<div id="divItem"  
+ 		style="display: none;
+ 		padding: 5px;
+ 		margin-left: 5px;
+ 		top: 250px; 
+ 		width: 750px; 
+ 		position: absolute; 
+ 		height: auto; 
+ 		overflow: visibled; 
+ 		background-color: #ECECEC; 
+ 		border: 1px solid #BDC7DE; 
+ 		font-weight: normal; 
+ 		text-align: center;">
+	<div id="tabSelecionar" style="float: left; width: 100%; font-weight: normal;"></div>
+	<br>&nbsp;<hr>
+	<input id="botFecharItem" type="button" value="Fechar" onclick="oDofi.fecharTelaItem();"><br>
+</div>
+<div id="tabItens" style="float: left; width: 100%; font-weight: normal;"></div>
+<div style="width: 407px; float: left; height: 26px; " class="frmMaiorFonte"><input type="button" id="botAdicinarConta" value="Adicionar Conta" onClick="oDofi.exibirTelaItem();"><input type="button" id="botQuitarConta" value="Quitar Contas" onClick="oDofi.quitarContas();"></div>
+<div style="width: 60px; float: left; height: 26px; line-height: 26px; " class="frmMaiorFonte">Total</div>
+<div id="total" style="float: left; width: 80px; text-align: right; height: 26px; line-height: 26px;" class="frmMaiorFonte"></div>
+<br><br>&nbsp;<br>&nbsp;
+Observação: <textarea id="observacao" cols="88" rows="4">@observacao@</textarea>
+<br>&nbsp;
+<hr>
+<input type="button" id="botNovo" value="Novo" onClick="oDofi.telaCadastro('');">
+<input type="button" id="botSalvar" value="Salvar" onClick="oDofi.salvar();">	

@@ -1,0 +1,80 @@
+<div id="frmFltr1">
+Id: <input type="hidden" id="id" value="@id@"><span id="spanId">@id@</span>
+	Nome: <input type="text" id="nome" value="@nome@" size="40">
+	Versão: <input type="text" id="versao" value="@versao@" size="5"><br>
+    Usuário Criador: @usuaidcriador@
+	Duração: @quantidadetempo@ <br>
+    Agendar Tarefas: @agendartarefas@
+	<hr>
+	<table class="frmMaiorFonte" width="100%">
+		<tr>
+			<td width="50%">Descrição:</td>
+			<td width="50%">Tipo Trabalho:</td>
+		</tr>
+		<tr>
+			<td width="50%" valign="top"> </td>
+			<td width="50%" valign="top"> 
+			  <span id="divcmbtipotrabalho" style=" float: left;">@cmbtipotrabalho@</span>
+			  <input type="button" id="botAddTipoTrabalho" value="Adicionar" onClick="oFltr.addTipoTrabalho();">
+			</td>
+		</tr>
+		<tr>
+			<td width="50%" valign="middle"><textarea id="descricao" cols="40 " rows="3">@descricao@</textarea></td>
+			<td width="50%" valign="middle"><div id="divlsttipotrabalho" style=" float: left;">@lsttipotrabalho@</div> <input type="button" id="botDelTipoTrabalho" value="Excluir" onClick="oFltr.delTipoTrabalho();"></td>
+		</tr>
+	</table>
+	<hr>
+	<div style="float: left ;text-align: left; width: 49%;"><input type="button" id="botNovo" value="Novo" onClick="oFltr.telaCadastro('');"></div>
+	<div style="float: left ;text-align: right; width: 49%;"><input type="button" id="botSalvar" value="Salvar" onClick="oFltr.salvar();"></div>
+	<br><br>
+	<div id="abas">
+		<ul>
+			<li id="liTarefa" onclick="oFltr.selecionarAbasTarefa(this.id);"  style=" background-color: #ECECEC"><a style="width: 100px;">Tarefa</a></li>
+			<li id="liTransicao" onclick="oFltr.selecionarAbasTarefa(this.id);" style=" background-color: #D3D3D3"><a style="width: 100px; ">Transição</a></li>
+			<li id="liPreProsCondicao" onclick="oFltr.selecionarAbasTarefa(this.id);" style=" background-color: #D3D3D3"><a style="width: 150px;">Pré e Pós Condição</a></li>
+		</ul>
+	</div>
+	<div id="edtFtta" style="width: 100%; height: 150px; float: none; margin-bottom: 20px; border: 1px solid #ECECEC; background-color: #ECECEC; padding:10px">
+		<div id="tabTarefa" class="frmMaiorFonte" style="display:block; width=100%; text-indent: 0px;">
+			Tarefa: @tareid@ <br>
+			Ordem: <input type="text" id="ordem" value="@ordem@" size="3" maxlength="5"><br>
+			Duração: <input type="text" id="duracao" value="@duracao@" size="10" maxlength="15"><br>
+			Unidade Organizacional: @unorid@ <br>
+			Funcionário Responsável: @usuaid@ <br>
+		</div>
+		<table class="frmMaiorFonte" width="100%" id="tabTrans" style="display:none;">
+			<tr>
+				<td width="100%">Transição:</td>
+			</tr>
+			<tr>
+				<td width="100%" valign="top"> <div id="divcmbpara" style=" float: left;">@cmbpara@</div> <input type="button" id="botAddPara" value="Adicionar" onClick="oFltr.addPara();"></td>
+			</tr>
+			<tr>
+				<td width="100%" valign="middle"> <div id="divlstpara" style=" float: left;">@lstpara@</div> <input type="button" id="botDelPara" value="Excluir" onClick="oFltr.delPara();"></td>
+			</tr>
+		</table>
+		<table class="frmMaiorFonte" width="100%" id="tabPrePos" style="display:none;">
+			<tr>
+				<td width="50%">Pre-Condição:</td>
+				<td width="50%">Pós-Condição:</td>
+			</tr>
+			<tr>
+				<td width="50%"> <div id="divcmbprecondicao" style=" float: left;">@cmbprecondicao@</div> <input type="button" id="botAddPreCondicao" value="Adicionar" onClick="oFltr.addPreCondicao();"></td>
+				<td width="50%"> <div id="divcmbposcondicao" style=" float: left;">@cmbposcondicao@</div> <input type="button" id="botAddPosCondicao" value="Adicionar" onClick="oFltr.addPosCondicao();"></td>
+			</tr>
+			<tr>
+				<td width="50%" valign="middle"> <div id="divlstprecondicao" style=" float: left;">@lstprecondicao@</div> <input type="button" id="botDelPreCondicao" value="Excluir" onClick="oFltr.delPreCondicao();"></td>
+				<td width="50%" valign="middle"> <div id="divlstposcondicao" style=" float: left;">@lstposcondicao@</div> <input type="button" id="botDelPosCondicao" value="Excluir" onClick="oFltr.delPosCondicao();"></td>
+			</tr>
+		</table>
+		<br>
+		<hr>	
+		<div style="float: left ;text-align: left; width: 33%;"><input type="button" id="botNovoFtta" value="Novo" onClick="oFltr.telaCadastroFtta('');"></div>
+		<div style="float: left ;text-align: center; width: 33%;"></div>
+		<div style="float: left ;text-align: right; width: 33%;"><input type="button" id="botAddFtta" value="Adicionar" onClick="oFltr.addFtta();" salvo="@fttafltrid@@fttatareid@"></div>	
+	</div>
+	<div id="divTabItens" class="tabMaior"></div>
+	<div id="botTabCronograma" onclick="oFtta.tabCronogramaDisplay();" style="cursor: pointer;  float: left;">Cronograma [ + ]</div>
+	<div style="border-bottom: 1px solid #000000; height: 1px; line-height: 10px;  width: 99%;"></div><br>		
+	<div id="tabCronograma" class="frmMaiorFonte" style="overflow:visibled; display:none; padding-left: 20px;"></div>
+</div>

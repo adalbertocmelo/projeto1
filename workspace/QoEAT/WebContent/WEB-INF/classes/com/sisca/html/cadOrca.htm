@@ -1,0 +1,18 @@
+<div id="grpOrca">
+	<div id="grpOrcaNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oOrca.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oOrca.selecionarAbas(this.id);oOrca.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 590px; text-align: right;">
+				<input type="button" value="Visualizar Orçamento com Logo" onclick="oOrca.visualizarRel('1');" style="width: 220px;">
+				<input type="button" value="Visualizar Orçamento sem Logo" onclick="oOrca.visualizarRel('0');" style="width: 220px;">
+				<input type="button" value="Visualizar Lista" onclick="oOrca.visualizarRelacao();" style="width: 110px;">
+			</li>
+		</ul>
+	</div>	
+	<div id="frmOrca" class="frmMaior">@frm@</div>
+	<div id="tabOrca" class="tabMaior"></div>
+	<div id="grpOrcaBarraBotoes" class="grpBarraBotoes">
+	</div>
+</div>

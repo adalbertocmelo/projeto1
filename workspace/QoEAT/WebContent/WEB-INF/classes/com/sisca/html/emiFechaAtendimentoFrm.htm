@@ -1,0 +1,57 @@
+<div style="width: 100%; text-align: left; float: left; padding-left: 5px; padding-top: 5px;">
+	<div style="width: 280px; height: 100px; float: left;">
+		Fechamento de: @cmbfech@ &nbsp;&nbsp;&nbsp;
+
+		<div style="width: 80px; height: 60px; float: left; line-height: 60px;">
+			Situação: 
+		</div>
+		
+		<div style="width: 100px; height: 60px; float: none; padding-left: 23px;">
+			@cmbsido@ 
+		</div>
+	</div><br><br>
+	<div style="width: 400px; float= none;">
+			<div style="width: 230px; float:left;">
+				Data: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@cmbdata@ <br><br>
+			</div>
+			<div id="divPeriodo"  style="width: 240px; float:left;">
+				Período:
+				<input type="text" id="inicio" value="" size="9" onKeyDown="numerosformatodata(this)"> 
+				a
+			 	<input type="text" id="termino" value="" size="9" onKeyDown="numerosformatodata(this)"> 
+				<br><br>
+			</div>
+			<div id="divMesAnoRef" style="width: 270px; float:left;">
+				Mês/Ano Ref.: @mesanoreferencia@
+				até @mesanoreferenciatermino@<br><br>
+			</div>					
+	</div>
+	
+	<div id="divClie" style="height: 20px;">
+		Cliente: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@pessidclie@<br><br>
+	</div>
+	<input type="hidden" id="usuaid" value="@usuaid@">
+	
+	<div id="divForn">
+		Fornecedor: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@pessidforn@<br><br>
+	</div>
+	
+	<div id="divVeic">
+		Veículo:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@pessidveic@<br><br>
+	</div>
+
+	Peça: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@pecaid@<br>
+	<br>
+	
+	<div id="divAtiv" style="float:left;">
+		Atividade: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ativid@<br><br>
+	</div>
+
+	<div id="divFinaberto" style="width: 200px; float:right;">
+		@finaberto@ Financeiro em Aberto 
+	</div>
+	<div id="divNaoFaturado" style="width: 200px; float:right;">
+		@naofaturado@ Somente Não Faturados 
+	</div><br>
+	
+</div>

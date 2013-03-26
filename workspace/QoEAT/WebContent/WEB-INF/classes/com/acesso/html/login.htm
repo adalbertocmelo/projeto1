@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>Seja bem vindo ao QoEAT v.2013</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="/QoEAT/acesso/login.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="/QoEAT/acesso/CSCLib.js"></script>
+<script type="text/javascript" src="/QoEAT/acesso/tAjax.js"></script>
+
+<script type="text/javascript" >
+function focar()
+{
+	login.focus();	
+}
+
+function testaLogar()
+{
+	if (window.event.keyCode == 13)
+	{
+		if (login.value != '')
+		{
+			if (senha.value != '')
+			{
+				logar();
+			}
+			else
+			{
+				senha.focus();
+			}
+		}
+		else
+		{
+			login.focus();
+		}
+	}	
+}
+
+function logar()
+{		
+	var oAjax = new tAjax();
+	oAjax.acao = 'login';
+	oAjax.addCampo('acao','logar');
+	oAjax.addCampo('login', login.value);
+	oAjax.addCampo('senha', senha.value);
+	oAjax.enviar('NoExec');
+	var retorno = oAjax.retorno;
+	/*alert(retorno);*/
+	if (retorno.substring(0,5) == 'Erro:')
+	{
+		divErro.innerHTML = retorno.substring(5);
+		divErro.style.display = 'block';
+	}
+	else
+	{
+		document.location = "/QoEAT/acesso/login?acao=intranet";
+	}
+}
+</script>
+</head>
+<body onLoad="focar()">
+<center>
+	<div id="pagina">
+		<div id="topo">
+			<div id="logo"></div>
+			<div id="titulo">QoEAT</div>
+		</div>
+		<div id="corpo">
+			<div id="texto">&nbsp;</div>
+			<div id="borda">
+				<div id ="areaLogin">
+					<div id="tituloAreaLogin">Acesse as ferramentas de Controle e Gestão:</div>				
+					<div id="lblUsuario">E-mail: <input name="login" type="text" id="login" size="18" maxlength="30" value="acmelo" onKeyDown="testaLogar()"></div>				
+					<div id="lblSenha">Senha: <input name="senha" type="password" id="senha" size="18" maxlength="30" value="baca1234" onKeyDown="testaLogar()"></div>
+					<div id="divErro"></div>
+					<div id="divBotao"><input name="BotOk" type="button" id="BotOk" value="Acessar" onClick="logar()"></div>
+					&nbsp;
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="rodape">&#169 2013 GERCOM
+	</div>
+</center>	
+</body>
+</html>

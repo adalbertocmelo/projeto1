@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>QoEAT</display-name>
+	<welcome-file-list>
+		<welcome-file>login</welcome-file>
+	</welcome-file-list>
+	<session-config>
+		<session-timeout>120</session-timeout>
+	</session-config>
+	<servlet>
+		<servlet-name>login</servlet-name>
+		<servlet-class>com.acesso.web.login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>login</servlet-name>
+		<url-pattern>/acesso/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>acesso</servlet-name>
+		<servlet-class>com.acesso.web.acesso</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>acesso</servlet-name>
+		<url-pattern>/acesso</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>qoeat</servlet-name>
+		<servlet-class>com.qoeat.web.qoeat</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>qoeat</servlet-name>
+		<url-pattern>/qoeat</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>relAcompanhamentoTrabalhoPorDepartamento</servlet-name>
+		<servlet-class>com.relatorios.relAcompanhamentoTrabalhoPorDepartamento</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>relAcompanhamentoTrabalhoPorDepartamento</servlet-name>
+		<url-pattern>/relatorios/relAcompanhamentoTrabalhoPorDepartamento</url-pattern>
+	</servlet-mapping>
+</web-app>

@@ -1,0 +1,15 @@
+<div id="grpProg">
+	<div id="grpProgNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oProg.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oProg.selecionarAbas(this.id);oProg.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 590px; text-align: right;"><input type="button" value="Visualizar Relatório" onclick="oProg.visualizarRel();"></li>
+		</ul>
+	</div>		
+	<div id="frmProg" class="frmMaior">@frm@</div>
+	<div id="tabProg" class="tabMaior"></div>
+	<div id="grpProgBarraBotoes" class="grpBarraBotoes">
+		<input type="button" id="botExcluirProg" value="Excluir selecionados" onClick="oProg.excluir();">
+	</div>
+</div>

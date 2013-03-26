@@ -1,0 +1,18 @@
+<div id="grpAumi">
+	<div id="grpAumiNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oAumi.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oAumi.selecionarAbas(this.id);oAumi.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 590px; text-align: right;">
+				<input type="button" value="Visualizar Autorização com Logo" onclick="oAumi.visualizarRel('1');" style="width: 220px;">
+				<input type="button" value="Visualizar Autorização sem Logo" onclick="oAumi.visualizarRel('0');" style="width: 220px;">
+				<input type="button" value="Visualizar Lista" onclick="oAumi.visualizarRelacao();" style="width: 110px;">
+			</li>			
+		</ul>
+	</div>
+	<div id="frmAumi" class="frmMaior">@frm@</div>
+	<div id="tabAumi" class="tabMaior"></div>
+	<div id="grpAumiBarraBotoes" class="grpBarraBotoes">
+	</div>
+</div>

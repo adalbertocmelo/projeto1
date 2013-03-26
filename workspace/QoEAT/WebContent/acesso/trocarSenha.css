@@ -1,0 +1,97 @@
+ 	div#grpTrocarSenhaNome
+	{
+		width:570px;
+		height:25px;
+		float:left;	
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:15px;		
+		font-weight: bold;	
+		text-align:left;
+		line-height:25px;
+	}		
+
+	div#grpTrocarSenhaInfoResultado
+	{
+		width:80px;
+		height:25px;
+		float:left;	
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:14px;		
+		text-align:left;
+		line-height:25px;
+	}		
+	div#frmTrocarSenha
+	{
+		width:700px;
+		height: auto;
+		float:left;	
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:13px;		
+		text-align:left;
+		background-color:#D3D3D3;
+		text-indent:5px;
+		padding-left:5px;
+		padding-top:2.5px;
+	}
+	div#campos
+	{
+		width: 70px;
+		float:left;
+		height: 25px;
+		line-height: 25px;
+		font-weight: bold;
+	}
+	div#camposSenha
+	{
+		width: 200px;
+		float:left;
+		height: 25px;
+		line-height: 25px;
+		font-weight: bold;
+	}
+	div#respostas
+	{
+		width: 490px;
+		height: 25px;
+		float:none;
+		line-height: 25px;
+	}	
+	div#respostasSenha
+	{
+		width: 490px;
+		height: 27px;
+		float: none;
+		line-height: 27px;
+	}
+	div#tabTrocarSenha
+	{
+		width:750px;
+		height:32px;
+		float:left;	
+		border-left:1px solid #BDC7DE;
+		border-right:1px solid #BDC7DE;
+		padding-top:5px;
+	}
+	
+	.titulo
+	{	
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:13px;	
+		text-align:left;
+		border-bottom:1px solid #BDC7DE;
+		color:#000000;
+	}
+	.detalhe
+	{	
+		font-family:Arial, Helvetica, sans-serif;
+		font-size:13px;	
+		text-align:left;
+		border-bottom:1px solid #BDC7DE;
+	}
+	div#grpTrocarSenhaBarraBotoes
+	{
+		width:570px;
+		height:30px;
+		padding-bottom:5px;
+		padding-left:260px;
+	}			

@@ -1,0 +1,39 @@
+<div id="frmTare1">
+Id: <input type="hidden" id="id" name="id" value="@id@"><span id="spanId">@id@</span><br>
+	Nome: <input type="text" id="nome" value="@nome@" size="40" maxlength="100">&nbsp;&nbsp;&nbsp;&nbsp;
+	Duração: <input type="text" id="duracao" value="@duracao@" size="10" maxlength="15"><br>
+	Unidade Organizacional: @unorid@ <br>
+	Funcionário Responsável: @usuaid@ <br>
+	<br>
+	<table class="frmMaiorFonte" width="100%" id="tabSitu" style="display:block;">
+		<tr>
+			<td width="100%">Ordem - Situação:</td>
+		</tr>
+		<tr>
+			<td width="100%" valign="top">
+			  <span><input type="text" id="situordem" size="5" maxlength="5"></span>
+			  <span id="divcmbsituacao">@cmbsituacao@</span>
+			  <input type="button" id="botAddSituacao" value="Adicionar" onClick="oTare.addSituacao();">
+			</td>
+		</tr>
+		<tr>
+			<td width="100%" valign="middle"> <div id="divlstsituacao" style=" float: left;">@lstsituacao@</div> <input type="button" id="botDelSituacao" value="Excluir" onClick="oTare.delSituacao();"><br><input type="button" id="botDelSituacao" value="Definir que Situação Conclui Tarefa" onClick="oTare.marcarSituConcluiTarefa();"></td>
+		</tr>
+	</table>
+	<br>
+	<table class="frmMaiorFonte" width="100%" id="tabDescCara" style="display:block;">
+		<tr>
+			<td>Descrição:</td>
+			<td>Caracteristica:</td>
+		</tr>
+		<tr>
+			<td><textarea id="descricao" cols="40 " rows="3">@descricao@</textarea></td>
+			<td><textarea id="caracteristica" cols="40 " rows="3">@caracteristica@</textarea></td>
+		</tr>
+	</table>
+	<br>
+	Função Automatizada: @fuauid@<br>
+	<hr>	
+	<div style="float: left ;text-align: left; width: 50%;"><input type="button" id="botNovo" value="Novo" onClick="oTare.telaCadastro('');"></div>
+	<div style="float: left ;text-align: right; width: 49%;"><input type="button" id="botSalvar" value="Salvar" onClick="oTare.salvar();"></div>
+</div>

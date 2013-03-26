@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>Seja bem vindo a sistemasesites.com.br</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="/acesso/login.css" rel="stylesheet" type="text/css">
+<script  type="text/javascript" src="/acesso/CSCLib.js"></script>
+<script type="text/javascript" src="/acesso/tAjax.js"></script>
+</head>
+<script type="text/javascript" >
+function focar()
+{
+	login.focus();	
+}
+
+function logar()
+{		
+	var oAjax = new tAjax();
+	oAjax.acao = 'login.php';
+	oAjax.addCampo('acao','logar');
+	oAjax.addCampo('login', login.value);
+	oAjax.addCampo('senha', senha.value);
+	oAjax.enviar('NoExec');
+	retorno = oAjax.retorno;
+	if (retorno.substring(0,5) == 'Erro:')
+	{
+		divErro.innerHTML = retorno.substring(5);
+		divErro.style.display = 'block';
+	}
+	else
+	{
+		document.location = "/acesso/login.php?acao=intranet";
+	}
+}
+</script>
+<body onLoad="focar()">
+	<div id="pagina">
+		<div id="topo">
+			<div id="logo"></div>
+			<div id="titulo">Bem-vindo às ferramentas de gestão de conteúdo de sites</div>
+		</div>
+		<div id="corpo">
+			<div id="texto">
+				Aqui ficará o resumo do sistema e algumas ferramentas...
+			</div>
+				<div id="borda">
+				<div id ="areaLogin">
+					<div id="tituloAreaLogin">Acesse à ferramenta Gestão de Conteúdo para administrar seu site:</div>				
+					<div id="lblUsuario">E-mail: <input name="login" type="text" id="login" size="18" maxlength="30" onkeypress="return focusNext('0', 'senha', event)"></div>				
+					<div id="lblSenha">Senha: <input name="senha" type="password" id="senha" size="18" maxlength="30" value="" onkeypress="return focusNext('0', 'BotOk', event)"></div>
+					<div id="divErro"></div>
+					<div id="divBotao"><input name="BotOk" type="button" id="BotOk" value="Acessar" onClick="logar()"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="rodape">&#169 2008 Sistemas e Sites
+	</div>	
+</body>
+</html>

@@ -1,0 +1,17 @@
+<div id="grpDofi">
+	<div id="grpDofiNome" class="grpNome">@titulo@</div>
+	<div id="abas">
+		<ul>
+			<li id="liConsultar" onclick="oDofi.selecionarAbas(this.id);"><a>Consultar</a></li>
+			<li id="liCadastrar" onclick="oDofi.selecionarAbas(this.id);oDofi.telaCadastro('');"><a>Cadastrar</a></li>
+			<li style="width: 590px; text-align: right;">
+				<input type="button" value="Visualizar Relatório" onclick="oDofi.visualizarRel();" style="width: 220px;">
+			</li>			
+		</ul>
+	</div>
+	<div id="frmDofi" class="frmMaior">@frm@</div>
+	<div id="tabDofi" class="tabMaior"></div>
+	<div id="grpDofiBarraBotoes" class="grpBarraBotoes">
+		<input type="button" id="botExcluirDofi" value="Excluir selecionados" onClick="oDofi.excluir();">
+	</div>
+</div>
