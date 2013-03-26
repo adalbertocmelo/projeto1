@@ -145,32 +145,45 @@ public class dbGraMQoECongest
 		try 
 		{
 			tQuery qry = new tQuery();
-			qry.add("select  id       ");
-			qry.add(",       nome     ");
-			qry.add(",       duracao  ");
-			qry.add(",       origem   ");
-			qry.add("from    video    ");
-			if (util.nstrvazia(cp.getProperty("id")))
-			{
-				qry.add("where   id = "+cp.get("id"));
-			}
-			else
-			{
-				if (util.nstrvazia(cp.getProperty("nome")))
-				{
-					qry.add("where   nome = '"+cp.get("nome")+"' ");				
-				}
-				else
-				{
-					qry.add("where   id = "+cp.get("id"));
-				}
-			}				
+			qry.add("select	vide.nome" +
+				",	codi.id"+
+				", 	tran.mode"+
+				", 	pltr.id"+
+				",	tran.systemload"+
+				", 	avg(aval.valor) as media"+
+				"from	planotrabalho pltr"+
+				", 	transmissao tran"+
+				", 	video vide"+
+				", 	codificacao codi"+
+				",	codifram cofr"+
+				", 	avaliacaoframe aval"+
+				", 	metrica metr"+
+				"where   vide.id = codi.videid"+
+				"and     tran.codiid = codi.id"+
+				"and	tran.pltrid = pltr.id"+
+				"and  	tran.id = aval.tranid"+
+				"and  	metr.id = aval.metrid"+
+				"and	cofr.framid = aval.framid"+
+				"and 	cofr.codiid = codi.id"+
+				"and     pltr.id = "+ 
+				"and 	metr.id = "+
+				"and	codi.id = "+
+				"group by vide.nome"+
+				",	codi.id"+
+				", 	tran.mode"+
+				", 	pltr.id"+
+				",	tran.systemload"+
+				"order by tran.mode, tran.systemload");
+
 			qry.abrir();
 
 			if (qry.proximo())
 			{
-				qry.putLinha(cp);
+				System.out.println(cp);
 			}
+			
+
+			
 			retorno = true;
 		} 
 		catch (SQLException e) 

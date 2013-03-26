@@ -2,6 +2,7 @@ var oGraMQoECongest = new tCad();
 
 oGraMQoECongest.constroi = function()
 {	
+	alert("teste2");
 	this.arqServer = '../qoeat?objServer=GraMQoECongest';
 	this.lstExcluir = '';
 	
@@ -14,30 +15,19 @@ oGraMQoECongest.constroi = function()
 	this.aoConstruir();
 }
 
-oGraMQoECongest.constroiGraMQoECongest = function()
-{	
-	selecionarMenuAtual = new Array(vlink, acao, execAoExibirTela);
-	exibirMenu();
-	var oAjax = new tAjax('../../QoEAT/'+vlink.substr(1).replace('/','?objServer='));
-	oAjax.addCampo('acao',acao);
+oGraMQoECongest.gerarGraMQoECongest = function()
+{
+	alert("teste1");
+	var oAjax = new tAjax(this.arqServer);
+	oAjax.addCampo('acao','gerarGraMQoECongest');
+	oAjax.addCampo('metrid',document.getElementById('metrid').value);
+	oAjax.addCampo('codiid',document.getElementById('codiid').value);
+	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
 	oAjax.enviar('NoExec');
-	corpo.innerHTML = oAjax.retorno;
-
-	var oAjax1 = new tAjax('../../QoEAT/acesso/login');
-	oAjax1.addCampo('acao','setTela');
-	oAjax1.addCampo('telaAcao',acao);	
-	oAjax1.addCampo('telaLink',vlink);
-	oAjax1.enviar('NoExec');	
-	
-	if (execAoExibirTela == undefined)
-	{
-		execAoExibirTela = true;
-	}
-	
-	if (execAoExibirTela)
-	{
-		setTimeout("executarAoExibirTela('"+vlink+"');", 500);
-	}
+	alert(oAjax.retorno);
+	document.getElementById('tabGrafGraMQoECongest').innerHTML = oAjax.retorno;
 }
+
+oGraMQoECongest.atualizarTab = function(){}
 
 oGraMQoECongest.constroi();

@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.qoeat.db.dbGraMQoECongest;
 import com.lib.lista;
 import com.lib.tCad;
+import com.lib.tCombo;
+import com.lib.tHtml;
 import com.mvc.BusinessLogic;
 
 public class GraMQoECongest extends tCad implements BusinessLogic{
@@ -20,15 +22,15 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 		this.campo.put("pista","");
 		this.campo.put("lstExcluir", "");
 
-		this.campo.put("id", "");
-		this.campo.put("nome", "");
-		this.campo.put("duracao", "");
-		this.campo.put("origem", "");
+		this.campo.put("metrid", "");
+		this.campo.put("pltrid", "");
+		this.campo.put("codiid", "");
 							
 		// objeto de persistencia
 		this.putCampos(request);
 		
 		this.consTitulo = "Gráfico de Métricas de QoE x Congestionamento";
+		
 		this.consPista = this.campo.gP("pista");
 		this.consCmpFiltro = lista.arrExplode(':',"vide.id:vide.nome:vide.duracao:vide.origem");
 		this.consCmpTitulo = lista.arrExplode(':',"&nbsp;:Id:Nome:Duracao:Ação");
@@ -54,44 +56,68 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	
 	public void exec(String acao) throws SQLException
 	{
-		if (acao.equals("salvar")) {this.salvar();}
-    	if (acao.equals("excluir")){this.excluir();}
-    	if (acao.equals("atualizarTab")){this.atualizarTab();}
+    	if (acao.equals("gerarGraMQoECongest")){this.gerarGraMQoECongest();}
     	if (acao.equals("telaCadastro")){this.telaCadastro();}
     	if (acao.equals("aoExibirTela")){this.aoExibirTela();}
     	if (acao.equals("exibirTela")){this.exibirTela();}
 	}
-/*	
+	
 	public String criarCombos(String str) throws SQLException
 	{			
-		// Combo Perfil
-		tCombo cmbPerf = new tCombo();		
-		cmbPerf.sql = 	" select 	id" +
+		// Combo Metrica
+		tCombo cmbMetr = new tCombo();		
+		cmbMetr.sql = 	" select 	id" +
 						" , 		nome" +
-						" from 	perfil" +
+						" from 	metrica" +
 						" order by nome";
-		cmbPerf.objetoNome = "perfid";
-		cmbPerf.indexTabulacao = "";
-		cmbPerf.valorInicial = this.campo.getProperty("perfid");
-		cmbPerf.constroi();
-		str = str.replace("@perfid@",cmbPerf.conteudo);
-
-		return str.replace("@unorid@", dbUnor.combo(this.campo.gP("unorid"), "unorid"));		
-	}*/
+		cmbMetr.objetoNome = "metrid";
+		cmbMetr.indexTabulacao = "";
+		cmbMetr.valorInicial = this.campo.getProperty("metrid");
+		cmbMetr.constroi();
+		
+		str = str.replace("@metrid@",cmbMetr.conteudo);
+		
+		// Combo Codificacao
+		tCombo cmbCodi = new tCombo();		
+		cmbCodi.sql = 	" select 	codi.id" +
+						" , 		vide.nome  || ' ' || codi.id" +
+						" from 	codificacao codi" +
+						", video vide" +
+						" where vide.id = codi.videid" +
+						" order by vide.nome";
+		cmbCodi.objetoNome = "codiid";
+		cmbCodi.indexTabulacao = "";
+		cmbCodi.valorInicial = this.campo.getProperty("codiid");
+		cmbCodi.constroi();
+		
+		str = str.replace("@codiid@",cmbCodi.conteudo);
+		
+		// Combo Plano de Trabalho
+		tCombo cmbPltr = new tCombo();		
+		cmbPltr.sql = 	" select 	id" +
+						" , 		nome" +
+						" from 	planotrabalho" +
+						" order by nome";
+		cmbPltr.objetoNome = "pltrid";
+		cmbPltr.indexTabulacao = "";
+		cmbPltr.valorInicial = this.campo.getProperty("pltrid");
+		cmbPltr.constroi();
+		
+		str = str.replace("@pltrid@",cmbPltr.conteudo);
+		
+		return str;		
+	}
 	
-	public void salvar()
+	public void gerarGraMQoECongest()
 	{
-		dbGraMQoECongest.salvar(this.campo);			
-	}		
-
-	public void excluir()
-	{
-		dbGraMQoECongest.excluirLista(this.campo.getProperty("lstExcluir"));
-	}			
-	
-	public void recuperar()
-	{
-		dbGraMQoECongest.recuperar(this.campo);
+		//tHtml ohtml = new tHtml('');
+		
+		
+		
+		
+		//ohtml.conteudo = ohtml.conteudo.replace("@pltrid@",cmbPltr.conteudo);
+		
+		//echo = ohtml.conteudo;
 	}	
 }
 

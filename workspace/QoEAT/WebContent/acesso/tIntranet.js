@@ -11,7 +11,7 @@ importarJs('tSistema.js');
 
 // qoeat
 importarJs('../qoeat/tVide.js');
-importarJs('../qoeat/tGrafPC.js');
+importarJs('../qoeat/tGraMQoECongest.js');
 
 // sisca
 importarJs('../sisca/tFltr.js');
