@@ -16,7 +16,7 @@
             function drawChart() {
                     
                 //var data = "{videosBean.consultaVideos()}"
-                
+                /*
                 var data2 = new google.visualization.DataTable();
                 data2.addColumn('string', 'Name');
                 data2.addColumn('number', 'Salary');
@@ -36,9 +36,9 @@
                 data2.setCell(3, 2, true);
                 data2.setCell(4, 0, 'Mike');
                 data2.setCell(4, 1, 12000, '$12,000');
-                data2.setCell(4, 2, false);
+                data2.setCell(4, 2, false);*/
 
-                /*var data = new google.visualization.arrayToDataTable(
+                var data = new google.visualization.arrayToDataTable(
                 [
                     ['Congest',     ' ',         'mec2',         'mec1',         'mec4',         'mec5',         'mec6',         'IEEE',         'dropQoEOnt'],
                     [' ',           45, ,, , , , , ,              ],
@@ -64,20 +64,20 @@
                     //            5:{color: 'purple', visibleInLegend: true},
                     //            6:{color: 'black', visibleInLegend: true},
                     //            7:{color: 'green', visibleInLegend: true}
-                };*/
+                };
 
                 // Every time the table fires the "select" event, it should call your
                 // function.
                         
-                var table = new google.visualization.Table(document.getElementById('table_div'));
-                table.draw(data2, {showRowNumber: true});
+                //var table = new google.visualization.Table(document.getElementById('table_div'));
+                //table.draw(data2, {showRowNumber: true});
                 
                 //var data = google.visualization.arrayToDataTable(table, 'select', drawChart2);
                         
-                //var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                //chart.draw(data, options);
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
                         
-                google.visualization.events.addListener(table, 'select', drawChart2);
+                //google.visualization.events.addListener(table, 'select', drawChart);
 
 
             }
@@ -96,6 +96,6 @@
         </script>
     </head>
     <body>
-        <div id="table_div" style="width: 1000px; height: 500px;"></div>
+        <div id="chart_div" style="width: 1000px; height: 500px;"></div>
     </body>
 </html>

@@ -110,14 +110,17 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	
 	public void gerarGraMQoECongest()
 	{
-		//tHtml ohtml = new tHtml('');
 		
+		tHtml ohtml = new tHtml("qoeat/html/GraPsnrCongest.html");
 		
+		//echo = "metriid: "+this.campo.gP("metrid")+"codiid: "+this.campo.gP("codiid")+"\npltrid: "+this.campo.gP("pltrid");
+		//echo = "codiid: "+this.campo.gP("codiid");
+		//echo = "pltrid: "+this.campo.gP("pltrid");
 		
 		
 		//ohtml.conteudo = ohtml.conteudo.replace("@pltrid@",cmbPltr.conteudo);
 		
-		//echo = ohtml.conteudo;
+		echo = ohtml.conteudo;
 	}	
 }
 
