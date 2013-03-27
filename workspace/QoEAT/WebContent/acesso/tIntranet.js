@@ -11,7 +11,7 @@ importarJs('tSistema.js');
 
 // qoeat
 
-importarJs('https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}');
+//importarJs('https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}');
 importarJs('../qoeat/tVide.js');
 importarJs('../qoeat/tGraMQoECongest.js');
 
