@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.videoevaluation.entity;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -17,17 +17,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="usuario")
-public class User implements Serializable{
+public class Usuario implements Serializable{
     
     @Id
     //@GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String name;
     private int age;
-    private boolean gender;
+    private boolean gender = true;
     private String profession;
     
-    public User(){}
+    public Usuario(){}
 
     public int getId() {
         return id;
@@ -84,7 +84,7 @@ public class User implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final User other = (User) obj;
+        final Usuario other = (Usuario) obj;
         return true;
     }
    

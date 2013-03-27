@@ -5,13 +5,10 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      >
-
+      xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Register new admin</title>
+        <title>Video Evaluation</title>
     </h:head>
-
     <h:body>
 
         <h:form id="form">  
@@ -19,38 +16,34 @@
             <p:panel header="Register new admin" toggleable="true" id="panel">  
                 <h:panelGrid columns="2" cellpadding="5">  
 
-                    <h:outputLabel value="Name :" for="name" />  
-                    <p:autoComplete id="name" value="#{autoCompleteBean.txt1}"   
-                                    completeMethod="#{autoCompleteBean.complete}"/>
+                    <h:outputLabel value="Name :" />  
+                    <p:inputText value="#{userBean.user.name}"/>
 
-                    <h:outputLabel value="Age :" for="age" />  
-                    <p:autoComplete id="age" value="#{autoCompleteBean.txt1}"   
-                                    completeMethod="#{autoCompleteBean.complete}"/>
+                    <h:outputLabel value="Age :" />  
+                    <p:inputText value="#{userBean.user.age}"/>
 
                     <h:outputLabel value="Gender :" />  
-                    <p:selectOneRadio id="gender" value="#{formBean.number}">
-                        <f:selectItem itemLabel="Male" itemValue="1" />
-                        <f:selectItem itemLabel="Female" itemValue="2" />
+                    <p:selectOneRadio value="#{userBean.user.gender}">
+                        <f:selectItem itemLabel="Male" itemValue="false" />
+                        <f:selectItem itemLabel="Female" itemValue="true" />
                     </p:selectOneRadio>
 
+                    <h:outputLabel value="Profession :" />  
+                    <p:inputText value="#{userBean.user.profession}"/>
 
-                    <h:outputLabel value="Profession :" for="username" />  
-                    <p:autoComplete id="username" value="#{autoCompleteBean.txt1}"   
-                                    completeMethod="#{autoCompleteBean.complete}"/>
+                    <!--<h:outputLabel value="Password :" for="password" />  
+                    <p:password id="password" type='password' />
 
-                    <h:outputLabel value="Password :" for="password" />  
-                    <p:password id="password" />
-                    
                     <h:outputLabel value="Confirm password :" for="c_password" />  
-                    <p:password id="c_password" />
+                    <p:password id="c_password" type='password' />-->
+                    
+                    <h:inputHidden/>
+                    <p:commandButton value="Register" action="#{userBean.addUser}"/>
 
                 </h:panelGrid>  
             </p:panel>  
 
-            <p:commandButton value="Register" id="login" />    
-
         </h:form> 
 
     </h:body>
-
 </html>

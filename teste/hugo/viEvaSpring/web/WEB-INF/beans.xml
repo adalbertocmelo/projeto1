@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://java.sun.com/xml/ns/javaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
+</beans>
+
+  <bean id="id"
+    class="bean.UsuarioBean">
+    <property name="dataSource" ref="myDataSource" />
+    <property name="mappingResources">
+        <list>
+            <value>model/Usuario.hbm.xml</value>
+        </list>
+    </property>
+    <property name="hibernateProperties">
+        <value>hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect</value>
+    </property>
+</bean>
+
+<!-- Wrapper for low-level data accessing and manipulation -->
+<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <property name="sessionFactory">
+        <ref bean="mySessionFactory" />
+    </property>
+</bean>
+
+<!--  -->
+
+<bean id="usuarioDao" class="org.example.smartgwt.server.data.PatientDao">
+    <property name="hibernateTemplate">
+        <ref bean="hibernateTemplate" />
+    </property>
+</bean>
+<!--
+<bean id="prescriptionDao" class="org.example.smartgwt.server.data.PrescriptionDao">
+    <property name="hibernateTemplate">
+        <ref bean="hibernateTemplate" />
+    </property>
+</bean>
+-->

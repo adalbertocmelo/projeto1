@@ -5,74 +5,30 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+
     <h:head>
-        <title>Video Evaluation</title>
+        <title>Login</title>
     </h:head>
+
+
+
     <h:body>
 
         <h:form id="form">  
 
-            <p:panel header="Register new admin" toggleable="true" id="panel">  
-                <h:panelGrid columns="2" cellpadding="5">  
+            <p:panel header="Páginas" toggleable="true" id="panel">      
 
-                    <h:outputLabel value="Name :" />  
-                    <p:inputText value="#{userBean.user.name}"/>
-
-                    <h:outputLabel value="Age :" />  
-                    <p:inputText value="#{userBean.user.age}"/>
-
-                    <h:outputLabel value="Gender :" />  
-                    <p:selectOneRadio value="#{userBean.user.gender}">
-                    <!--<p:selectOneRadio value="{formBean.number}">-->
-                        <f:selectItem itemLabel="Male" itemValue="0" />
-                        <f:selectItem itemLabel="Female" itemValue="1" />
-                    </p:selectOneRadio>
-
-                    <h:outputLabel value="Profession :" />  
-                    <p:inputText value="#{userBean.user.profession}"/>
-
-                    <!--<h:outputLabel value="Password :" for="password" />  
-                    <p:password id="password" type='password' />
-
-                    <h:outputLabel value="Confirm password :" for="c_password" />  
-                    <p:password id="c_password" type='password' />-->
-                    
-                    <h:inputHidden/>
-                    <p:commandButton value="Register" action="#{userBean.addUser}"/>
-
-                </h:panelGrid>  
-            </p:panel>  
-
-            <h:dataTable value="" var="data" border="1">
-                <h:column>
-                    <f:facet name="header">
-                        Name
-                    </f:facet>
-                    <h:outputText value=""/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        Age
-                    </f:facet>
-                    <h:outputText value=""/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        Gender
-                    </f:facet>
-                    <h:outputText value=""/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">
-                        Profession
-                    </f:facet>
-                    <h:outputText value=""/>
-                </h:column>
-            </h:dataTable>
+                <a href="/videoEvaluation/faces/register.xhtml">register</a>
+                <br></br>
+                <a href="/videoEvaluation/faces/login.xhtml">login</a>
+                <br></br>
+                <a href="/videoEvaluation/faces/newProfile.xhtml">newProfile</a>
+            </p:panel>
 
         </h:form> 
 
     </h:body>
-</html>
 
+</html>
