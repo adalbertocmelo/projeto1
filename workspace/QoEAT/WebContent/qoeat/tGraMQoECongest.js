@@ -32,16 +32,15 @@ oGraMQoECongest.gerarGraMQoECongest = function()
 oGraMQoECongest.google = function()
 {
 	alert("google");
-	google.load("chart_div", "1", {packages:["corechart"]});alert("google35");
-	//google.setOnLoadCallback(oGraMQoECongest.drawChart);	alert("google36");
-	oGraMQoECongest.drawChart();alert("google37");
+	google.load("visualization", "1", {packages:["corechart"]}); alert("google35");
+	google.setOnLoadCallback(oGraMQoECongest.drawChart());	alert("google36");
+	oGraMQoECongest.drawChart();//alert("google37");
 }
        
 oGraMQoECongest.drawChart = function ()
 {
     alert("drawchart");
-    //var data = "{videosBean.consultaVideos()}"
-    
+
     var data = new google.visualization.arrayToDataTable(
     [
         ['Congest',     ' ',         'mec2',         'mec1',         'mec4',         'mec5',         'mec6',         'IEEE',         'dropQoEOnt'],
@@ -53,13 +52,14 @@ oGraMQoECongest.drawChart = function ()
         ['40',           47.31813,       45.6513,        47.0718,        46.58449,       45.86174,       45.8813,        46.45037,       47.0718	],
     ]);alert("drawchart54");
 
+    
     var options = {
-        //title: 'Average',
         vAxis: {title: 'PSNR (dB)', titleTextStyle: {color:'blue'}, textPosition: 'in'},
         hAxis: {title: 'Congest (%)', titleTextStyle: {color:'blue'}, textPosition: 'in'},
         legend: {position: 'top', alignment: 'end'},
         pointSize:4,
         colors: ['white','yellow','gray','purple','black','green','pink','blue']
+<<<<<<< HEAD
         //series: {   0:{color: 'black', visibleInLegend: true},
         //            1:{color: 'red', visibleInLegend: true},
         //            2:{color: 'blue', visibleInLegend: true}},
@@ -83,9 +83,16 @@ oGraMQoECongest.drawChart = function ()
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));alert("drawchart81");
     chart.draw(data, options);alert("drawchart82");
             
+=======
+
+    };
+
+            
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+    
+>>>>>>> 5514f7ddeea7485202ffa47c597ae6af16cf3675
     //google.visualization.events.addListener(table, 'select', drawChart2);
-
-
 }
 /*
 function drawChart2(){
