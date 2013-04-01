@@ -119,7 +119,7 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 		
 		
 		//ohtml.conteudo = ohtml.conteudo.replace("@pltrid@",cmbPltr.conteudo);
-		
+		System.out.print(ohtml.toString());
 		echo = ohtml.conteudo;
 	}	
 }
