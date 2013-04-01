@@ -59,39 +59,14 @@ oGraMQoECongest.drawChart = function ()
         legend: {position: 'top', alignment: 'end'},
         pointSize:4,
         colors: ['white','yellow','gray','purple','black','green','pink','blue']
-<<<<<<< HEAD
-        //series: {   0:{color: 'black', visibleInLegend: true},
-        //            1:{color: 'red', visibleInLegend: true},
-        //            2:{color: 'blue', visibleInLegend: true}},
-        //            3:{color: 'yellow', visibleInLegend: true},
-        //            4:{color: 'gray', visibleInLegend: true},
-        //            5:{color: 'purple', visibleInLegend: true},
-        //            6:{color: 'black', visibleInLegend: true},
-        //            7:{color: 'green', visibleInLegend: true}
-    };alert("drawchart71");
 
-    // Every time the table fires the "select" event, it should call your
-    // function.
-            
-    //var table = new google.visualization.Table(document.getElementById('table_div'));
-    //table.draw(data2, {showRowNumber: true});
-    //alert(tabGraMQoECongest)
-    //var data = google.visualization.arrayToDataTable(table, 'select', drawChart2);
-    alert(document.getElementById('chart_div').innerHTML);
-    
-    
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));alert("drawchart81");
-    chart.draw(data, options);alert("drawchart82");
-            
-=======
 
     };
 
             
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
-    
->>>>>>> 5514f7ddeea7485202ffa47c597ae6af16cf3675
+
     //google.visualization.events.addListener(table, 'select', drawChart2);
 }
 /*
