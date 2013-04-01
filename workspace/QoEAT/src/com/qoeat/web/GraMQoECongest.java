@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.qoeat.db.dbGraMQoECongest;
+import com.lib.Propriedades;
 import com.lib.lista;
 import com.lib.tCad;
 import com.lib.tCombo;
@@ -57,6 +58,7 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	public void exec(String acao) throws SQLException
 	{
     	if (acao.equals("gerarGraMQoECongest")){this.gerarGraMQoECongest();}
+    	if (acao.equals("gerarTabela")){this.gerarTabela();}
     	if (acao.equals("telaCadastro")){this.telaCadastro();}
     	if (acao.equals("aoExibirTela")){this.aoExibirTela();}
     	if (acao.equals("exibirTela")){this.exibirTela();}
@@ -119,8 +121,27 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 		
 		
 		//ohtml.conteudo = ohtml.conteudo.replace("@pltrid@",cmbPltr.conteudo);
-		System.out.print(ohtml.toString());
+		//System.out.print(ohtml.toString());
 		echo = ohtml.conteudo;
+	}		
+	
+	
+	public void gerarTabela()
+	{
+		Propriedades cp = new Propriedades();
+		cp.put("metrid", this.campo.gP("metrid"));
+		cp.put("pltrid", this.campo.gP("pltrid"));
+		cp.put("codiid", this.campo.gP("codiid"));
+		System.out.println("socorro "+this.campo.gP("metrid"));
+
+		dbGraMQoECongest.gerar(cp);
+
+		
+
+		
+		
+
 	}	
+	
 }
 
