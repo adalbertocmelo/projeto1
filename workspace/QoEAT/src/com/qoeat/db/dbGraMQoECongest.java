@@ -17,9 +17,9 @@ public class dbGraMQoECongest
 		{
 			tQuery qry = new tQuery();
 			qry.add("select	vide.nome " +
-				",	codi.id "+
+				",	codi.id as codiid"+
 				", 	tran.mode "+
-				", 	pltr.id "+
+				", 	pltr.id as pltrid"+
 				",	tran.systemload "+
 				", 	avg(aval.valor) as media "+
 				"from	planotrabalho pltr "+
@@ -48,34 +48,35 @@ public class dbGraMQoECongest
 
 			qry.abrir();
 			Propriedades linhasql = new Propriedades();
-						
-			if (qry.proximo())
+	
+			String mecAnt = "";
+			int	col = 0;
+			int	lin = 0;
+			//retorno += "tabela = new Array( ); \n";
+			
+			while (qry.proximo())
 			{
-				System.out.println("entrou_loop");
-				qry.putLinha(cp);
-				/*vide.nome" +
-				",	codi.id"+
-				", 	tran.mode"+
-				", 	pltr.id"+
-				",	tran.systemload"+
-				", 	avg(aval.valor) as media"+
-				*/
-				
-				retorno = cp.gP("systemload");
-
-				retorno = cp.gP("media");
-
-				retorno = cp.gP("mode");
-				
-				System.out.print("socorro2" +retorno);
+				qry.putLinha(linhasql);
+				if (!mecAnt.equals(linhasql.gP("mode")))
+				{
+					mecAnt = linhasql.gP("mode");
+					lin = 1;
+					col++;					
+					retorno += "tabela[0, "+ col +"] = '" +linhasql.gP("mode") + "';";
+				}
+				retorno += "tabela["+ lin+", 0] = " +linhasql.gP("systemload") + ";";
+				retorno += "tabela["+ lin+", "+ col +"] = " +linhasql.gP("media") + ";";
+				lin++;
 			}
-
+			
+			System.out.println(retorno);
 		} 
+
+		
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-			//retorno = false;
 		}
 		return retorno;
 	}
