@@ -132,15 +132,8 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 		cp.put("metrid", this.campo.gP("metrid"));
 		cp.put("pltrid", this.campo.gP("pltrid"));
 		cp.put("codiid", this.campo.gP("codiid"));
-		System.out.println("socorro "+this.campo.gP("metrid"));
 
-		dbGraMQoECongest.gerar(cp);
-
-		
-
-		
-		
-
+		echo = " alert('terminou');" + dbGraMQoECongest.gerar(cp) ;
 	}	
 	
 }
