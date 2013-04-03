@@ -74,7 +74,9 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 						" order by nome";
 		cmbMetr.objetoNome = "metrid";
 		cmbMetr.indexTabulacao = "";
-		cmbMetr.valorInicial = this.campo.getProperty("metrid");
+		cmbMetr.complemento = " style=\"width:300px\"";
+		cmbMetr.valorInicial = "5";
+		//cmbMetr.valorInicial = this.campo.getProperty("metrid");
 		cmbMetr.constroi();
 		
 		str = str.replace("@metrid@",cmbMetr.conteudo);
@@ -89,7 +91,9 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 						" order by vide.nome";
 		cmbCodi.objetoNome = "codiid";
 		cmbCodi.indexTabulacao = "";
-		cmbCodi.valorInicial = this.campo.getProperty("codiid");
+		cmbCodi.complemento = " style=\"width:300px\"";
+		cmbCodi.valorInicial = "58";
+		//cmbCodi.valorInicial = this.campo.getProperty("codiid");
 		cmbCodi.constroi();
 		
 		str = str.replace("@codiid@",cmbCodi.conteudo);
@@ -102,7 +106,9 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 						" order by nome";
 		cmbPltr.objetoNome = "pltrid";
 		cmbPltr.indexTabulacao = "";
-		cmbPltr.valorInicial = this.campo.getProperty("pltrid");
+		cmbPltr.complemento = " style=\"width:300px\"";
+		cmbPltr.valorInicial = "7";
+		//cmbPltr.valorInicial = this.campo.getProperty("pltrid");
 		cmbPltr.constroi();
 		
 		str = str.replace("@pltrid@",cmbPltr.conteudo);
@@ -133,7 +139,7 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 		cp.put("pltrid", this.campo.gP("pltrid"));
 		cp.put("codiid", this.campo.gP("codiid"));
 
-		echo = " alert('terminou');" + dbGraMQoECongest.gerar(cp) ;
+		dbGraMQoECongest.gerar(cp);
 	}	
 	
 }

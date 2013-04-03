@@ -182,17 +182,15 @@ function tAjax(objServer)
 			{
 				if (this.retorno != '')
 				{
-				    if (window.execScript) 
-				    {
-				    	window.execScript(this.retorno,'javascript');
-				    } 
-				    else 
-				    {
-				        var tag = document.createElement("script");
-				        tag.type = "text/javascript";
-				        tag.text = this.retorno;
-				        document.getElementsByTagName("head").item(0).appendChild(tag);
-				    }					
+			        if (window.execScript) {        // Internet Explorer and Google Chrome
+			            execScript (this.retorno, "JavaScript");
+			        }
+			        else {
+			            if (window.eval) {
+			                // the script language  is always JavaScript for the eval method
+			                eval (this.retorno);
+			            }
+			        }
 				}
 			}
 		}

@@ -17,40 +17,33 @@ oGraMQoECongest.constroi = function()
 
 oGraMQoECongest.gerarGraMQoECongest = function()
 {
-	var oAjax = new tAjax(this.arqServer);//alert("oi1");
-	oAjax.addCampo('acao','gerarGraMQoECongest');
-	oAjax.addCampo('metrid',document.getElementById('metrid').value);
-	oAjax.addCampo('codiid',document.getElementById('codiid').value);
-	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
-	oAjax.enviar('NoExec');
+	//var oAjax = new tAjax(this.arqServer);//alert("oi1");
+	//oAjax.addCampo('acao','gerarGraMQoECongest');
+	//oAjax.addCampo('metrid',document.getElementById('metrid').value);
+	//oAjax.addCampo('codiid',document.getElementById('codiid').value);
+	//oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
+	//oAjax.enviar('NoExec');
 	//alert(oAjax.retorno);
-	document.getElementById('tabGraMQoECongest').innerHTML = oAjax.retorno;
+	//document.getElementById('tabGraMQoECongest').innerHTML = oAjax.retorno;
 	
 	oGraMQoECongest.gerarTabela();
-	setTimeout("oGraMQoECongest.google()",800);
+	//setTimeout("oGraMQoECongest.google()",800);
+	oGraMQoECongest.google();
 }
 
 oGraMQoECongest.google = function()
 {
-	alert("google");
 	document.getElementById("teste").src="../qoeat/GraPsnrCongestIFrame.html";
-	
 }
 
 oGraMQoECongest.gerarTabela = function()
 {
-	tabela = new Array( );
-	
 	var oAjax = new tAjax(this.arqServer);
 	oAjax.addCampo('acao','gerarTabela');
 	oAjax.addCampo('metrid',document.getElementById('metrid').value);
 	oAjax.addCampo('codiid',document.getElementById('codiid').value);
 	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
-	oAjax.enviar('NoExec');
-	alert(oAjax.retorno);
-	tabela = oAjax.retorno;
-	//document.getElementById('tabGraMQoECongest').innerHtml = oAjax.retorno;
-	//alert(tabela);
+	oAjax.enviar();
 }
 
 oGraMQoECongest.atualizarTab = function(){}
