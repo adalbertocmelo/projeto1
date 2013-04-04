@@ -62,10 +62,10 @@ public class dbGraMQoECongest
 				if (!slAnt.equals(linhasql.gP("systemload")))
 				{
 					contaSl++;
-					if(contaSl==17)
-					{
-						break;
-					}
+					//if(contaSl==17)
+					//{
+					//	break;
+					//}
 					if (!slAnt.equals(""))
 					{
 						retorno3 += "],";
@@ -88,11 +88,16 @@ public class dbGraMQoECongest
 						}
 					}
 				}
-				retorno3 += ", "+linhasql.gP("media") + " ";
+				retorno3 += ", "+ linhasql.gP("media") + " ";
+
 			}
 			retorno2 += "],";
 			retorno3 += "]]);";
+			
 			System.out.println(retorno1 + retorno2 + retorno3);
+			System.out.println(retorno1 );
+			System.out.println(retorno2 );
+			System.out.println(retorno3);
 		} 
 
 		
