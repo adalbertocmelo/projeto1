@@ -10,7 +10,7 @@ import com.lib.util;
 
 public class dbGraMQoECongest
 {
-	public static String gerar(Propriedades cp)
+	public static String gerarGraMQoECongest(Propriedades cp)
 	{
 		String retorno1 = "";
 		String retorno2 = "";
@@ -24,7 +24,7 @@ public class dbGraMQoECongest
 				", 	pltr.id as pltrid"+
 				",	tran.systemload "+
 				", 	(avg(aval.valor))::numeric(15,4) as media "+
-				"from	planotrabalho pltr "+
+				" from	planotrabalho pltr "+
 				", 	transmissao tran "+
 				", 	video vide "+
 				", 	codificacao codi "+
@@ -52,24 +52,26 @@ public class dbGraMQoECongest
 			Propriedades linhasql = new Propriedades();
 
 			int contaSl = 0;
-			String modeAnt = "";
-			String slAnt = ""; //guarda o mecanismo anterior para saber quando houe mudança de mecanismo e assim começar uma nova coluna
-			retorno1 = "tabela = ([";
-						
+			String modeAnt = "";// guarda os macanismos para preenchar a primeira linha que formará a legenda do gráfico
+			String slAnt = ""; //guarda a congestão anterior para saber quando houe mudança de mecanismo e assim começar uma nova coluna
+			retorno1 = "oGraMQoECongest.tabelaGraMQoECongest = ([";
+
 			while (qry.proximo())
 			{
+				
 				qry.putLinha(linhasql);
 				if (!slAnt.equals(linhasql.gP("systemload")))
 				{
 					contaSl++;
-					//if(contaSl==17)
-					//{
-					//	break;
-					//}
-					if (!slAnt.equals(""))
+					if (!slAnt.equals("") && slAnt.equals("260"))
 					{
-						retorno3 += "],";
-					}
+						retorno3 += ", null ],";
+						}else{
+							if (!slAnt.equals("") && !(slAnt.equals("260")))
+							{
+								retorno3 += " ],";
+							}
+						}
 					slAnt = linhasql.gP("systemload");
 					retorno3 += "['" +linhasql.gP("systemload") + "' ";
 				}
@@ -89,15 +91,11 @@ public class dbGraMQoECongest
 					}
 				}
 				retorno3 += ", "+ linhasql.gP("media") + " ";
-
 			}
 			retorno2 += "],";
 			retorno3 += "]]);";
-			
+
 			System.out.println(retorno1 + retorno2 + retorno3);
-			System.out.println(retorno1 );
-			System.out.println(retorno2 );
-			System.out.println(retorno3);
 		} 
 
 		
