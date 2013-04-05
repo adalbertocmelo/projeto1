@@ -25,7 +25,7 @@ oGraMQoECongest.gerarGraMQoECongest = function()
 	//oAjax.enviar('NoExec');
 	//alert(oAjax.retorno);
 	//document.getElementById('tabGraMQoECongest').innerHTML = oAjax.retorno;
-	
+	this.metrname = document.getElementById('metrid').options[document.getElementById('metrid').selectedIndex].text;
 	oGraMQoECongest.gerarTabela();
 	//setTimeout("oGraMQoECongest.google()",800);
 	oGraMQoECongest.google();
@@ -39,7 +39,7 @@ oGraMQoECongest.google = function()
 oGraMQoECongest.gerarTabela = function()
 {
 	var oAjax = new tAjax(this.arqServer);
-	oAjax.addCampo('acao','gerarTabela');
+	oAjax.addCampo('acao','gerarTabelaGraMQoECongest');
 	oAjax.addCampo('metrid',document.getElementById('metrid').value);
 	oAjax.addCampo('codiid',document.getElementById('codiid').value);
 	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
