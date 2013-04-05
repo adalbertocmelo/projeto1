@@ -58,7 +58,7 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	public void exec(String acao) throws SQLException
 	{
     	if (acao.equals("gerarGraMQoECongest")){this.gerarGraMQoECongest();}
-    	if (acao.equals("gerarTabela")){this.gerarTabela();}
+    	if (acao.equals("gerarTabelaGraMQoECongest")){this.gerarTabelaGraMQoECongest();}
     	if (acao.equals("telaCadastro")){this.telaCadastro();}
     	if (acao.equals("aoExibirTela")){this.aoExibirTela();}
     	if (acao.equals("exibirTela")){this.exibirTela();}
@@ -132,14 +132,14 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	}		
 	
 	
-	public void gerarTabela()
+	public void gerarTabelaGraMQoECongest()
 	{
 		Propriedades cp = new Propriedades();
 		cp.put("metrid", this.campo.gP("metrid"));
 		cp.put("pltrid", this.campo.gP("pltrid"));
 		cp.put("codiid", this.campo.gP("codiid"));
 
-		echo = dbGraMQoECongest.gerar(cp);
+		echo = dbGraMQoECongest.gerarGraMQoECongest(cp);
 	}	
 	
 }
