@@ -10,7 +10,7 @@ import com.lib.tCad;
 import com.lib.tCombo;
 import com.lib.tHtml;
 import com.mvc.BusinessLogic;
-import com.qoeat.db.dbGraMQoE;
+import com.qoeat.db.dbGraMQoECongest;
 
 public class GraMQoECongest extends tCad implements BusinessLogic{
 	String link = "/qoeat/GraMQoECongest";	
