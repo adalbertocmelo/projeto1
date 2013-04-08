@@ -37,7 +37,7 @@ group by vide.nome
 ,	metr.nome
 order by  tran.mode, tran.systemload
 
--- SQL 2 - 
+-- SQL 2 - gráfico Métrica X GOP
 
 select	vide.nome
 ,	codi.id as codiid
