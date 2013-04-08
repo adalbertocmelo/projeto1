@@ -8,7 +8,7 @@ import com.lib.tCombo;
 import com.lib.tQuery;
 import com.lib.util;
 
-public class dbGraMQoECongest
+public class dbGraMQoE
 {
 	
 	
