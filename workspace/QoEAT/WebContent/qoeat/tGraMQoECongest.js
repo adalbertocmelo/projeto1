@@ -15,35 +15,40 @@ oGraMQoECongest.constroi = function()
 	this.aoConstruir();
 }
 
+// Método para gerar o gráfico de Métrica X Congestionamento
 oGraMQoECongest.gerarGraMQoECongest = function()
 {
-	//var oAjax = new tAjax(this.arqServer);//alert("oi1");
-	//oAjax.addCampo('acao','gerarGraMQoECongest');
-	//oAjax.addCampo('metrid',document.getElementById('metrid').value);
-	//oAjax.addCampo('codiid',document.getElementById('codiid').value);
-	//oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
-	//oAjax.enviar('NoExec');
-	//alert(oAjax.retorno);
-	//document.getElementById('tabGraMQoECongest').innerHTML = oAjax.retorno;
+	// Pegar a métrica e armazenar diretamente no objeto pra passar pro java script do google como legenda pro gráfico
 	this.metrname = document.getElementById('metrid').options[document.getElementById('metrid').selectedIndex].text;
-	oGraMQoECongest.gerarTabela();
-	//setTimeout("oGraMQoECongest.google()",800);
-	oGraMQoECongest.google();
-}
-
-oGraMQoECongest.google = function()
-{
-	document.getElementById("teste").src="../qoeat/GraPsnrCongestIFrame.html";
-}
-
-oGraMQoECongest.gerarTabela = function()
-{
+	
+	// Chama o método do ".java" passando os parâmetros a serem utilizados pela sql para gerar o gráfico
 	var oAjax = new tAjax(this.arqServer);
 	oAjax.addCampo('acao','gerarTabelaGraMQoECongest');
 	oAjax.addCampo('metrid',document.getElementById('metrid').value);
 	oAjax.addCampo('codiid',document.getElementById('codiid').value);
 	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
 	oAjax.enviar();
+	
+	// Chama o java script que gera o gráfico (Google Graphics)
+	document.getElementById("ifrGraMQoECongest").src="../qoeat/GraPsnrCongestIFrame.html";
+}
+
+
+oGraMQoECongest.gerarGraMQoEGop = function()
+{
+	//
+	this.metrname = document.getElementById('metrid').options[document.getElementById('metrid').selectedIndex].text;
+	
+	
+	var oAjax = new tAjax(this.arqServer);
+	oAjax.addCampo('acao','gerarTabelaGraMQoEGop');
+	oAjax.addCampo('metrid',document.getElementById('metrid').value);
+	oAjax.addCampo('codiid',document.getElementById('codiid').value);
+	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
+	oAjax.enviar();
+	
+	
+	document.getElementById("ifrGraMQoEGop").src="../qoeat/GraPsnrGopIFrame.html";
 }
 
 oGraMQoECongest.atualizarTab = function(){}
