@@ -36,7 +36,7 @@ oGraMQoECongest.gerarGraMQoECongest = function()
 
 oGraMQoECongest.gerarGraMQoEGop = function()
 {
-	//
+	
 	this.metrname = document.getElementById('metrid').options[document.getElementById('metrid').selectedIndex].text;
 	
 	
