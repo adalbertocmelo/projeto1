@@ -7,5 +7,5 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface BusinessLogic {
 	void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException;
-	void putPaths(String pathimg, String path) throws IOException;
+	void putPaths(String pathimg, String path) throws IOException; 
 }
