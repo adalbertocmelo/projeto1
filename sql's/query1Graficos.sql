@@ -28,7 +28,6 @@ and 	cofr.codiid = codi.id
 and     pltr.id = 7 
 and 	metr.id =5
 and	codi.id = 58
-and	tran.systemload = 260
 group by vide.nome
 ,	codi.id
 , 	tran.mode
@@ -67,12 +66,14 @@ and	cofr.gopid = cogo.gopid
 and 	metr.id =5
 and	tran.id = 45813
 group by vide.nome
-,	codi.id
-, 	tran.mode
-, 	pltr.id
-,	tran.systemload
-,	cogo.gopid
-order by  tran.mode, tran.systemload
+,	 codi.id
+, 	 tran.mode
+, 	 pltr.id
+,	 tran.systemload
+,	 cogo.gopid
+order by cogo.gopid
+
+
 
 select * from codifram where codiid =1
 
