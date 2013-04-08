@@ -73,7 +73,7 @@ group by vide.nome
 ,	 cogo.gopid
 order by cogo.gopid
 
-
+select id from transmissao where mode LIKE 'dropdependent' and codiid =58 and pltrid = 7  and systemload = 250 
 
 select * from codifram where codiid =1
 
@@ -81,4 +81,5 @@ select * from codigop where codiid = 1
 
 select * from codificacao where id =1
 
+select	vide.nome ,	codi.id as codiid, 	tran.mode , 	pltr.id as pltrid,	tran.systemload ,	cogo.gopid , 	(avg(aval.valor))::numeric(15,4) as media  from	planotrabalho pltr , 	transmissao tran , 	video vide , 	codificacao codi , 	codigop cogo ,	codifram cofr , 	avaliacaoframe aval , 	metrica metr where   vide.id = codi.videid and     tran.codiid = codi.id and	tran.pltrid = pltr.id and  	tran.id = aval.tranid and  	metr.id = aval.metrid and	cofr.framid = aval.framid and	codi.id = cogo.codiid and 	cofr.codiid = codi.id and 	cofr.gopid = cogo.gopid and 	metr.id = 5 and	tran.id =  group by vide.nome,	codi.id, 	tran.mode, 	pltr.id,	tran.systemload   order by cogo.gopid
 
