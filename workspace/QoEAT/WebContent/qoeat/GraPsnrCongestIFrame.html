@@ -11,7 +11,8 @@
          google.setOnLoadCallback(drawChart); 
 			
  function drawChart ()
-{	var data = new google.visualization.arrayToDataTable(parent.oGraMQoECongest.tabelaGraMQoECongest);
+{	
+	data = new google.visualization.arrayToDataTable(parent.oGraMQoECongest.tabelaGraMQoECongest);
    
     var options = {
         vAxis: {title: parent.oGraMQoECongest.metrname, titleTextStyle: {color:'blue'}, textPosition: 'out',
@@ -21,10 +22,51 @@
         pointSize:4,
         colors: ['red','yellow','gray','purple','black','green','pink','blue']
 		}; 
-
+	
+    //alert (data.getValue(1,2));
+    
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
+    google.visualization.events.addListener(chart, 'select', exibir);
+	
 }
+ 
+ function exibir(){
+	 	alert('entrou');
+	 	alert (data.getValue(chart.getSelection.row,chart.getSelection.column));
+		var selection = chart.getSelection();
+		alert('passou_selection');
+		var message = '';
+		for (var i = 0; i < selection.length; i++) {
+				alert('entrou_for')
+				var item = selection[i];
+				alert(item);
+				if (item.row != null && item.column != null) {
+					alert('2');
+					var str = data.getValue(item.row, item.column);
+					alert('3');
+					message += '{row:' + item.row + ',column:' + item.column + '} = ' + str + '\n';
+					alert('4');
+				} else if (item.row != null) {
+					alert('5');				
+					var str = data.getValue(item.row, 0);
+					alert('6');				
+					message += '{row:' + item.row + ', (no column, showing first)} = ' + str + '\n';
+					alert('7');				
+				} else if (item.column != null) {
+					alert('8');				
+					var str = data.getValue(0, item.column);
+					alert('9');				
+					message += '{(no row, showing first), column:' + item.column + '} = ' + str + '\n';
+					alert('10');				
+				}
+		}
+		if (message == '') {
+			message = 'nothing';
+		}
+		alert('You selected ' + message);
+		//alert('teste');
+	}
 </script>
 </head>
 <body>
