@@ -13,7 +13,7 @@ import com.mvc.BusinessLogic;
 import com.qoeat.db.dbGraMQoE;
 
 public class GraMQoECongest extends tCad implements BusinessLogic{
-	String link = "/qoeat/GraMQoECongest";	
+	String link = "/qoeat/GraMQoECongest";
 	public void iniciar(HttpServletRequest request) throws SQLException
 	{
 		// carregar Campos
@@ -130,9 +130,8 @@ public class GraMQoECongest extends tCad implements BusinessLogic{
 	{
 		Propriedades cp = new Propriedades();
 		cp.put("metrid", this.campo.gP("metrid"));
-		cp.put("pltrid", this.campo.gP("pltrid"));
-		cp.put("codiid", this.campo.gP("codiid"));
-
+		cp.put("tranid", this.campo.gP("tranid"));
+		System.out.println(cp);
 		echo = dbGraMQoE.gerarGraMQoEGop(cp);
 	}	
 	
