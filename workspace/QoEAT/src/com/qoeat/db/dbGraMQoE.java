@@ -60,8 +60,8 @@ public class dbGraMQoE
 			String modeAnt = "";// guarda os macanismos para preenchar a primeira linha que formará a legenda do gráfico
 			String slAnt = ""; //guarda a congestão anterior para saber quando houe mudança de mecanismo e assim começar uma nova coluna
 			retorno1 = "oGraMQoECongest.tabelaGraMQoECongest = ([";
-			retornoTabTranId = "oGraMQoECongest.tabelaTranId = ([";
-
+			retornoTabTranId = " oGraMQoECongest.tabelaTranId = ([";
+			
 			while (qry.proximo())
 			{
 
@@ -71,6 +71,7 @@ public class dbGraMQoE
 					contaSl++;
 					if (!slAnt.equals("") && slAnt.equals("260"))
 					{
+						retornoTabTranId += ", null ],";
 						retorno3 += ", null ],";
 						}else{
 							if (!slAnt.equals("") && !(slAnt.equals("260")))
@@ -102,10 +103,8 @@ public class dbGraMQoE
 				retornoTabTranId += ", "+ linhasql.gP("tranid") + " ";
 			}
 			retorno2 += "],";	
-			retorno3 += "]])";
+			retorno3 += "]]);";
 			retornoTabTranId += "]]);";
-
-			System.out.println(retornoTabTranId);
 		} 
 
 
@@ -114,7 +113,7 @@ public class dbGraMQoE
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
-		return retorno1 + retorno2 + retorno3;
+		return retorno1 + retorno2 + retorno3 + retornoTabTranId;
 	}
 	
 	public static String gerarGraMQoEGop(Propriedades cp)
@@ -164,7 +163,7 @@ public class dbGraMQoE
 			int contaSl = 0;
 			String modeAnt = "";// guarda os macanismos para preenchar a primeira linha que formará a legenda do gráfico
 			String slAnt = ""; //guarda a congestão anterior para saber quando houe mudança de mecanismo e assim começar uma nova coluna
-			retorno1 = "oGraMQoECongest.tabelaGraMQoECongest = ([";
+			retorno1 = "oGraMQoECongest.tabelaGraMQoEGop = ([";
 
 			while (qry.proximo())
 			{
