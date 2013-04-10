@@ -28,13 +28,12 @@ oGraMQoECongest.gerarGraMQoECongest = function()
 	oAjax.addCampo('codiid',document.getElementById('codiid').value);
 	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
 	oAjax.enviar();
-	
 	// Chama o java script que gera o gráfico (Google Graphics)
 	document.getElementById("ifrGraMQoECongest").src="../qoeat/GraPsnrCongestIFrame.html";
 }
 
 
-oGraMQoECongest.gerarGraMQoEGop = function()
+oGraMQoECongest.gerarGraMQoEGop = function(tranid)
 {
 	
 	this.metrname = document.getElementById('metrid').options[document.getElementById('metrid').selectedIndex].text;
@@ -43,10 +42,8 @@ oGraMQoECongest.gerarGraMQoEGop = function()
 	var oAjax = new tAjax(this.arqServer);
 	oAjax.addCampo('acao','gerarTabelaGraMQoEGop');
 	oAjax.addCampo('metrid',document.getElementById('metrid').value);
-	oAjax.addCampo('codiid',document.getElementById('codiid').value);
-	oAjax.addCampo('pltrid',document.getElementById('pltrid').value);
+	oAjax.addCampo('tranid',tranid);
 	oAjax.enviar();
-	
 	
 	document.getElementById("ifrGraMQoEGop").src="../qoeat/GraPsnrGopIFrame.html";
 }
