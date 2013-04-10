@@ -9,11 +9,15 @@
 <script type="text/javascript">
          google.load("visualization", "1", {packages:["corechart"]});
          google.setOnLoadCallback(drawChart); 
-			
+		var visualization;
  function drawChart ()
 {	
+	 
+	 
 	data = new google.visualization.arrayToDataTable(parent.oGraMQoECongest.tabelaGraMQoECongest);
-   
+	
+	var tranId = parent.oGraMQoECongest.tabelaTranId;
+	
     var options = {
         vAxis: {title: parent.oGraMQoECongest.metrname, titleTextStyle: {color:'blue'}, textPosition: 'out',
        		gridlines:{count:10}},
@@ -23,53 +27,36 @@
         colors: ['red','yellow','gray','purple','black','green','pink','blue']
 		}; 
 	
-    //alert (data.getValue(1,2));
-    
-    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data, options);
-    google.visualization.events.addListener(chart, 'select', exibir);
-	
+    visualization = new google.visualization.LineChart(document.getElementById('chart'));
+    visualization.draw(data, options);
+    google.visualization.events.addListener(visualization, 'select', exibir);
 }
  
  function exibir(){
-	 	alert('entrou');
-	 	alert (data.getValue(chart.getSelection.row,chart.getSelection.column));
-		var selection = chart.getSelection();
-		alert('passou_selection');
+		var selection = visualization.getSelection();
 		var message = '';
 		for (var i = 0; i < selection.length; i++) {
-				alert('entrou_for')
 				var item = selection[i];
-				alert(item);
 				if (item.row != null && item.column != null) {
-					alert('2');
 					var str = data.getValue(item.row, item.column);
-					alert('3');
 					message += '{row:' + item.row + ',column:' + item.column + '} = ' + str + '\n';
-					alert('4');
-				} else if (item.row != null) {
-					alert('5');				
-					var str = data.getValue(item.row, 0);
-					alert('6');				
-					message += '{row:' + item.row + ', (no column, showing first)} = ' + str + '\n';
-					alert('7');				
-				} else if (item.column != null) {
-					alert('8');				
-					var str = data.getValue(0, item.column);
-					alert('9');				
-					message += '{(no row, showing first), column:' + item.column + '} = ' + str + '\n';
-					alert('10');				
+					parent.oGraMQoECongest.gerarGraMQoEGop(parent.oGraMQoECongest.tabelaTranId[item.row][item.column]);
+				} else if (item.row != null) {			
+					var str = data.getValue(item.row, 0);			
+					message += '{row:' + item.row + ', (no column, showing first)} = ' + str + '\n';			
+				} else if (item.column != null) {			
+					var str = data.getValue(0, item.column);			
+					message += '{(no row, showing first), column:' + item.column + '} = ' + str + '\n';				
 				}
 		}
 		if (message == '') {
 			message = 'nothing';
 		}
 		alert('You selected ' + message);
-		//alert('teste');
 	}
 </script>
 </head>
 <body>
-<div id="chart_div" style="width: 730px; height: 500px;"></div>
+<div id="chart" style="width: 730px; height: 500px;"></div>
 </body>
 </html>
